@@ -7,10 +7,20 @@ function xen_clean() {
 }
 
 function xen_build() {
-    # install dependencies
+    echo installing Xen dependencies
     case $DISTRO in
         "Debian" | "Ubuntu" )
-        apt-get install build-essential
+        $SUDO apt-get install -y git build-essential python-dev gettext \
+          uuid-dev libncurses5-dev libyajl-dev libaio-dev
+        if test $ARCH = "x86_32" || test $ARCH = "x86_64"
+        then
+                $SUDO apt-get install -y bcc iasl bin86 libglib2.0-0 \
+                  libpixman-1-dev
+        fi
+        if test $ARCH = "x86_64"
+        then
+            $SUDO apt-get install -y libc6-dev-i386
+        fi
         ;;
         * )
         echo "I don't know how to install xen dependencies on $DISTRO"

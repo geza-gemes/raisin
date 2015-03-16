@@ -1,7 +1,6 @@
 # Config variables for raixen
 
-# Build and git config
-#GIT=git
+# Build config
 MAKE="make -j"
 PREFIX="/usr"
 DESTDIR=dist
@@ -14,8 +13,9 @@ XEN_UPSTREAM_URL="git://xenbits.xen.org/xen.git"
 GRUB_UPSTREAM_URL="git://git.savannah.gnu.org/grub.git"
 LIBVIRT_UPSTREAM_URL="git://libvirt.org/libvirt.git"
 
-# Software versions. Leave blank if you want to avoid the build
-# XEN_UPSTREAM_REVISION=
+# Software versions. Leave blank if you want to avoid the build, like
+# this: GRUB_UPSTREAM_REVISION=
+# Keep in mind that both Grub and Libvirt needs Xen to build and run.
 XEN_UPSTREAM_REVISION="RELEASE-4.5.0"
 GRUB_UPSTREAM_REVISION="master"
 LIBVIRT_UPSTREAM_REVISION="v1.2.9.1"

@@ -4,6 +4,7 @@ source config
 
 export PWD=`pwd`
 export GIT=${GIT-git}
+export SUDO=${SUDO-sudo}
 export MAKE=${MAKE-make -j}
 export PREFIX=${PREFIX-/usr}
 export INST_DIR=${DESTDIR-dist}
@@ -51,9 +52,12 @@ function get_distro() {
 
             if test -n "`grep -i \"$r\" /etc/SuSE-release`"
             then
-                os_CODENAME=`grep "CODENAME = " /etc/SuSE-release | sed 's:.* = ::g'`
-                os_RELEASE=`grep "VERSION = " /etc/SuSE-release | sed 's:.* = ::g'`
-                os_UPDATE=`grep "PATCHLEVEL = " /etc/SuSE-release | sed 's:.* = ::g'`
+                os_CODENAME=`grep "CODENAME = " /etc/SuSE-release | \
+                             sed 's:.* = ::g'`
+                os_RELEASE=`grep "VERSION = " /etc/SuSE-release | \
+                            sed 's:.* = ::g'`
+                os_UPDATE=`grep "PATCHLEVEL = " /etc/SuSE-release | \
+                           sed 's:.* = ::g'`
                 break
             fi
         done
@@ -61,8 +65,10 @@ function get_distro() {
     elif test -f /etc/debian_version && [[ `cat /proc/version` =~ "Debian" ]]
     then
         os_VENDOR="Debian"
-        os_CODENAME=`awk '/VERSION=/' /etc/os-release | sed 's/VERSION=//' | sed -r 's/\"|\(|\)//g' | awk '{print $2}'`
-        os_RELEASE=`awk '/VERSION_ID=/' /etc/os-release | sed 's/VERSION_ID=//' | sed 's/\"//g'`
+        os_CODENAME=`awk '/VERSION=/' /etc/os-release | sed 's/VERSION=//' | \
+                     sed -r 's/\"|\(|\)//g' | awk '{print $2}'`
+        os_RELEASE=`awk '/VERSION_ID=/' /etc/os-release | sed 's/VERSION_ID=//' \
+                    | sed 's/\"//g'`
     fi
 
     # Simply distro version string
@@ -88,12 +94,29 @@ function get_distro() {
     export DISTRO
 }
 
+function get_arch() {
+    export ARCH=`uname -m | sed -e s/i.86/x86_32/ -e s/i86pc/x86_32/ -e \
+                s/amd64/x86_64/ -e s/armv7.*/arm32/ -e s/armv8.*/arm64/ \
+                -e s/aarch64/arm64/`
+}
+
 
 # execution
+if test $EUID -eq 0
+then
+    export SUDO=""
+elif test ! -f `which sudo`
+then
+    echo "Raixen requires sudo to install build dependencies for you."
+    echo "Please install sudo, then run this script again."
+    exit 1
+fi
+
 rm -rf "$INST_DIR"
 mkdir -p "$INST_DIR"
 
 get_distro
+get_arch
 
 if test "$XEN_UPSTREAM_REVISION"
 then
