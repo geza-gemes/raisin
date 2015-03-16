@@ -2,11 +2,22 @@
 
 source config
 
-libvirt_clean() {
+function libvirt_clean() {
     rm -rf libvirt-dir
 }
 
-libvirt_build() {
+function libvirt_build() {
+    # install dependencies
+    case $DISTRO in
+        "Debian" | "Ubuntu" )
+        apt-get install build-essential
+        ;;
+        * )
+        echo "I don't know how to install libvirt dependencies on $DISTRO"
+        return 1
+        ;;
+    esac
+
     ./git-checkout.sh $LIBVIRT_UPSTREAM_URL $LIBVIRT_UPSTREAM_REVISION libvirt-dir
     cd libvirt-dir
     ./autogen.sh --disable-threads --with-xen --without-qemu --without-uml     \

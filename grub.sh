@@ -2,12 +2,23 @@
 
 source config
 
-grub_clean() {
+function grub_clean() {
     rm -rf memdisk.tar
     rm -rf grub-dir
 }
 
-grub_build() {
+function grub_build() {
+    # install dependencies
+    case $DISTRO in
+        "Debian" | "Ubuntu" )
+        apt-get install build-essential
+        ;;
+        * )
+        echo "I don't know how to install grub dependencies on $DISTRO"
+        return 1
+        ;;
+    esac
+
     tar cf memdisk.tar grub.cfg
     ./git-checkout.sh $GRUB_UPSTREAM_URL $GRUB_UPSTREAM_REVISION grub-dir
     cd grub-dir
