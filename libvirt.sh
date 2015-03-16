@@ -14,7 +14,8 @@ function libvirt_build() {
         $SUDO apt-get install -y git build-essential libtool autoconf \
                                  autopoint xsltproc libxml2-utils     \
                                  pkg-config python-dev libxml-xpath-perl \
-                                 libyajl-dev libxml2-dev
+                                 libyajl-dev libxml2-dev gettext \
+                                 libdevmapper-dev
         ;;
         * )
         echo "I don't know how to install libvirt dependencies on $DISTRO"
@@ -24,14 +25,12 @@ function libvirt_build() {
 
     ./git-checkout.sh $LIBVIRT_UPSTREAM_URL $LIBVIRT_UPSTREAM_REVISION libvirt-dir
     cd libvirt-dir
-    ./autogen.sh --disable-threads --with-xen --without-qemu --without-uml     \
-        --without-outopenvz --without-vmware --without-libssh2 --without-phyp  \
-        --without-xenapi --with-libxl --without-vbox --without-lxc             \
-        --without-esx --without-hyperv --without-parallels --without-test      \
-        --without-remote --with-libvirtd --without-sasl --with-yajl            \
-        --without-dbus --without-selinux --without-python --without-apparmor   \
-        --without-macvtap --without-avahi --without-openvz --without-dbus      \
-        --prefix=$PREFIX
+    ./autogen.sh
+    ./configure --with-xen --without-qemu --without-uml --without-openvz  \
+        --without-vmware --without-phyp --without-xenapi --with-libxl     \
+        --without-vbox --without-lxc --without-esx --without-hyperv       \
+        --without-parallels --without-test --with-libvirtd --without-sasl \
+        --with-yajl --without-macvtap --without-avahi  --prefix=$PREFIX
     $MAKE
     $MAKE --ignore-errors install DESTDIR=$INST_DIR
     cd ..

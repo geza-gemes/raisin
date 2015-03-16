@@ -14,7 +14,7 @@ function xen_build() {
           uuid-dev libncurses5-dev libyajl-dev libaio-dev
         if test $ARCH = "x86_32" || test $ARCH = "x86_64"
         then
-                $SUDO apt-get install -y bcc iasl bin86 libglib2.0-0 \
+                $SUDO apt-get install -y bcc iasl bin86 libglib2.0-dev \
                   libpixman-1-dev
         fi
         if test $ARCH = "x86_64"
@@ -34,4 +34,9 @@ function xen_build() {
     $MAKE
     $MAKE install DESTDIR="$INST_DIR"
     cd ..
+}
+
+function xen_install() {
+    cd xen-dir
+    $MAKE install
 }
