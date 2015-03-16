@@ -2,11 +2,11 @@
 
 source config
 
-clean_libvirt() {
+libvirt_clean() {
     rm -rf libvirt-dir
 }
 
-build_libvirt() {
+libvirt_build() {
     ./git-checkout.sh $LIBVIRT_UPSTREAM_URL $LIBVIRT_UPSTREAM_REVISION libvirt-dir
     cd libvirt-dir
     ./autogen.sh --disable-threads --with-xen --without-qemu --without-uml     \

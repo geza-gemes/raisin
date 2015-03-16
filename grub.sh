@@ -2,12 +2,12 @@
 
 source config
 
-clean_grub() {
+grub_clean() {
     rm -rf memdisk.tar
     rm -rf grub-dir
 }
 
-build_grub() {
+grub_build() {
     tar cf memdisk.tar grub.cfg
     ./git-checkout.sh $GRUB_UPSTREAM_URL $GRUB_UPSTREAM_REVISION grub-dir
     cd grub-dir

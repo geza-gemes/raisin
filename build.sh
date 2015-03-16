@@ -22,16 +22,16 @@ mkdir -p "$INST_DIR"
 
 if test "$XEN_UPSTREAM_REVISION"
 then
-    clean_xen
-    build_xen
+    xen_clean
+    xen_build
 fi
 if test "$GRUB_UPSTREAM_REVISION"
 then
-    clean_grub
-    build_grub
+    grub_clean
+    grub_build
 fi
 if test "$LIBVIRT_UPSTREAM_REVISION"
 then
-    clean_libvirt
-    build_libvirt
+    libvirt_clean
+    libvirt_build
 fi
