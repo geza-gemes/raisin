@@ -8,13 +8,8 @@ export MAKE=${MAKE-make -j}
 export PREFIX=${PREFIX-/usr}
 export INST_DIR=${DESTDIR-dist}
 
-if test ! -d "$INST_DIR"
-then
-    echo "DESTDIR not set correctly"
-    exit 1
-fi
 INST_DIR=`readlink -f $INST_DIR`
-
+mkdir -p "$INST_DIR"
 
 source xen.sh
 source grub.sh
