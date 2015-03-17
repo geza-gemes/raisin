@@ -35,8 +35,3 @@ function xen_build() {
     $MAKE install DESTDIR="$INST_DIR"
     cd ..
 }
-
-function xen_install() {
-    cd xen-dir
-    $MAKE install
-}

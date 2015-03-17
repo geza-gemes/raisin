@@ -123,12 +123,6 @@ then
     xen_clean
     xen_build
 fi
-
-# need xen installed in order to build the rest
-if test "$GRUB_UPSTREAM_REVISION" || test "$LIBVIRT_UPSTREAM_REVISION"
-then
-    xen_install
-fi
 if test "$GRUB_UPSTREAM_REVISION"
 then
     grub_clean
