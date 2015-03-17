@@ -15,7 +15,7 @@ function libvirt_build() {
                                  autopoint xsltproc libxml2-utils     \
                                  pkg-config python-dev libxml-xpath-perl \
                                  libyajl-dev libxml2-dev gettext \
-                                 libdevmapper-dev libnl-dev
+                                 libdevmapper-dev libnl-3-dev libnl-route-3-dev
         ;;
         * )
         echo "I don't know how to install libvirt dependencies on $DISTRO"
