@@ -15,7 +15,7 @@ function libvirt_build() {
                                  autopoint xsltproc libxml2-utils     \
                                  pkg-config python-dev libxml-xpath-perl \
                                  libyajl-dev libxml2-dev gettext \
-                                 libdevmapper-dev
+                                 libdevmapper-dev libnl-devel
         ;;
         * )
         echo "I don't know how to install libvirt dependencies on $DISTRO"
@@ -25,8 +25,9 @@ function libvirt_build() {
 
     ./git-checkout.sh $LIBVIRT_UPSTREAM_URL $LIBVIRT_UPSTREAM_REVISION libvirt-dir
     cd libvirt-dir
-    ./autogen.sh
-    ./configure --with-xen --without-qemu --without-uml --without-openvz  \
+    CFLAGS="-I$INST_DIR/$PREFIX/include" \
+    LDFLAGS="-L$INST_DIR/$PREFIX/lib -Wl,-rpath-link=$INST_DIR/$PREFIX/lib" \
+    ./autogen.sh --with-xen --without-qemu --without-uml --without-openvz \
         --without-vmware --without-phyp --without-xenapi --with-libxl     \
         --without-vbox --without-lxc --without-esx --without-hyperv       \
         --without-parallels --without-test --with-libvirtd --without-sasl \
