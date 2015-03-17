@@ -32,6 +32,7 @@ function grub_build() {
     tar cf memdisk.tar grub.cfg
     ./git-checkout.sh $GRUB_UPSTREAM_URL $GRUB_UPSTREAM_REVISION grub-dir
     cd grub-dir
+    export CPPFLAGS="-I$INST_DIR/$PREFIX/include"
     ./autogen.sh
     ## GRUB32
     ./configure --target=i386 --with-platform=xen
