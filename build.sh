@@ -10,7 +10,7 @@ export PREFIX=${PREFIX-/usr}
 export INST_DIR=${DESTDIR-dist}
 
 INST_DIR=`readlink -f $INST_DIR`
-mkdir -p "$INST_DIR"
+mkdir -p "$INST_DIR" &>/dev/null
 
 source xen.sh
 source grub.sh
@@ -111,9 +111,6 @@ then
     echo "Please install sudo, then run this script again."
     exit 1
 fi
-
-rm -rf "$INST_DIR"
-mkdir -p "$INST_DIR"
 
 get_distro
 get_arch
