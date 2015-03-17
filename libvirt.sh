@@ -17,6 +17,11 @@ function libvirt_build() {
                                  libyajl-dev libxml2-dev gettext \
                                  libdevmapper-dev libnl-3-dev libnl-route-3-dev
         ;;
+        "Fedora" )
+        $SUDO yum install -y git patch make gcc libtool autoconf gettext-devel \
+                             python-devel libxslt yajl-devel libxml2-devel \
+                             device-mapper-devel libpciaccess-devel libuuid-devel
+        ;;
         * )
         echo "I don't know how to install libvirt dependencies on $DISTRO"
         return 1

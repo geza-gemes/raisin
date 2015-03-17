@@ -15,7 +15,7 @@ function xen_build() {
           libglib2.0-dev libssl-dev libpixman-1-dev
         if test $ARCH = "x86_32" || test $ARCH = "x86_64"
         then
-                $SUDO apt-get install -y bcc iasl bin86
+                $SUDO apt-get install -y bcc iasl bin86 texinfo
         fi
         if test $ARCH = "x86_64"
         then
@@ -24,6 +24,19 @@ function xen_build() {
         if test $ARCH = "arm32" || test $ARCH = "arm64"
         then
             $SUDO apt-get install -y libfdt-dev
+        fi
+        ;;
+        "Fedora" )
+        $SUDO yum install -y git make gcc python-devel gettext
+          libuuid-devel ncurses-devel glib2-devel libaio-devel openssl-devel
+          yajl-devel patch pixman-devel 
+        if test $ARCH = "x86_32" || test $ARCH = "x86_64"
+        then
+            $SUDO yum install -y dev86 iasl texinfo
+        fi
+        if test $ARCH = "x86_64"
+        then
+            $SUDO yum install -y glibc-devel.i686
         fi
         ;;
         * )

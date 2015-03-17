@@ -23,6 +23,14 @@ function grub_build() {
             $SUDO apt-get install -y libc6-dev-i386
         fi
         ;;
+        "Fedora" )
+        $SUDO yum install -y git make gcc tar automake autoconf sysconftool \
+          bison flex
+        if test $ARCH = "x86_64"
+        then
+            $SUDO yum install -y glibc-devel.i686
+        fi
+        ;;
         * )
         echo "I don't know how to install grub dependencies on $DISTRO"
         return 1
