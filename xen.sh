@@ -15,7 +15,7 @@ function xen_install_dependencies() {
 
     local DEP_Fedora_common="make gcc python-devel gettext libuuid-devel   \
              ncurses-devel glib2-devel libaio-devel openssl-devel yajl-devel   \
-             patch pixman-devel"
+             patch pixman-devel glibc-devel"
     local DEP_Fedora_x86_32="$DEP_Fedora_common dev86 iasl texinfo"
     local DEP_Fedora_x86_64="$DEP_Fedora_x86_32 glibc-devel.i686"
 

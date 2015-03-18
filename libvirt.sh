@@ -39,10 +39,10 @@ function libvirt_build() {
         --without-parallels --without-test --with-libvirtd --without-sasl \
         --with-yajl --without-macvtap --without-avahi  --prefix=$PREFIX
     $MAKE
-    $MAKE --ignore-errors install DESTDIR=$INST_DIR
+    $MAKE --ignore-errors install DESTDIR="$INST_DIR"
     if test $DISTRO = "Debian"
     then
-        cp libvirt.debian.init "$INST_DIR"/etc/init.d/libvirtd
+        cp ../libvirt.debian.init "$INST_DIR"/etc/init.d/libvirtd
         chmod +x "$INST_DIR"/etc/init.d/libvirtd
     elif test $DISTRO = "Fedora" || test $DISTRO = "CentOS"
     then

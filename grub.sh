@@ -11,7 +11,8 @@ function grub_install_dependencies() {
     local DEP_Debian_arm32="$DEP_Debian_common"
     local DEP_Debian_arm64="$DEP_Debian_common"
 
-    local DEP_Fedora_common="make gcc tar automake autoconf sysconftool bison flex"
+    local DEP_Fedora_common="make gcc tar automake autoconf sysconftool bison flex \
+                             glibc-devel"
     local DEP_Fedora_x86_32="$DEP_Fedora_common"
     local DEP_Fedora_x86_64="$DEP_Fedora_common glibc-devel.i686"
 
@@ -32,11 +33,10 @@ function grub_build() {
     tar cf memdisk.tar grub.cfg
     ./git-checkout.sh $GRUB_UPSTREAM_URL $GRUB_UPSTREAM_REVISION grub-dir
     cd grub-dir
-    export CPPFLAGS="-I$INST_DIR/$PREFIX/include"
     ./autogen.sh
     ## GRUB32
     ./configure --target=i386 --with-platform=xen
-    $MAKE
+    $MAKE CPPFLAGS="-I$INST_DIR/$PREFIX/include"
     ./grub-mkimage -d grub-core -O i386-xen -c ../grub-bootstrap.cfg \
       -m ../memdisk.tar -o grub-i386-xen grub-core/*mod
     cp grub-i386-xen "$INST_DIR"/$PREFIX/lib/xen/boot
@@ -45,7 +45,7 @@ function grub_build() {
     then
         $MAKE clean
         ./configure --target=amd64 --with-platform=xen
-        $MAKE
+        $MAKE CPPFLAGS="-I$INST_DIR/$PREFIX/include"
         ./grub-mkimage -d grub-core -O x86_64-xen -c ../grub-bootstrap.cfg \
           -m ../memdisk.tar -o grub-x86_64-xen grub-core/*mod
         cp grub-x86_64-xen "$INST_DIR"/$PREFIX/lib/xen/boot
@@ -59,4 +59,5 @@ function grub_clean() {
 }
 
 function grub_configure() {
+    echo "Nothing to configure for Grub"
 }
