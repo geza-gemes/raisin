@@ -22,7 +22,7 @@ source libvirt.sh
 if test $EUID -eq 0
 then
     export SUDO=""
-elif test ! -f `which sudo`
+elif test ! -f `which sudo 2>/dev/null`
 then
     echo "Raixen requires sudo to install build dependencies for you."
     echo "Please install sudo, then run this script again."
