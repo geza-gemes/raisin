@@ -17,6 +17,12 @@ source xen.sh
 source grub.sh
 source libvirt.sh
 
+help() {
+    echo "Usage: ./build.sh <options>"
+    echo "where options are:"
+    echo "    -n | --no-deps       Do no install build-time dependencies"
+    echo "    -v | --verbose       Verbose"
+}
 
 # execution
 if test $EUID -eq 0
@@ -28,6 +34,26 @@ then
     echo "Please install sudo, then run this script again."
     exit 1
 fi
+
+# parameters check
+export NO_DEPS=0
+export VERBOSE=0
+while test $# -ge 1
+do
+  if test "$1" = "-n" || test "$1" = "--no-deps"
+  then
+    NO_DEPS=1
+    shift 1
+  elif test "$1" = "-v" || test "$1" = "--verbose"
+  then
+    VERBOSE=1
+    shift 1
+  else
+    help
+    exit 1
+  fi
+done
+
 
 get_distro
 get_arch

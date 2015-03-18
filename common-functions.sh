@@ -85,6 +85,12 @@ function get_arch() {
 }
 
 function install_dependencies() {
+    if test "$NO_DEPS" && test "$NO_DEPS" -eq 1
+    then
+        echo "Not installing any dependencies, as requested."
+        echo "Depency list: $*"
+        return 0
+    fi
     case $DISTRO in
         "Debian" | "Ubuntu" )
         $SUDO apt-get install -y $*
