@@ -57,3 +57,6 @@ function grub_clean() {
     rm -rf memdisk.tar
     rm -rf grub-dir
 }
+
+function grub_configure() {
+}

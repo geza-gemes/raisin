@@ -103,3 +103,18 @@ function install_dependencies() {
         ;;
     esac
 }
+
+function start_initscripts() {
+    case $DISTRO in
+        "Debian" | "Ubuntu" )
+        while test $# -ge 1
+        do
+            $SUDO update-rc.d $1
+            shift 1
+        done
+        ;;
+        * )
+        echo "I don't know how to start initscripts on $DISTRO"
+        ;;
+    esac
+}

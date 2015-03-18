@@ -31,6 +31,9 @@ function xen_build() {
     ./configure --prefix=$PREFIX
     $MAKE
     $MAKE install DESTDIR="$INST_DIR"
+    chmod +x "$INST_DIR"/etc/init.d/xencommons
+    chmod +x "$INST_DIR"/etc/init.d/xendomains
+    chmod +x "$INST_DIR"/etc/init.d/xen-watchdog
     cd ..
 }
 
@@ -38,5 +41,40 @@ function xen_clean() {
     rm -rf xen-dir
 }
 
+function xen_create_bridge_Debian() {
+    BRIDGE="xenbr0"
+    IFACE=`grep "dhcp" /etc/network/interfaces | head -1 | awk '{print$2}'`
 
+    if test -z "$IFACE"
+    then
+        echo "Please refer to the following page to setup networking:"
+        echo "http://wiki.xenproject.org/wiki/Network_Configuration_Examples_(Xen_4.1%2B)"
+        return 1
+    fi
+    if test "`grep $BRIDGE /etc/network/interfaces`"
+    then
+        echo "a network bridge seems to be already setup"
+        return 0
+    fi
 
+    TMPFILE=`mktemp`
+    cat /etc/network/interfaces | \
+        sed -e "s/iface $IFACE inet dhcp/iface $IFACE inet manual/" \
+            -e "/auto/s/\<$IFACE\>/$BRIDGE/g" \
+            -e "/allow-hotplug/s/\<$IFACE\>/$BRIDGE/g" > $TMPFILE
+    echo "" >> $TMPFILE
+    echo "iface $BRIDGE inet dhcp" >> $TMPFILE
+    echo "    bridge_ports $IFACE" >> $TMPFILE
+    $SUDO cp $TMPFILE /etc/network/interfaces
+    rm $TMPFILE
+}
+
+function xen_configure() {
+    if test "$DISTRO" != "Debian"
+    then
+        echo "I don't know how to configure Xen on $DISTRO"
+        return 1
+    fi
+    xen_create_bridge_$DISTRO
+    start_initscripts xencommons xendomains xen-watchdog
+}

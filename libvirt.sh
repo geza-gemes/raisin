@@ -40,9 +40,30 @@ function libvirt_build() {
         --with-yajl --without-macvtap --without-avahi  --prefix=$PREFIX
     $MAKE
     $MAKE --ignore-errors install DESTDIR=$INST_DIR
+    if test $DISTRO = "Debian"
+    then
+        cp libvirt.debian.init "$INST_DIR"/etc/init.d/libvirtd
+        chmod +x "$INST_DIR"/etc/init.d/libvirtd
+    elif test $DISTRO = "Fedora" || test $DISTRO = "CentOS"
+    then
+        $MAKE -C daemon libvirtd.init
+        cp daemon/libvirtd.init $INST_DIR/etc/init.d/libvirtd
+        chmod +x "$INST_DIR"/etc/init.d/libvirtd
+    else
+        echo "I don't know how write an init script for Libvirt on $DISTRO"
+    fi
     cd ..
 }
 
 function libvirt_clean() {
     rm -rf libvirt-dir
+}
+
+function libvirt_configure() {
+    if test "$DISTRO" != "Debian"
+    then
+        echo "I don't know how to configure Libvirt on $DISTRO"
+        return 1
+    fi
+    start_initscripts libvirtd
 }
