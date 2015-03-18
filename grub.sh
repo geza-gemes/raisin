@@ -5,13 +5,13 @@ source common-functions.sh
 
 
 function grub_install_dependencies() {
-    local DEP_Debian_common="git build-essential tar autoconf bison flex"
+    local DEP_Debian_common="build-essential tar autoconf bison flex"
     local DEP_Debian_x86_32="$DEP_Debian_common"
     local DEP_Debian_x86_64="$DEP_Debian_common libc6-dev-i386"
     local DEP_Debian_arm32="$DEP_Debian_common"
     local DEP_Debian_arm64="$DEP_Debian_common"
 
-    local DEP_Fedora_common="git make gcc tar automake autoconf sysconftool bison flex"
+    local DEP_Fedora_common="make gcc tar automake autoconf sysconftool bison flex"
     local DEP_Fedora_x86_32="$DEP_Fedora_common"
     local DEP_Fedora_x86_64="$DEP_Fedora_common glibc-devel.i686"
 

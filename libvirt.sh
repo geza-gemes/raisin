@@ -5,7 +5,7 @@ source common-functions.sh
 
 
 function libvirt_install_dependencies() {
-    local DEP_Debian_common="git build-essential libtool autoconf autopoint \
+    local DEP_Debian_common="build-essential libtool autoconf autopoint \
                              xsltproc libxml2-utils pkg-config python-dev   \
                              libxml-xpath-perl libyajl-dev libxml2-dev      \
                              gettext libdevmapper-dev libnl-3-dev           \
@@ -15,7 +15,7 @@ function libvirt_install_dependencies() {
     local DEP_Debian_arm32="$DEP_Debian_common"
     local DEP_Debian_arm64="$DEP_Debian_common"
 
-    local DEP_Fedora_common="git patch make gcc libtool autoconf gettext-devel \
+    local DEP_Fedora_common="patch make gcc libtool autoconf gettext-devel \
                              python-devel libxslt yajl-devel libxml2-devel     \
                              device-mapper-devel libpciaccess-devel            \
                              libuuid-devel"
