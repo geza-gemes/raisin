@@ -17,7 +17,7 @@ source grub.sh
 source libvirt.sh
 
 function get_distro() {
-    if test -x "`which lsb_release`"
+    if test -x "`which lsb_release 2>/dev/null`"
     then
         os_VENDOR=`lsb_release -i -s`
         os_RELEASE=`lsb_release -r -s`
