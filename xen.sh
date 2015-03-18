@@ -27,8 +27,8 @@ function xen_build() {
         fi
         ;;
         "Fedora" )
-        $SUDO yum install -y git make gcc python-devel gettext
-          libuuid-devel ncurses-devel glib2-devel libaio-devel openssl-devel
+        $SUDO yum install -y git make gcc python-devel gettext \
+          libuuid-devel ncurses-devel glib2-devel libaio-devel openssl-devel \
           yajl-devel patch pixman-devel 
         if test $ARCH = "x86_32" || test $ARCH = "x86_64"
         then
