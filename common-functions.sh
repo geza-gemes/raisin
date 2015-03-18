@@ -92,7 +92,7 @@ function install_dependencies() {
         return 0
     fi
     case $DISTRO in
-        "Debian" | "Ubuntu" )
+        "Debian" )
         $SUDO apt-get install -y $*
         ;;
         "Fedora" )
@@ -106,7 +106,7 @@ function install_dependencies() {
 
 function start_initscripts() {
     case $DISTRO in
-        "Debian" | "Ubuntu" )
+        "Debian" )
         while test $# -ge 1
         do
             $SUDO update-rc.d $1
