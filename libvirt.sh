@@ -4,20 +4,30 @@ source config
 source common-functions.sh
 
 
-DEP_Debian_common="git build-essential libtool autoconf autopoint xsltproc libxml2-utils pkg-config python-dev libxml-xpath-perl libyajl-dev libxml2-dev gettext libdevmapper-dev libnl-3-dev libnl-route-3-dev"
-DEP_Debian_x86_32="$DEP_Debian_common"
-DEP_Debian_x86_64="$DEP_Debian_common"
-DEP_Debian_arm32="$DEP_Debian_common"
-DEP_Debian_arm64="$DEP_Debian_common"
+function libvirt_install_dependencies() {
+    local DEP_Debian_common="git build-essential libtool autoconf autopoint \
+                             xsltproc libxml2-utils pkg-config python-dev   \
+                             libxml-xpath-perl libyajl-dev libxml2-dev      \
+                             gettext libdevmapper-dev libnl-3-dev           \
+                             libnl-route-3-dev"
+    local DEP_Debian_x86_32="$DEP_Debian_common"
+    local DEP_Debian_x86_64="$DEP_Debian_common"
+    local DEP_Debian_arm32="$DEP_Debian_common"
+    local DEP_Debian_arm64="$DEP_Debian_common"
 
-DEP_Fedora_common="git patch make gcc libtool autoconf gettext-devel python-devel libxslt yajl-devel libxml2-devel device-mapper-devel libpciaccess-devel libuuid-devel"
-DEP_Fedora_x86_32="$DEP_Fedora_common"
-DEP_Fedora_x86_64="$DEP_Fedora_common"
+    local DEP_Fedora_common="git patch make gcc libtool autoconf gettext-devel \
+                             python-devel libxslt yajl-devel libxml2-devel     \
+                             device-mapper-devel libpciaccess-devel            \
+                             libuuid-devel"
+    local DEP_Fedora_x86_32="$DEP_Fedora_common"
+    local DEP_Fedora_x86_64="$DEP_Fedora_common"
 
-
-function libvirt_build() {
     echo installing Libvirt dependencies
     eval install_dependencies \$DEP_"$DISTRO"_"$ARCH"
+}
+
+function libvirt_build() {
+    libvirt_install_dependencies
 
     ./git-checkout.sh $LIBVIRT_UPSTREAM_URL $LIBVIRT_UPSTREAM_REVISION libvirt-dir
     cd libvirt-dir
