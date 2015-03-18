@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 
 source config
+source common-functions.sh
 
-function grub_clean() {
-    rm -rf memdisk.tar
-    rm -rf grub-dir
-}
+
+DEP_Debian_common="git build-essential tar autoconf bison flex"
+DEP_Debian_x86_32="$DEP_Debian_common"
+DEP_Debian_x86_64="$DEP_Debian_common libc6-dev-i386"
+DEP_Debian_arm32="$DEP_Debian_common"
+DEP_Debian_arm64="$DEP_Debian_common"
+
+DEP_Fedora_common="git make gcc tar automake autoconf sysconftool bison flex"
+DEP_Fedora_x86_32="$DEP_Fedora_common"
+DEP_Fedora_x86_64="$DEP_Fedora_common glibc-devel.i686"
+
 
 function grub_build() {
     if test $ARCH != "x86_64" && test $ARCH != "x86_32"
@@ -14,28 +22,7 @@ function grub_build() {
         return
     fi
     echo installing Grub dependencies
-    case $DISTRO in
-        "Debian" | "Ubuntu" )
-        # grub also requires xen
-        $SUDO apt-get install -y git build-essential tar autoconf bison flex
-        if test $ARCH = "x86_64"
-        then
-            $SUDO apt-get install -y libc6-dev-i386
-        fi
-        ;;
-        "Fedora" )
-        $SUDO yum install -y git make gcc tar automake autoconf sysconftool \
-          bison flex
-        if test $ARCH = "x86_64"
-        then
-            $SUDO yum install -y glibc-devel.i686
-        fi
-        ;;
-        * )
-        echo "I don't know how to install grub dependencies on $DISTRO"
-        return 1
-        ;;
-    esac
+    eval install_dependencies \$DEP_"$DISTRO"_"$ARCH"
 
     tar cf memdisk.tar grub.cfg
     ./git-checkout.sh $GRUB_UPSTREAM_URL $GRUB_UPSTREAM_REVISION grub-dir
@@ -59,4 +46,9 @@ function grub_build() {
         cp grub-x86_64-xen "$INST_DIR"/$PREFIX/lib/xen/boot
     fi
     cd ..
+}
+
+function grub_clean() {
+    rm -rf memdisk.tar
+    rm -rf grub-dir
 }

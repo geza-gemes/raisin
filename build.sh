@@ -73,8 +73,8 @@ function get_distro() {
 
     # Simply distro version string
     case "$os_VENDOR" in
-        "Ubuntu"* | "LinuxMint"* )
-            DISTRO="Ubuntu"
+        "Debian"* | "Ubuntu"* | "LinuxMint"* )
+            DISTRO="Debian"
             ;;
         "SUSE"* )
             DISTRO="SUSE"

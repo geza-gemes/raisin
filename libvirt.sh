@@ -1,32 +1,23 @@
 #!/usr/bin/env bash
 
 source config
+source common-functions.sh
 
-function libvirt_clean() {
-    rm -rf libvirt-dir
-}
+
+DEP_Debian_common="git build-essential libtool autoconf autopoint xsltproc libxml2-utils pkg-config python-dev libxml-xpath-perl libyajl-dev libxml2-dev gettext libdevmapper-dev libnl-3-dev libnl-route-3-dev"
+DEP_Debian_x86_32="$DEP_Debian_common"
+DEP_Debian_x86_64="$DEP_Debian_common"
+DEP_Debian_arm32="$DEP_Debian_common"
+DEP_Debian_arm64="$DEP_Debian_common"
+
+DEP_Fedora_common="git patch make gcc libtool autoconf gettext-devel python-devel libxslt yajl-devel libxml2-devel device-mapper-devel libpciaccess-devel libuuid-devel"
+DEP_Fedora_x86_32="$DEP_Fedora_common"
+DEP_Fedora_x86_64="$DEP_Fedora_common"
+
 
 function libvirt_build() {
     echo installing Libvirt dependencies
-    case $DISTRO in
-        "Debian" | "Ubuntu" )
-        # libvirt also requires xen
-        $SUDO apt-get install -y git build-essential libtool autoconf \
-                                 autopoint xsltproc libxml2-utils     \
-                                 pkg-config python-dev libxml-xpath-perl \
-                                 libyajl-dev libxml2-dev gettext \
-                                 libdevmapper-dev libnl-3-dev libnl-route-3-dev
-        ;;
-        "Fedora" )
-        $SUDO yum install -y git patch make gcc libtool autoconf gettext-devel \
-                             python-devel libxslt yajl-devel libxml2-devel \
-                             device-mapper-devel libpciaccess-devel libuuid-devel
-        ;;
-        * )
-        echo "I don't know how to install libvirt dependencies on $DISTRO"
-        return 1
-        ;;
-    esac
+    eval install_dependencies \$DEP_"$DISTRO"_"$ARCH"
 
     ./git-checkout.sh $LIBVIRT_UPSTREAM_URL $LIBVIRT_UPSTREAM_REVISION libvirt-dir
     cd libvirt-dir
@@ -40,4 +31,8 @@ function libvirt_build() {
     $MAKE
     $MAKE --ignore-errors install DESTDIR=$INST_DIR
     cd ..
+}
+
+function libvirt_clean() {
+    rm -rf libvirt-dir
 }
