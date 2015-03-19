@@ -19,7 +19,7 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 export PATH
-DAEMON=/usr/local/sbin/libvirtd
+DAEMON=@PREFIX/sbin/libvirtd
 NAME=libvirtd
 DESC="libvirt management daemon"
 

@@ -92,7 +92,8 @@ function xen_create_bridge_Fedora() {
     echo "BRIDGE=$BRIDGE" >> $TMPFILE
     $SUDO mv -f $TMPFILE $IFACE
 
-    $SUDO cp ifcfg-xenbr0 /etc/sysconfig/network-scripts
+    cat ifcfg-xenbr0 | sed -e "s/@BRIDGE/$BRIDGE/g" > $TMPFILE
+    $SUDO mv -f $TMPFILE /etc/sysconfig/network-scripts
 
     $SUDO iptables -I FORWARD -m physdev --physdev-is-bridged -j ACCEPT
     $SUDO service iptables save

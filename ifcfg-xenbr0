@@ -1,4 +1,4 @@
-DEVICE=xenbr0
+DEVICE=@BRIDGE
 TYPE=Bridge
 BOOTPROTO=dhcp
 ONBOOT=yes

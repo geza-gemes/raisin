@@ -42,7 +42,7 @@ function libvirt_build() {
     $MAKE --ignore-errors install DESTDIR="$INST_DIR"
     if test $DISTRO = "Debian"
     then
-        cp ../libvirt.debian.init "$INST_DIR"/etc/init.d/libvirtd
+        cat ../libvirt.debian.init | sed -e "s/@PREFIX/$PREFIX/g" > "$INST_DIR"/etc/init.d/libvirtd
         chmod +x "$INST_DIR"/etc/init.d/libvirtd
     elif test $DISTRO = "Fedora" || test $DISTRO = "CentOS"
     then
