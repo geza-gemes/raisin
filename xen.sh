@@ -7,7 +7,7 @@ source common-functions.sh
 function xen_install_dependencies() {
     local DEP_Debian_common="build-essential python-dev gettext uuid-dev   \
              libncurses5-dev libyajl-dev libaio-dev pkg-config libglib2.0-dev  \
-             libssl-dev libpixman-1-dev"
+             libssl-dev libpixman-1-dev bridge-utils"
     local DEP_Debian_x86_32="$DEP_Debian_common bcc iasl bin86 texinfo"
     local DEP_Debian_x86_64="$DEP_Debian_x86_32 libc6-dev-i386"
     local DEP_Debian_arm32="$DEP_Debian_common libfdt-dev"
@@ -15,7 +15,7 @@ function xen_install_dependencies() {
 
     local DEP_Fedora_common="make gcc python-devel gettext libuuid-devel   \
              ncurses-devel glib2-devel libaio-devel openssl-devel yajl-devel   \
-             patch pixman-devel glibc-devel"
+             patch pixman-devel glibc-devel bridge-utils"
     local DEP_Fedora_x86_32="$DEP_Fedora_common dev86 iasl texinfo"
     local DEP_Fedora_x86_64="$DEP_Fedora_x86_32 glibc-devel.i686"
 
