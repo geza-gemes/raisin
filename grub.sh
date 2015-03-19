@@ -59,5 +59,5 @@ function grub_clean() {
 }
 
 function grub_configure() {
-    echo "Nothing to configure for Grub"
+    echo "Grub: nothing to configure"
 }

@@ -69,12 +69,39 @@ function xen_create_bridge_Debian() {
     rm $TMPFILE
 }
 
-function xen_configure() {
-    if test "$DISTRO" != "Debian"
+function xen_create_bridge_Fedora() {
+    BRIDGE="xenbr0"
+
+    if test "`grep $BRIDGE /etc/sysconfig/network-scripts/*`"
     then
-        echo "I don't know how to configure Xen on $DISTRO"
+        return 0
+    fi
+
+    IFACE=`grep 'BOOTPROTO="dhcp"' /etc/sysconfig/network-scripts/* | head -1 | cut -d : -f 1`
+    if test -z "$IFACE"
+    then
         return 1
     fi
+
+    $SUDO chkconfig NetworkManager off
+    $SUDO chkconfig network on
+    $SUDO service NetworkManager stop
+
+    TMPFILE=`mktemp`
+    cat $IFACE | grep -v dhcp | grep -v DHCLIENT > $TMPFILE
+    echo "BRIDGE=$BRIDGE" >> $TMPFILE
+    $SUDO mv -f $TMPFILE $IFACE
+
+    $SUDO cp ifcfg-xenbr0 /etc/sysconfig/network-scripts
+
+    $SUDO iptables -I FORWARD -m physdev --physdev-is-bridged -j ACCEPT
+    $SUDO service iptables save
+    $SUDO service iptables restart
+
+    $SUDO service network start
+}
+
+function xen_configure() {
     xen_create_bridge_$DISTRO
     start_initscripts xencommons xendomains xen-watchdog
 }

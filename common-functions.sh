@@ -105,17 +105,26 @@ function install_dependencies() {
 }
 
 function start_initscripts() {
-    case $DISTRO in
-        "Debian" )
-        while test $# -ge 1
-        do
-            $SUDO update-rc.d $1
+    while test $# -ge 1
+    do
+        if test ! -f $1
+        then
             shift 1
-        done
-        ;;
-        * )
-        echo "I don't know how to start initscripts on $DISTRO"
-        ;;
-    esac
+            continue
+        fi
+        case $DISTRO in
+            "Debian" )
+            $SUDO update-rc.d $1 defaults
+            ;;
+            "Fedora" )
+            $SUDO chkconfig --add $1
+            ;;
+            * )
+            echo "I don't know how to start initscripts on $DISTRO"
+            return 1
+            ;;
+        esac
+        shift 1
+    done
 }
 

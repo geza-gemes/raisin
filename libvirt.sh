@@ -60,10 +60,5 @@ function libvirt_clean() {
 }
 
 function libvirt_configure() {
-    if test "$DISTRO" != "Debian"
-    then
-        echo "I don't know how to configure Libvirt on $DISTRO"
-        return 1
-    fi
-    start_initscripts libvirtd
+    start_initscripts libvirtd libvirt-guests virtlockd
 }
