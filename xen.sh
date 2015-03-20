@@ -102,7 +102,20 @@ function xen_create_bridge_Fedora() {
     $SUDO service network start
 }
 
+function xen_update_bootloader_Debian() {
+    grub-mkconfig
+}
+
+function xen_update_bootloader_Fedora() {
+    TMPFILE=`mktemp`
+    cat /boot/grub/grub.conf | \
+      sed -e 's,kernel,multiboot /boot/xen.gz placeholder\n\tmodule,g' | \
+      sed -e 's/initrd/module/g' > $TMPFILE
+    $SUDO mv -f $TMPFILE /boot/grub/grub.conf
+}
+
 function xen_configure() {
     xen_create_bridge_$DISTRO
     start_initscripts xencommons xendomains xen-watchdog
+    xen_update_bootloader_$DISTRO
 }
