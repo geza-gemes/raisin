@@ -18,4 +18,4 @@ LIBVIRT_UPSTREAM_URL="git://libvirt.org/libvirt.git"
 # Keep in mind that both Grub and Libvirt needs Xen to build and run.
 XEN_UPSTREAM_REVISION="RELEASE-4.5.0"
 GRUB_UPSTREAM_REVISION="master"
-LIBVIRT_UPSTREAM_REVISION="v1.2.9.1"
+LIBVIRT_UPSTREAM_REVISION="master"
