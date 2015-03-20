@@ -42,13 +42,14 @@ function libvirt_build() {
     $MAKE --ignore-errors install DESTDIR="$INST_DIR"
     if test $DISTRO = "Debian"
     then
-        cat ../libvirt.debian.init | sed -e "s/@PREFIX/$PREFIX/g" > "$INST_DIR"/etc/init.d/libvirtd
+        cat ../libvirt.debian.init | sed -e "s,@PREFIX,$PREFIX,g" > "$INST_DIR"/etc/init.d/libvirtd
         chmod +x "$INST_DIR"/etc/init.d/libvirtd
     elif test $DISTRO = "Fedora" || test $DISTRO = "CentOS"
     then
         $MAKE -C daemon libvirtd.init
-        cp daemon/libvirtd.init $INST_DIR/etc/init.d/libvirtd
-        chmod +x "$INST_DIR"/etc/init.d/libvirtd
+        mkdir -p "$INST_DIR"/etc/rc.d/init.d
+        cp daemon/libvirtd.init "$INST_DIR"/etc/rc.d/init.d/libvirtd
+        chmod +x "$INST_DIR"/etc/rc.d/init.d/libvirtd
     else
         echo "I don't know how write an init script for Libvirt on $DISTRO"
     fi

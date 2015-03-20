@@ -93,7 +93,7 @@ TMPFILE=`mktemp`
 cd $INST_DIR
 find . > $TMPFILE
 $SUDO mv $TMPFILE /var/log/raixen.log
-$SUDO mv -f * /
+$SUDO cp -ar * /
 
 # configure
 if test "$XEN_UPSTREAM_REVISION"
@@ -108,3 +108,5 @@ if test "$LIBVIRT_UPSTREAM_REVISION"
 then
     libvirt_configure
 fi
+
+rm -rf $INST_DIR
