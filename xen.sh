@@ -15,7 +15,7 @@ function xen_install_dependencies() {
 
     local DEP_Fedora_common="make gcc python-devel gettext libuuid-devel   \
              ncurses-devel glib2-devel libaio-devel openssl-devel yajl-devel   \
-             patch pixman-devel glibc-devel bridge-utils"
+             patch pixman-devel glibc-devel bridge-utils grub2"
     local DEP_Fedora_x86_32="$DEP_Fedora_common dev86 iasl texinfo"
     local DEP_Fedora_x86_64="$DEP_Fedora_x86_32 glibc-devel.i686"
 
@@ -103,15 +103,11 @@ function xen_create_bridge_Fedora() {
 }
 
 function xen_update_bootloader_Debian() {
-    grub-mkconfig
+    $SUDO update-grub
 }
 
 function xen_update_bootloader_Fedora() {
-    TMPFILE=`mktemp`
-    cat /boot/grub/grub.conf | \
-      sed -e 's,kernel,multiboot /boot/xen.gz placeholder\n\tmodule,g' | \
-      sed -e 's/initrd/module/g' > $TMPFILE
-    $SUDO mv -f $TMPFILE /boot/grub/grub.conf
+    $SUDO grub2-mkconfig -o /boot/grub2/grub.cfg
 }
 
 function xen_configure() {
