@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 source config
 source common-functions.sh
 
@@ -90,10 +92,10 @@ then
 fi
 # install under /
 TMPFILE=`mktemp`
-cd $INST_DIR
+cd "$INST_DIR"
 find . > $TMPFILE
-$SUDO mv $TMPFILE /var/log/raisin.log
-$SUDO cp -ar * /
+$SUDO mv -f $TMPFILE /var/log/raisin.log
+$SUDO cp -ar * / || true
 
 # configure
 if test "$XEN_UPSTREAM_REVISION"
@@ -109,4 +111,4 @@ then
     libvirt_configure
 fi
 
-rm -rf $INST_DIR
+rm -rf "$INST_DIR"

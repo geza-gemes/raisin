@@ -30,6 +30,7 @@ function grub_install_dependencies() {
 function grub_build() {
     grub_install_dependencies
 
+    rm -f memdisk.tar
     tar cf memdisk.tar grub.cfg
     ./git-checkout.sh $GRUB_UPSTREAM_URL $GRUB_UPSTREAM_REVISION grub-dir
     cd grub-dir

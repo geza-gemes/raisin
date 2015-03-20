@@ -114,10 +114,10 @@ function start_initscripts() {
         fi
         case $DISTRO in
             "Debian" )
-            $SUDO update-rc.d $1 defaults
+            $SUDO update-rc.d $1 defaults || echo "Couldn't set $1 to start"
             ;;
             "Fedora" )
-            $SUDO chkconfig --add $1
+            $SUDO chkconfig --add $1 || echo "Couldn't set $1 to start"
             ;;
             * )
             echo "I don't know how to start initscripts on $DISTRO"

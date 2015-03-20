@@ -65,8 +65,7 @@ function xen_create_bridge_Debian() {
     echo "" >> $TMPFILE
     echo "iface $BRIDGE inet dhcp" >> $TMPFILE
     echo "    bridge_ports $IFACE" >> $TMPFILE
-    $SUDO cp $TMPFILE /etc/network/interfaces
-    rm $TMPFILE
+    $SUDO mv -f $TMPFILE /etc/network/interfaces
 }
 
 function xen_create_bridge_Fedora() {
