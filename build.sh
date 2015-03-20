@@ -93,7 +93,7 @@ TMPFILE=`mktemp`
 cd $INST_DIR
 find . > $TMPFILE
 $SUDO mv $TMPFILE /var/log/raixen.log
-$SUDO mv * /
+$SUDO mv -f * /
 
 # configure
 if test "$XEN_UPSTREAM_REVISION"
