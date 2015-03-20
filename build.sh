@@ -89,7 +89,7 @@ then
     exit 0
 fi
 # install under /
-$TMPFILE=`mktemp`
+TMPFILE=`mktemp`
 cd $INST_DIR
 find . > $TMPFILE
 $SUDO mv $TMPFILE /var/log/raixen.log
