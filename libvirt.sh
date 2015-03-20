@@ -15,10 +15,10 @@ function libvirt_install_dependencies() {
     local DEP_Debian_arm32="$DEP_Debian_common"
     local DEP_Debian_arm64="$DEP_Debian_common"
 
-    local DEP_Fedora_common="patch make gcc libtool autoconf gettext-devel \
+    local DEP_Fedora_common="patch make gcc libtool autoconf gettext-devel     \
                              python-devel libxslt yajl-devel libxml2-devel     \
                              device-mapper-devel libpciaccess-devel            \
-                             libuuid-devel"
+                             libuuid-devel perl-XML-XPath"
     local DEP_Fedora_x86_32="$DEP_Fedora_common"
     local DEP_Fedora_x86_64="$DEP_Fedora_common"
 
