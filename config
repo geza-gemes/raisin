@@ -1,4 +1,4 @@
-# Config variables for raixen
+# Config variables for raisin
 
 # Build config
 MAKE="make -j2"

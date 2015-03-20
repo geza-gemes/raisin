@@ -92,7 +92,7 @@ fi
 TMPFILE=`mktemp`
 cd $INST_DIR
 find . > $TMPFILE
-$SUDO mv $TMPFILE /var/log/raixen.log
+$SUDO mv $TMPFILE /var/log/raisin.log
 $SUDO cp -ar * /
 
 # configure
