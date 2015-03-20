@@ -1,0 +1,9 @@
+= Raisin =
+
+The purpose of Raisin is to retrieve and build from source everything
+needed for a good Xen installation. Today that includes Xen, Grub and
+Libvirt. It can be used to quickly setup a Xen development environment.
+Optionally it can also install and configure the system for you.
+
+Raisin is meant to be easy to read so that it can be used as a guideline
+on how to build and configure the system.
