@@ -1,7 +1,7 @@
 # Config variables for raixen
 
 # Build config
-MAKE="make -j"
+MAKE="make -j2"
 PREFIX="/usr"
 DESTDIR=dist
 

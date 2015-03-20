@@ -6,7 +6,7 @@ source common-functions.sh
 export PWD=`pwd`
 export GIT=${GIT-git}
 export SUDO=${SUDO-sudo}
-export MAKE=${MAKE-make -j}
+export MAKE=${MAKE-make}
 export PREFIX=${PREFIX-/usr}
 export INST_DIR=${DESTDIR-dist}
 
