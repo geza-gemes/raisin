@@ -3,7 +3,7 @@
 # Init script for libvirtd
 #
 # Loosely based on Debian libvirt-bin initscript:
-# (c) 2007 Guido Guenther <agx@xxxxxxxxxxx>
+# (c) 2007 Guido Guenther <agx@sigxcpu.org>
 # based on the skeletons that comes with dh_make
 #
 ### BEGIN INIT INFO
