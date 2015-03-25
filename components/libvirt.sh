@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-source config
-source common-functions.sh
+source "$BASEDIR"/config
+source "$BASEDIR"/common-functions.sh
 
 
 function libvirt_install_dependencies() {
@@ -29,6 +29,7 @@ function libvirt_install_dependencies() {
 function libvirt_build() {
     libvirt_install_dependencies
 
+    cd "$BASEDIR"
     ./git-checkout.sh $LIBVIRT_UPSTREAM_URL $LIBVIRT_UPSTREAM_REVISION libvirt-dir
     cd libvirt-dir
     CFLAGS="-I$INST_DIR/$PREFIX/include" \
@@ -58,6 +59,7 @@ function libvirt_build() {
 }
 
 function libvirt_clean() {
+    cd "$BASEDIR"
     if test -d libvirt-dir
     then
         cd libvirt-dir

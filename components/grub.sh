@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-source config
-source common-functions.sh
+source "$BASEDIR"/config
+source "$BASEDIR"/common-functions.sh
 
 
 function grub_install_dependencies() {
@@ -30,6 +30,7 @@ function grub_install_dependencies() {
 function grub_build() {
     grub_install_dependencies
 
+    cd "$BASEDIR"
     rm -f memdisk.tar
     tar cf memdisk.tar grub.cfg
     ./git-checkout.sh $GRUB_UPSTREAM_URL $GRUB_UPSTREAM_REVISION grub-dir
@@ -51,10 +52,11 @@ function grub_build() {
           -m ../memdisk.tar -o grub-x86_64-xen grub-core/*mod
         cp grub-x86_64-xen "$INST_DIR"/$PREFIX/lib/xen/boot
     fi
-    cd ..
+    cd "$BASEDIR"
 }
 
 function grub_clean() {
+    cd "$BASEDIR"
     rm -rf memdisk.tar
     if test -d grub-dir
     then

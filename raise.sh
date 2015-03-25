@@ -5,7 +5,7 @@ set -e
 source config
 source common-functions.sh
 
-export PWD=`pwd`
+export BASEDIR=`pwd`
 export GIT=${GIT-git}
 export SUDO=${SUDO-sudo}
 export MAKE=${MAKE-make}
@@ -15,9 +15,9 @@ export INST_DIR=${DESTDIR-dist}
 INST_DIR=`readlink -f $INST_DIR`
 mkdir -p "$INST_DIR" &>/dev/null
 
-source xen.sh
-source grub.sh
-source libvirt.sh
+source components/xen.sh
+source components/grub.sh
+source components/libvirt.sh
 
 help() {
     echo "Usage: ./build.sh <options>"
@@ -68,7 +68,7 @@ get_arch
 
 install_dependencies git
 
-# build and install under $DESTDIR ($PWD/dist by default)
+# build and install under $DESTDIR ($BASEDIR/dist by default)
 if test "$XEN_UPSTREAM_REVISION"
 then
     xen_clean

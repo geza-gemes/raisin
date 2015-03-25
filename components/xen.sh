@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-source config
-source common-functions.sh
+source "$BASEDIR"/config
+source "$BASEDIR"/common-functions.sh
 
 
 function xen_install_dependencies() {
@@ -26,6 +26,7 @@ function xen_install_dependencies() {
 function xen_build() {
     xen_install_dependencies
 
+    cd "$BASEDIR"
     ./git-checkout.sh $XEN_UPSTREAM_URL $XEN_UPSTREAM_REVISION xen-dir
     cd xen-dir
     ./configure --prefix=$PREFIX
@@ -34,15 +35,16 @@ function xen_build() {
     chmod +x "$INST_DIR"/etc/init.d/xencommons
     chmod +x "$INST_DIR"/etc/init.d/xendomains
     chmod +x "$INST_DIR"/etc/init.d/xen-watchdog
-    cd ..
+    cd "$BASEDIR"
 }
 
 function xen_clean() {
+    cd "$BASEDIR"
     if test -d xen-dir
     then
         cd xen-dir
         $MAKE distclean
-        cd ..
+        cd "$BASEDIR"
         rm -rf xen-dir
     fi
 }
