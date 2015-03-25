@@ -38,7 +38,13 @@ function xen_build() {
 }
 
 function xen_clean() {
-    rm -rf xen-dir
+    if test -d xen-dir
+    then
+        cd xen-dir
+        $MAKE distclean
+        cd ..
+        rm -rf xen-dir
+    fi
 }
 
 function xen_create_bridge_Debian() {

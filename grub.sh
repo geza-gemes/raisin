@@ -56,7 +56,13 @@ function grub_build() {
 
 function grub_clean() {
     rm -rf memdisk.tar
-    rm -rf grub-dir
+    if test -d grub-dir
+    then
+        cd grub-dir
+        $MAKE distclean
+        cd ..
+        rm -rf grub-dir
+    fi
 }
 
 function grub_configure() {

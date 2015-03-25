@@ -58,7 +58,13 @@ function libvirt_build() {
 }
 
 function libvirt_clean() {
-    rm -rf libvirt-dir
+    if test -d libvirt-dir
+    then
+        cd libvirt-dir
+        $MAKE distclean
+        cd ..
+        rm -rf libvirt-dir
+    fi
 }
 
 function libvirt_configure() {
