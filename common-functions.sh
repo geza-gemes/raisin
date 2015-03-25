@@ -128,3 +128,26 @@ function start_initscripts() {
     done
 }
 
+function stop_initscripts() {
+    while test $# -ge 1
+    do
+        if test ! -f $1
+        then
+            shift 1
+            continue
+        fi
+        case $DISTRO in
+            "Debian" )
+            $SUDO update-rc.d $1 remove || echo "Couldn't remove $1 from init"
+            ;;
+            "Fedora" )
+            $SUDO chkconfig --del $1 || echo "Couldn't remove $1 from init"
+            ;;
+            * )
+            echo "I don't know how to start initscripts on $DISTRO"
+            return 1
+            ;;
+        esac
+        shift 1
+    done
+}

@@ -68,3 +68,7 @@ function grub_clean() {
 function grub_configure() {
     echo "Grub: nothing to configure"
 }
+
+function grub_unconfigure() {
+    echo "Grub: nothing to unconfigure"
+}

@@ -70,3 +70,7 @@ function libvirt_clean() {
 function libvirt_configure() {
     start_initscripts libvirtd libvirt-guests virtlockd
 }
+
+function libvirt_unconfigure() {
+    stop_initscripts libvirtd libvirt-guests virtlockd
+}

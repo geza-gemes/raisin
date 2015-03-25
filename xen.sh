@@ -120,3 +120,12 @@ function xen_configure() {
     start_initscripts xencommons xendomains xen-watchdog
     xen_update_bootloader_$DISTRO
 }
+
+function xen_unconfigure() {
+    # leave the bridge in place
+    stop_initscripts xencommons xendomains xen-watchdog
+    if test "`grep -rIi xen /boot/grub* | head -1`"
+    then
+        xen_update_bootloader_$DISTRO
+    fi
+}
