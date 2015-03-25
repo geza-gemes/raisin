@@ -5,7 +5,7 @@ set -e
 source config
 source common-functions.sh
 
-export PWD=`pwd`
+export BASEDIR=`pwd`
 export GIT=${GIT-git}
 export SUDO=${SUDO-sudo}
 export MAKE=${MAKE-make}
@@ -14,13 +14,13 @@ export INST_DIR=${DESTDIR-dist}
 
 INST_DIR=`readlink -f $INST_DIR`
 
-xen_clean
-grub_clean
-libvirt_clean
+for f in `cat "$BASEDIR"/components/series`
+do
+    source "$BASEDIR"/components/"$f"
+done
 
-xen_unconfigure
-grub_unconfigure
-libvirt_unconfigure
+for_each_component clean
+for_each_component unconfigure
 
 for i in `cat /var/log/raisin.log 2>/dev/null`
 do

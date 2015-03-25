@@ -15,10 +15,6 @@ export INST_DIR=${DESTDIR-dist}
 INST_DIR=`readlink -f $INST_DIR`
 mkdir -p "$INST_DIR" &>/dev/null
 
-source components/xen.sh
-source components/grub.sh
-source components/libvirt.sh
-
 help() {
     echo "Usage: ./build.sh <options>"
     echo "where options are:"
@@ -68,23 +64,14 @@ get_arch
 
 install_dependencies git
 
-# build and install under $DESTDIR ($BASEDIR/dist by default)
-if test "$XEN_UPSTREAM_REVISION"
-then
-    xen_clean
-    xen_build
-fi
-if test "$GRUB_UPSTREAM_REVISION"
-then
-    grub_clean
-    grub_build
-fi
-if test "$LIBVIRT_UPSTREAM_REVISION"
-then
-    libvirt_clean
-    libvirt_build
-fi
+for f in `cat "$BASEDIR"/components/series`
+do
+    source "$BASEDIR"/components/"$f"
+done
 
+# build and install under $DESTDIR ($BASEDIR/dist by default)
+for_each_component clean
+for_each_component build
 
 if test -z "$INST" || test "$INST" -eq 0
 then
@@ -98,17 +85,6 @@ $SUDO mv -f $TMPFILE /var/log/raisin.log
 $SUDO cp -ar * / || true
 
 # configure
-if test "$XEN_UPSTREAM_REVISION"
-then
-    xen_configure
-fi
-if test "$GRUB_UPSTREAM_REVISION"
-then
-    grub_configure
-fi
-if test "$LIBVIRT_UPSTREAM_REVISION"
-then
-    libvirt_configure
-fi
+for_each_component configure
 
 rm -rf "$INST_DIR"

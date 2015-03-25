@@ -151,3 +151,14 @@ function stop_initscripts() {
         shift 1
     done
 }
+
+for_each_component () {
+    for component in `cat "$BASEDIR"/components/series`
+    do
+        capital=`echo $component | tr '[:lower:]' '[:upper:]'`
+        if test "`eval echo \$"$capital"_UPSTREAM_URL`"
+        then
+            "$component"_"$1"
+        fi
+    done
+}
