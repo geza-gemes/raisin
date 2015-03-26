@@ -12,7 +12,7 @@ for_each_component unconfigure
 
 for i in `cat /var/log/raisin.log 2>/dev/null`
 do
-    if test -f /"$i"
+    if test ! -d /"$i"
     then
         rm -f /"$i"
     fi
@@ -21,7 +21,7 @@ for i in `cat /var/log/raisin.log 2>/dev/null`
 do
     if test -d /"$i"
     then
-        rmdir --ignore-fail-on-non-empty /"$i"
+        rmdir --ignore-fail-on-non-empty /"$i" &> /dev/null || true
     fi
 done
 
