@@ -5,16 +5,6 @@ set -e
 source config
 source common-functions.sh
 
-export BASEDIR=`pwd`
-export GIT=${GIT-git}
-export SUDO=${SUDO-sudo}
-export MAKE=${MAKE-make}
-export PREFIX=${PREFIX-/usr}
-export INST_DIR=${DESTDIR-dist}
-
-INST_DIR=`readlink -f $INST_DIR`
-mkdir -p "$INST_DIR" &>/dev/null
-
 help() {
     echo "Usage: ./build.sh <options>"
     echo "where options are:"
@@ -23,16 +13,7 @@ help() {
     echo "    -i | --install       Install under / and configure the system"
 }
 
-# execution
-if test $EUID -eq 0
-then
-    export SUDO=""
-elif test ! -f `which sudo 2>/dev/null`
-then
-    echo "Raixen requires sudo to install build dependencies for you."
-    echo "Please install sudo, then run this script again."
-    exit 1
-fi
+common_init
 
 # parameters check
 INST=0
@@ -58,16 +39,8 @@ do
   fi
 done
 
-
-get_distro
-get_arch
-
+mkdir -p "$INST_DIR" &>/dev/null
 install_dependencies git
-
-for f in `cat "$BASEDIR"/components/series`
-do
-    source "$BASEDIR"/components/"$f"
-done
 
 # build and install under $DESTDIR ($BASEDIR/dist by default)
 for_each_component clean
@@ -86,5 +59,3 @@ $SUDO cp -ar * / || true
 
 # configure
 for_each_component configure
-
-rm -rf "$INST_DIR"

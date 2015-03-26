@@ -5,32 +5,7 @@ set -e
 source config
 source common-functions.sh
 
-export BASEDIR=`pwd`
-export GIT=${GIT-git}
-export SUDO=${SUDO-sudo}
-export MAKE=${MAKE-make}
-export PREFIX=${PREFIX-/usr}
-export INST_DIR=${DESTDIR-dist}
-
-INST_DIR=`readlink -f $INST_DIR`
-
-if test $EUID -eq 0
-then
-    export SUDO=""
-elif test ! -f `which sudo 2>/dev/null`
-then
-    echo "Raixen requires sudo to install build dependencies for you."
-    echo "Please install sudo, then run this script again."
-    exit 1
-fi
-
-get_distro
-get_arch
-
-for f in `cat "$BASEDIR"/components/series`
-do
-    source "$BASEDIR"/components/"$f"
-done
+common_init
 
 for_each_component clean
 for_each_component unconfigure

@@ -1,5 +1,35 @@
 #!/usr/bin/env bash
 
+function common_init() {
+    export BASEDIR=`pwd`
+    export GIT=${GIT-git}
+    export SUDO=${SUDO-sudo}
+    export MAKE=${MAKE-make}
+    export PREFIX=${PREFIX-/usr}
+    export INST_DIR=${DESTDIR-dist}
+    
+    INST_DIR=`readlink -f $INST_DIR`
+    
+    # execution
+    if test $EUID -eq 0
+    then
+        export SUDO=""
+    elif test ! -f `which sudo 2>/dev/null`
+    then
+        echo "Raixen requires sudo to install build dependencies for you."
+        echo "Please install sudo, then run this script again."
+        exit 1
+    fi
+
+    get_distro
+    get_arch
+
+    for f in `cat "$BASEDIR"/components/series`
+    do
+        source "$BASEDIR"/components/"$f"
+    done
+}
+
 function get_distro() {
     if test -x "`which lsb_release 2>/dev/null`"
     then
