@@ -15,7 +15,7 @@ LIBVIRT_UPSTREAM_URL="git://libvirt.org/libvirt.git"
 
 # Software versions. Leave blank if you want to avoid the build, like
 # this: GRUB_UPSTREAM_REVISION=
-# Keep in mind that both Grub and Libvirt needs Xen to build and run.
+# Grub and Libvirt needs Xen to build and run.
 XEN_UPSTREAM_REVISION="RELEASE-4.5.0"
 GRUB_UPSTREAM_REVISION="master"
 LIBVIRT_UPSTREAM_REVISION="master"
