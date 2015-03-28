@@ -84,3 +84,6 @@ particular:
 install_dependencies
 start_initscripts
 stop_initscripts
+
+If your component comes with additional data, maybe a config script or
+anything else, place it under "data".

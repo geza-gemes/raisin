@@ -44,7 +44,7 @@ function libvirt_build() {
     if test $DISTRO = "Debian"
     then
         mkdir -p "$INST_DIR"/etc/init.d
-        cat ../libvirt.debian.init | sed -e "s,@PREFIX,$PREFIX,g" > "$INST_DIR"/etc/init.d/libvirtd
+        cat "$BASEDIR"/data/libvirt.debian.init | sed -e "s,@PREFIX,$PREFIX,g" > "$INST_DIR"/etc/init.d/libvirtd
         chmod +x "$INST_DIR"/etc/init.d/libvirtd
     elif test $DISTRO = "Fedora" || test $DISTRO = "CentOS"
     then
