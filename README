@@ -8,3 +8,79 @@ for you.
 
 Raisin is meant to be easy to read so that it can be used as a guideline
 on how to build and configure the system.
+
+
+
+= Usage =
+
+Set your configuration parameters in the "config" file, then run
+
+./raise.sh
+
+Go and grab a coffee. When the script completes, you'll have a full
+Xen system installation under DESTDIR.
+
+raise.sh takes care of:
+
+- git cloning all the components enabled in the config
+- installing all the dependencies needed to build each components (requires sudo)
+- building them
+- installing them under DESTDIR (the "dist" sub-directory by default)
+
+raise.sh can optionally perform the installation under / and fully
+configure the system for you. If you want this behaviour run
+
+./raise.sh -i
+
+
+
+= Adding new components =
+
+Adding new components is easy!
+
+Just introduce a new component script file under "components", following
+the example of the already existing ones. Remember to add the component
+name in the series file in the right order (for example anything that
+depends on Xen, should be built after Xen).
+
+
+You need to implement a few bash functions in the component script file:
+
+* component_build
+git clones, builds and installs the new component under DESTDIR
+
+* component_clean
+cleans the build
+
+* component_configure
+The component has already been installed under /, now configure the
+system for it
+
+* component_unconfigure
+The component has already been uninstalled from /, now remove the
+configuration
+
+These functions are called by raise.sh automatically if the component is
+enabled in the config.
+
+
+You can/should rely on the following global variables in your component
+script file:
+
+GIT: git command to run, but prefer the git-checkout.sh script
+MAKE: make command to run
+SUDO: sudo command to run
+DISTRO: which Linux distribution we are running on, Debian, Fedora, etc
+ARCH: which architecture we are running on, x86_64, arm32, etc.
+BASEDIR: absolute path of the raisin directory
+PREFIX: installation PREFIX
+INST_DIR: absolute path of the installation directory
+COMPONENT_UPSTREAM_URL: git url to clone, set by config
+COMPONENT_UPSTREAM_REVISION: branch or tag to checkout, set by config
+
+You can also rely on any utility functions in common-functions.sh, in
+particular:
+
+install_dependencies
+start_initscripts
+stop_initscripts

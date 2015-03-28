@@ -1,11 +1,15 @@
 # Config variables for raisin
 
 # Build config
+## Make command to run
 MAKE="make -j2"
+## Installation prefix (configure --prefix)
 PREFIX="/usr"
+## Install everything under DESTDIR
+## If you want to install under / run raise.sh -i
 DESTDIR=dist
 
-# Git urls
+# Git urls. Use the http urls if you are behind a firewall.
 #XEN_UPSTREAM_URL="http://xenbits.xen.org/git-http/xen.git"
 #GRUB_UPSTREAM_URL="http://git.savannah.gnu.org/r/grub.git"
 #LIBVIRT_UPSTREAM_URL="https://gitorious.org/libvirt/libvirt.git"
@@ -16,6 +20,6 @@ LIBVIRT_UPSTREAM_URL="git://libvirt.org/libvirt.git"
 # Software versions. Leave blank if you want to avoid the build, like
 # this: GRUB_UPSTREAM_REVISION=
 # Grub and Libvirt needs Xen to build and run.
-XEN_UPSTREAM_REVISION="RELEASE-4.5.0"
+XEN_UPSTREAM_REVISION="master"
 GRUB_UPSTREAM_REVISION="master"
 LIBVIRT_UPSTREAM_REVISION="master"

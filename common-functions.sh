@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# Executed once at the beginning of the script
 function common_init() {
     export BASEDIR=`pwd`
     export GIT=${GIT-git}

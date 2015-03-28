@@ -5,6 +5,8 @@ set -e
 source config
 source common-functions.sh
 
+
+# start execution
 common_init
 
 for_each_component clean

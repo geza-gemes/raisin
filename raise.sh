@@ -13,6 +13,8 @@ help() {
     echo "    -i | --install       Install under / and configure the system"
 }
 
+
+# start execution
 common_init
 
 # parameters check
@@ -42,7 +44,7 @@ done
 mkdir -p "$INST_DIR" &>/dev/null
 install_dependencies git
 
-# build and install under $DESTDIR ($BASEDIR/dist by default)
+# build and install under $DESTDIR
 for_each_component clean
 for_each_component build
 
