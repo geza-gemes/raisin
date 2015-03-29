@@ -70,9 +70,17 @@ function libvirt_clean() {
 }
 
 function libvirt_configure() {
-    start_initscripts libvirtd libvirt-guests virtlockd
+    start_initscripts libvirtd
+    if test $DISTRO = "Fedora" || test $DISTRO = "CentOS"
+    then
+        start_initscripts libvirt-guests virtlockd
+    fi
 }
 
 function libvirt_unconfigure() {
-    stop_initscripts libvirtd libvirt-guests virtlockd
+    stop_initscripts libvirtd
+    if test $DISTRO = "Fedora" || test $DISTRO = "CentOS"
+    then
+        stop_initscripts libvirt-guests virtlockd
+    fi
 }

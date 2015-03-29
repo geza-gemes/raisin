@@ -138,11 +138,6 @@ function install_dependencies() {
 function start_initscripts() {
     while test $# -ge 1
     do
-        if test ! -f $1
-        then
-            shift 1
-            continue
-        fi
         case $DISTRO in
             "Debian" )
             $SUDO update-rc.d $1 defaults || echo "Couldn't set $1 to start"
@@ -162,11 +157,6 @@ function start_initscripts() {
 function stop_initscripts() {
     while test $# -ge 1
     do
-        if test ! -f $1
-        then
-            shift 1
-            continue
-        fi
         case $DISTRO in
             "Debian" )
             $SUDO update-rc.d $1 remove || echo "Couldn't remove $1 from init"
