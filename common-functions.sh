@@ -173,7 +173,7 @@ function stop_initscripts() {
     done
 }
 
-for_each_component () {
+function for_each_component () {
     for component in `cat "$BASEDIR"/components/series`
     do
         capital=`echo $component | tr '[:lower:]' '[:upper:]'`
