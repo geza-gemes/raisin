@@ -43,21 +43,23 @@ done
 
 mkdir -p "$INST_DIR" &>/dev/null
 install_dependencies git
+if test $DISTRO = "Fedora"
+then
+    install_dependencies rpm-build
+fi
 
 # build and install under $DESTDIR
 for_each_component clean
 for_each_component build
 
+build_package xen-system
+
 if test -z "$INST" || test "$INST" -eq 0
 then
     exit 0
 fi
-# install under /
-TMPFILE=`mktemp`
-cd "$INST_DIR"
-find . > $TMPFILE
-$SUDO mv -f $TMPFILE /var/log/raisin.log
-$SUDO cp -ar * / || true
+
+install_package xen-system
 
 # configure
 for_each_component configure

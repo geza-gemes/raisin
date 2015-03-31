@@ -18,7 +18,8 @@ Set your configuration parameters in the "config" file, then run
 ./raise.sh
 
 Go and grab a coffee. When the script completes, you'll have a full
-Xen system installation under DESTDIR.
+Xen system installation under DESTDIR and a deb or rpm package
+(depending on your distro) containing all the necessary binaries.
 
 raise.sh takes care of:
 
@@ -26,12 +27,16 @@ raise.sh takes care of:
 - installing all the dependencies needed to build each components (requires sudo)
 - building them
 - installing them under DESTDIR (the "dist" sub-directory by default)
+- creating a deb or rpm package with all the content
 
 raise.sh can optionally perform the installation under / and fully
 configure the system for you. If you want this behaviour run
 
 ./raise.sh -i
 
+raise.sh performs the installation by installing the deb or rpm package,
+hence it can be easily uninstalled by unraise.sh or manually by the
+user.
 
 
 = Adding new components =
@@ -53,12 +58,11 @@ git clones, builds and installs the new component under DESTDIR
 cleans the build
 
 * component_configure
-The component has already been installed under /, now configure the
-system for it
+The component has already been installed, now configure the system for
+it
 
 * component_unconfigure
-The component has already been uninstalled from /, now remove the
-configuration
+The component has already been uninstalled, now remove the configuration
 
 These functions are called by raise.sh automatically if the component is
 enabled in the config.

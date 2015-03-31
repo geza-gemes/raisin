@@ -183,3 +183,39 @@ function for_each_component () {
         fi
     done
 }
+
+function build_package() {
+    if test $DISTRO = "Debian"
+    then
+        ./mkdeb "$1"
+    elif test $DISTRO = "Fedora"
+    then
+        ./mkrpm "$1"
+    else
+        echo "Don't know how to create packages for $DISTRO"
+    fi
+}
+
+function install_package() {
+    if test $DISTRO = "Debian"
+    then
+        $SUDO dpkg -i "$1".deb
+    elif test $DISTRO = "Fedora"
+    then
+        $SUDO rpm -i --force "$1"-`git show --oneline | head -1 | cut -d " " -f 1`-0.$ARCH.rpm
+    else
+        echo "Don't know how to install packages on $DISTRO"
+    fi
+}
+
+function uninstall_package() {
+    if test $DISTRO = "Debian"
+    then
+        $SUDO dpkg -r "$1"
+    elif test $DISTRO = "Fedora"
+    then
+        $SUDO rpm -e "$1"
+    else
+        echo "Don't know how to uninstall packages on $DISTRO"
+    fi
+}

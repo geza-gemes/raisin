@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+#
+# mkrpm: package INST_DIR in an .rpm
+#
+# Takes 1 argument: the package name
+# It relies on ARCH and INST_DIR being set correctly
+
+set -e
+
+if test -z "$1"
+then 
+  echo "usage: $0 package_name"
+  exit 1
+fi 
+
+name="$1"
+
+# Prepare the directory to package
+rm -rf rpm
+
+# Fill in the rpm boilerplate
+mkdir -p rpm/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+cat >rpm/SPECS/xen.spec <<EOF
+Summary: Raisin build
+Name: $name
+Version: $(git show --oneline | head -1 | cut -d " " -f 1)
+Release: 0
+License: GPL
+Group:   System/Hypervisor
+URL: http://xenbits.xenproject.org/sstabellini/raisin.git
+
+%description
+This package contains the Xen hypervisor, LibVirt and associated tools,
+built from source. It is not a fully packaged and supported Xen and
+related components, just the output of Raisin wrapped in an .rpm to make
+it easy to uninstall.
+
+%build
+
+%install
+rm -rf \$RPM_BUILD_ROOT
+mkdir -p \$RPM_BUILD_ROOT
+cp -ar "$INST_DIR"/* \$RPM_BUILD_ROOT
+
+%clean
+
+%post
+/sbin/ldconfig
+
+%postun
+/sbin/ldconfig
+
+%files
+%defattr(-,root,root,-)
+/*
+EOF
+
+# Package it up
+rpmbuild --define "_topdir $BASEDIR/rpm" -bb rpm/SPECS/xen.spec
+
+# Tidy up after ourselves
+mv rpm/RPMS/*/*.rpm .
+rm -rf rpm
