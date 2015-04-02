@@ -1,0 +1,78 @@
+RAISIN CODING STYLE
+===================
+
+
+Shell version compliance
+------------------------
+
+Although we are requiring bash to run at the moment, please don't make
+assumption on the bash version available. Use modern features only when
+no older constructs do what you need.
+
+
+Indentation
+-----------
+
+Use four spaces to indent.
+
+
+Line width
+----------
+
+Lines are limited to 80 characters.
+
+
+Functions
+---------
+
+Use the function keyword and () to define a function. Place the opening
+brace on the same line and the closing brace on a line by itself.
+Example:
+
+function do_something () {
+    echo something
+}
+
+
+Tests
+-----
+
+Use "test" to make a test. Do not use [. Do not use [[ unless you have a
+good reason.
+
+
+Subshell
+--------
+
+Use `` to execute a command in a subshell.
+
+
+Numeric tests
+-------------
+
+Use expr for calculations.
+
+
+Awk
+---
+
+Use cut, tr, bash 4+ and sed instead of awk when possible, in this order.
+
+
+Block structure
+---------------
+
+for loops, place do on a new line:
+
+for i in $LIST
+do
+    echo do something
+done
+
+
+if statements, place then on a new line:
+
+if test -z "$VAR"
+then
+    echo do something
+fi
