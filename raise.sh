@@ -11,7 +11,7 @@ help() {
     echo "    -n | --no-deps       Do no install build-time dependencies"
     echo "    -v | --verbose       Verbose"
     echo "    -y | --yes           Do not ask questions and continue"
-    echo "    -i | --install       Install under / and configure the system"
+    echo "    -i | --install       Install under / and configure the system (needs sudo)"
 }
 
 
