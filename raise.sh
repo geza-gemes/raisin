@@ -10,6 +10,7 @@ help() {
     echo "where options are:"
     echo "    -n | --no-deps       Do no install build-time dependencies"
     echo "    -v | --verbose       Verbose"
+    echo "    -y | --yes           Do not ask questions and continue"
     echo "    -i | --install       Install under / and configure the system"
 }
 
@@ -21,6 +22,7 @@ common_init
 INST=0
 export NO_DEPS=0
 export VERBOSE=0
+export YES="n"
 while [[ $# -ge 1 ]]
 do
   if [[ "$1" = "-n" || "$1" = "--no-deps" ]]
@@ -34,6 +36,10 @@ do
   elif [[ "$1" = "-i" || "$1" = "--install" ]]
   then
     INST=1
+    shift 1
+  elif [[ "$1" = "-y" || "$1" = "--yes" ]]
+  then
+    YES="y"
     shift 1
   else
     help
@@ -57,6 +63,21 @@ build_package xen-system
 if [[ -z "$INST" || "$INST" -eq 0 ]]
 then
     exit 0
+elif [[ -z "$YES" || "$YES" != "y" ]]
+    echo "Proceeding we'll make changes to the running system,"
+    echo "Installing the components we built and configuring the system"
+    echo "(requires sudo)."
+    echo "Are you sure that you want to continue? (y/n)"
+    while read answer
+    do
+        if [[ "$answer" = "n" ]]
+        then
+            exit 0
+        elif [[ "$answer" = "y" ]]
+        then
+            break
+        fi
+    done
 fi
 
 install_package xen-system
