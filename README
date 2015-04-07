@@ -15,11 +15,12 @@ on how to build and configure the system.
 
 Set your configuration parameters in the "config" file, then run
 
-./raise.sh
+./raise.sh build
 
-Go and grab a coffee. When the script completes, you'll have a full
-Xen system installation under DESTDIR and a deb or rpm package
-(depending on your distro) containing all the necessary binaries.
+Reply to questions and go and grab a coffee. When the script completes, you'll
+have a full Xen system installation under DESTDIR and a deb or rpm package
+(depending on your distro) containing all the necessary binaries in the raisin
+directory.
 
 raise.sh takes care of:
 
@@ -29,10 +30,11 @@ raise.sh takes care of:
 - installing them under DESTDIR (the "dist" sub-directory by default)
 - creating a deb or rpm package with all the content
 
-raise.sh can optionally perform the installation under / and fully
+raise.sh can also perform the installation under / and fully
 configure the system for you. If you want this behaviour run
 
-./raise.sh -i
+./raise.sh install
+./raise.sh configure
 
 raise.sh performs the installation by installing the deb or rpm package,
 hence it can be easily uninstalled by unraise.sh or manually by the
