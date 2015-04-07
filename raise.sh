@@ -50,6 +50,12 @@ _build() {
 }
 
 _install() {
+    # need single braces for filename matching expansion
+    if [ ! -f xen-sytem*rpm ] && [ ! -f xen-system*deb ]
+    then
+        echo You need to raise.sh build first.
+        exit 1
+    fi
     install_package xen-system
 }
 

@@ -37,7 +37,7 @@ Prepend _ to the function name if it is a local function.
 Tests
 -----
 
-Use [[ for tests. Do not use test or [.
+[[ is preferred for tests.
 
 
 Subshell
