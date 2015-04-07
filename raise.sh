@@ -30,6 +30,8 @@ _build() {
             elif [[ "$answer" = "y" ]]
             then
                 break
+            else
+                echo "Reply y or n"
             fi
         done
     fi
@@ -64,6 +66,8 @@ _configure() {
             elif [[ "$answer" = "y" ]]
             then
                 break
+            else
+                echo "Reply y or n"
             fi
         done
     fi
