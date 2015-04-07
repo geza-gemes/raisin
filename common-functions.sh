@@ -22,6 +22,13 @@ function common_init() {
         exit 1
     fi
 
+    if test -z "$BASH_VERSINFO" || test ${BASH_VERSINFO[0]} -lt 3 ||
+       (test ${BASH_VERSINFO[0]} -eq 3 && test ${BASH_VERSINFO[1]} -lt 2)
+    then
+        echo "Raisin requires BASH 3.2 or newer."
+        exit 1
+    fi
+
     get_distro
     get_arch
 
