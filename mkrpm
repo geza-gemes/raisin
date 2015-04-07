@@ -41,6 +41,14 @@ it easy to uninstall.
 rm -rf \$RPM_BUILD_ROOT
 mkdir -p \$RPM_BUILD_ROOT
 cp -ar "$INST_DIR"/* \$RPM_BUILD_ROOT
+mkdir -p \$RPM_BUILD_ROOT/opt/raisin
+cp -r "$BASEDIR"/data \$RPM_BUILD_ROOT/opt/raisin
+cp -r "$BASEDIR"/components \$RPM_BUILD_ROOT/opt/raisin
+cp "$BASEDIR"/common-functions.sh \$RPM_BUILD_ROOT/opt/raisin
+cp "$BASEDIR"/config \$RPM_BUILD_ROOT/opt/raisin
+cp "$BASEDIR"/git-checkout.sh \$RPM_BUILD_ROOT/opt/raisin
+cp "$BASEDIR"/raise.sh \$RPM_BUILD_ROOT/opt/raisin
+cp "$BASEDIR"/unraise.sh \$RPM_BUILD_ROOT/opt/raisin
 
 %clean
 

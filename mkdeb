@@ -29,6 +29,11 @@ esac
 # Prepare the directory to package
 rm -rf deb
 cp -a "$INST_DIR" deb
+mkdir -p deb/opt/raisin
+cp -r data deb/opt/raisin
+cp -r components deb/opt/raisin
+cp common-functions.sh config git-checkout.sh raise.sh unraise.sh deb/opt/raisin
+
 
 # Debian doesn't use /usr/lib64 for 64-bit libraries
 if [[ -d deb/usr/lib64 ]]
