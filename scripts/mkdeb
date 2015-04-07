@@ -15,6 +15,8 @@ fi
 
 name=$1
 
+cd "$BASEDIR"
+
 # map the architecture, if necessary
 case "$ARCH" in
   x86_32|x86_32p)  arch=i386 ;;
@@ -32,7 +34,8 @@ cp -a "$INST_DIR" deb
 mkdir -p deb/opt/raisin
 cp -r data deb/opt/raisin
 cp -r components deb/opt/raisin
-cp common-functions.sh config git-checkout.sh raise.sh unraise.sh deb/opt/raisin
+cp -r scripts deb/opt/raisin
+cp config raise.sh unraise.sh deb/opt/raisin
 
 
 # Debian doesn't use /usr/lib64 for 64-bit libraries

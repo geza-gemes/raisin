@@ -194,10 +194,10 @@ function for_each_component () {
 function build_package() {
     if [[ $DISTRO = "Debian" ]]
     then
-        ./mkdeb "$1"
+        ./scripts/mkdeb "$1"
     elif [[  $DISTRO = "Fedora" ]]
     then
-        ./mkrpm "$1"
+        ./scripts/mkrpm "$1"
     else
         echo "Don't know how to create packages for $DISTRO"
     fi

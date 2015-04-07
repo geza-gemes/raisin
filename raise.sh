@@ -3,7 +3,7 @@
 set -e
 
 source config
-source common-functions.sh
+source scripts/common-functions.sh
 
 _help() {
     echo "Usage: ./build.sh <options> <command>"

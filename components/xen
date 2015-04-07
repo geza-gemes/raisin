@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 source "$BASEDIR"/config
-source "$BASEDIR"/common-functions.sh
+source "$BASEDIR"/scripts/common-functions.sh
 
 
 function _xen_install_dependencies() {
@@ -27,7 +27,7 @@ function xen_build() {
     _xen_install_dependencies
 
     cd "$BASEDIR"
-    ./git-checkout.sh $XEN_UPSTREAM_URL $XEN_UPSTREAM_REVISION xen-dir
+    ./scripts/git-checkout.sh $XEN_UPSTREAM_URL $XEN_UPSTREAM_REVISION xen-dir
     cd xen-dir
     ./configure --prefix=$PREFIX
     $MAKE

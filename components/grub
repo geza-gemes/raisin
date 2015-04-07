@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 source "$BASEDIR"/config
-source "$BASEDIR"/common-functions.sh
+source "$BASEDIR"/scripts/common-functions.sh
 
 
 function _grub_install_dependencies() {
@@ -33,7 +33,7 @@ function grub_build() {
     cd "$BASEDIR"
     rm -f memdisk.tar
     tar cf memdisk.tar -C data grub.cfg
-    ./git-checkout.sh $GRUB_UPSTREAM_URL $GRUB_UPSTREAM_REVISION grub-dir
+    ./scripts/git-checkout.sh $GRUB_UPSTREAM_URL $GRUB_UPSTREAM_REVISION grub-dir
     cd grub-dir
     ./autogen.sh
     ## GRUB32
