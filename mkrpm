@@ -7,7 +7,7 @@
 
 set -e
 
-if test -z "$1"
+if [[ -z "$1" ]]
 then 
   echo "usage: $0 package_name"
   exit 1

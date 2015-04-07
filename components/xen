@@ -4,7 +4,7 @@ source "$BASEDIR"/config
 source "$BASEDIR"/common-functions.sh
 
 
-function xen_install_dependencies() {
+function _xen_install_dependencies() {
     local DEP_Debian_common="build-essential python-dev gettext uuid-dev   \
              libncurses5-dev libyajl-dev libaio-dev pkg-config libglib2.0-dev  \
              libssl-dev libpixman-1-dev bridge-utils"
@@ -24,7 +24,7 @@ function xen_install_dependencies() {
 }
 
 function xen_build() {
-    xen_install_dependencies
+    _xen_install_dependencies
 
     cd "$BASEDIR"
     ./git-checkout.sh $XEN_UPSTREAM_URL $XEN_UPSTREAM_REVISION xen-dir
@@ -40,7 +40,7 @@ function xen_build() {
 
 function xen_clean() {
     cd "$BASEDIR"
-    if test -d xen-dir
+    if [[ -d xen-dir ]]
     then
         cd xen-dir
         $MAKE distclean
@@ -49,17 +49,17 @@ function xen_clean() {
     fi
 }
 
-function xen_create_bridge_Debian() {
+function _xen_create_bridge_Debian() {
     BRIDGE="xenbr0"
     IFACE=`grep "dhcp" /etc/network/interfaces | head -1 | awk '{print$2}'`
 
-    if test -z "$IFACE"
+    if [[ -z "$IFACE" ]]
     then
         echo "Please refer to the following page to setup networking:"
         echo "http://wiki.xenproject.org/wiki/Network_Configuration_Examples_(Xen_4.1%2B)"
         return 1
     fi
-    if test "`grep $BRIDGE /etc/network/interfaces`"
+    if [[ "`grep $BRIDGE /etc/network/interfaces`" ]]
     then
         echo "a network bridge seems to be already setup"
         return 0
@@ -76,16 +76,16 @@ function xen_create_bridge_Debian() {
     $SUDO mv -f $TMPFILE /etc/network/interfaces
 }
 
-function xen_create_bridge_Fedora() {
+function _xen_create_bridge_Fedora() {
     BRIDGE="xenbr0"
 
-    if test "`grep $BRIDGE /etc/sysconfig/network-scripts/*`"
+    if [[ "`grep $BRIDGE /etc/sysconfig/network-scripts/*`" ]]
     then
         return 0
     fi
 
     IFACE=`grep 'BOOTPROTO="dhcp"' /etc/sysconfig/network-scripts/* | head -1 | cut -d : -f 1`
-    if test -z "$IFACE"
+    if [[ -z "$IFACE" ]]
     then
         return 1
     fi
@@ -109,24 +109,24 @@ function xen_create_bridge_Fedora() {
     $SUDO service network start
 }
 
-function xen_update_bootloader_Debian() {
+function _xen_update_bootloader_Debian() {
     $SUDO update-grub
 }
 
-function xen_update_bootloader_Fedora() {
+function _xen_update_bootloader_Fedora() {
     $SUDO grub2-mkconfig -o /boot/grub2/grub.cfg
 }
 
 function xen_configure() {
-    xen_create_bridge_$DISTRO
+    _xen_create_bridge_$DISTRO
     start_initscripts xencommons xendomains xen-watchdog
-    xen_update_bootloader_$DISTRO
+    _xen_update_bootloader_$DISTRO
 }
 
 function xen_unconfigure() {
     # leave the bridge in place
     stop_initscripts xencommons xendomains xen-watchdog
-    if test "`grep -rIi xen /boot/grub* | head -1`"
+    if [[ "`grep -rIi xen /boot/grub* | head -1`" ]]
     then
         xen_update_bootloader_$DISTRO
     fi

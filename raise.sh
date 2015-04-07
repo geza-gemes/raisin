@@ -21,17 +21,17 @@ common_init
 INST=0
 export NO_DEPS=0
 export VERBOSE=0
-while test $# -ge 1
+while [[ $# -ge 1 ]]
 do
-  if test "$1" = "-n" || test "$1" = "--no-deps"
+  if [[ "$1" = "-n" || "$1" = "--no-deps" ]]
   then
     NO_DEPS=1
     shift 1
-  elif test "$1" = "-v" || test "$1" = "--verbose"
+  elif [[ "$1" = "-v" || "$1" = "--verbose" ]]
   then
     VERBOSE=1
     shift 1
-  elif test "$1" = "-i" || test "$1" = "--install"
+  elif [[ "$1" = "-i" || "$1" = "--install" ]]
   then
     INST=1
     shift 1
@@ -43,7 +43,7 @@ done
 
 mkdir -p "$INST_DIR" &>/dev/null
 install_dependencies git
-if test $DISTRO = "Fedora"
+if [[ $DISTRO = "Fedora" ]]
 then
     install_dependencies rpm-build
 fi
@@ -54,7 +54,7 @@ for_each_component build
 
 build_package xen-system
 
-if test -z "$INST" || test "$INST" -eq 0
+if [[ -z "$INST" || "$INST" -eq 0 ]]
 then
     exit 0
 fi

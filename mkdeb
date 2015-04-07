@@ -7,7 +7,7 @@
 
 set -e
 
-if test -z "$1"
+if [[ -z "$1" ]]
 then 
   echo "usage: $0 package_name"
   exit 1
@@ -31,7 +31,8 @@ rm -rf deb
 cp -a "$INST_DIR" deb
 
 # Debian doesn't use /usr/lib64 for 64-bit libraries
-if test -d deb/usr/lib64 ; then 
+if [[ -d deb/usr/lib64 ]]
+then 
   cp -a deb/usr/lib64/* deb/usr/lib/
   rm -rf deb/usr/lib64
 fi

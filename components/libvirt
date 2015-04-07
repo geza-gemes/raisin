@@ -4,7 +4,7 @@ source "$BASEDIR"/config
 source "$BASEDIR"/common-functions.sh
 
 
-function libvirt_install_dependencies() {
+function _libvirt_install_dependencies() {
     local DEP_Debian_common="build-essential libtool autoconf autopoint \
                              xsltproc libxml2-utils pkg-config python-dev   \
                              libxml-xpath-perl libyajl-dev libxml2-dev      \
@@ -27,7 +27,7 @@ function libvirt_install_dependencies() {
 }
 
 function libvirt_build() {
-    libvirt_install_dependencies
+    _libvirt_install_dependencies
 
     cd "$BASEDIR"
     ./git-checkout.sh $LIBVIRT_UPSTREAM_URL $LIBVIRT_UPSTREAM_REVISION libvirt-dir
@@ -41,12 +41,12 @@ function libvirt_build() {
         --with-yajl --without-macvtap --without-avahi  --prefix=$PREFIX
     $MAKE
     $MAKE --ignore-errors install DESTDIR="$INST_DIR" || true
-    if test $DISTRO = "Debian"
+    if [[ $DISTRO = "Debian" ]]
     then
         mkdir -p "$INST_DIR"/etc/init.d
         cat "$BASEDIR"/data/libvirt.debian.init | sed -e "s,@PREFIX,$PREFIX,g" > "$INST_DIR"/etc/init.d/libvirtd
         chmod +x "$INST_DIR"/etc/init.d/libvirtd
-    elif test $DISTRO = "Fedora" || test $DISTRO = "CentOS"
+    elif [[ $DISTRO = "Fedora" || $DISTRO = "CentOS" ]]
     then
         $MAKE -C daemon libvirtd.init
         mkdir -p "$INST_DIR"/etc/rc.d/init.d
@@ -60,7 +60,7 @@ function libvirt_build() {
 
 function libvirt_clean() {
     cd "$BASEDIR"
-    if test -d libvirt-dir
+    if [[ -d libvirt-dir ]]
     then
         cd libvirt-dir
         $MAKE distclean
@@ -71,7 +71,7 @@ function libvirt_clean() {
 
 function libvirt_configure() {
     start_initscripts libvirtd
-    if test $DISTRO = "Fedora" || test $DISTRO = "CentOS"
+    if [[ $DISTRO = "Fedora" || $DISTRO = "CentOS" ]]
     then
         start_initscripts libvirt-guests virtlockd
     fi
@@ -79,7 +79,7 @@ function libvirt_configure() {
 
 function libvirt_unconfigure() {
     stop_initscripts libvirtd
-    if test $DISTRO = "Fedora" || test $DISTRO = "CentOS"
+    if [[ $DISTRO = "Fedora" || $DISTRO = "CentOS" ]]
     then
         stop_initscripts libvirt-guests virtlockd
     fi

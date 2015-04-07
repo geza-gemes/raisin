@@ -12,18 +12,18 @@ function common_init() {
     INST_DIR=`readlink -f $INST_DIR`
     
     # execution
-    if test $EUID -eq 0
+    if [[ $EUID -eq 0 ]]
     then
         export SUDO=""
-    elif test ! -f `which sudo 2>/dev/null`
+    elif [[ ! -f `which sudo 2>/dev/null` ]]
     then
         echo "Raisin requires sudo to install build dependencies for you."
         echo "Please install sudo, then run this script again."
         exit 1
     fi
 
-    if test -z "$BASH_VERSINFO" || test ${BASH_VERSINFO[0]} -lt 3 ||
-       (test ${BASH_VERSINFO[0]} -eq 3 && test ${BASH_VERSINFO[1]} -lt 2)
+    if [[ -z "$BASH_VERSINFO" || ${BASH_VERSINFO[0]} -lt 3 ||
+        (${BASH_VERSINFO[0]} -eq 3 && ${BASH_VERSINFO[1]} -lt 2) ]]
     then
         echo "Raisin requires BASH 3.2 or newer."
         exit 1
@@ -39,13 +39,13 @@ function common_init() {
 }
 
 function get_distro() {
-    if test -x "`which lsb_release 2>/dev/null`"
+    if [[ -x "`which lsb_release 2>/dev/null`" ]]
     then
         os_VENDOR=`lsb_release -i -s`
         os_RELEASE=`lsb_release -r -s`
         os_CODENAME=`lsb_release -c -s`
         os_UPDATE=""
-    elif test -r /etc/redhat-release
+    elif [[ -r /etc/redhat-release ]]
     then
         # Red Hat Enterprise Linux Server release 5.5 (Tikanga)
         # Red Hat Enterprise Linux Server release 7.0 Beta (Maipo)
@@ -56,7 +56,7 @@ function get_distro() {
         os_CODENAME=""
         for r in "Red Hat" "CentOS" "Fedora" "XenServer"; do
             os_VENDOR="$r"
-            if test -n "`grep -i \"$r\" /etc/redhat-release`"
+            if [[ -n "`grep -i \"$r\" /etc/redhat-release`" ]]
             then
                 ver=`sed -e 's/^.* \([0-9].*\) (\(.*\)).*$/\1\|\2/' /etc/redhat-release`
                 os_CODENAME=${ver#*|}
@@ -66,13 +66,13 @@ function get_distro() {
                 break
             fi
         done
-    elif test -r /etc/SuSE-release
+    elif [[ -r /etc/SuSE-release ]]
     then
         for r in "openSUSE" "SUSE Linux"
         do
             os_VENDOR="$r"
 
-            if test -n "`grep -i \"$r\" /etc/SuSE-release`"
+            if [[ -n "`grep -i \"$r\" /etc/SuSE-release`" ]]
             then
                 os_CODENAME=`grep "CODENAME = " /etc/SuSE-release | \
                              sed 's:.* = ::g'`
@@ -84,7 +84,7 @@ function get_distro() {
             fi
         done
     # If lsb_release is not installed, we should be able to detect Debian OS
-    elif test -f /etc/debian_version && [[ `cat /proc/version` =~ "Debian" ]]
+    elif [[ -f /etc/debian_version && `cat /proc/version` =~ "Debian" ]]
     then
         os_VENDOR="Debian"
         os_CODENAME=`awk '/VERSION=/' /etc/os-release | sed 's/VERSION=//' | \
@@ -123,7 +123,7 @@ function get_arch() {
 }
 
 function install_dependencies() {
-    if test "$NO_DEPS" && test "$NO_DEPS" -eq 1
+    if [[ "$NO_DEPS" && "$NO_DEPS" -eq 1 ]]
     then
         echo "Not installing any dependencies, as requested."
         echo "Depency list: $*"
@@ -143,7 +143,7 @@ function install_dependencies() {
 }
 
 function start_initscripts() {
-    while test $# -ge 1
+    while [[ $# -ge 1 ]]
     do
         case $DISTRO in
             "Debian" )
@@ -162,7 +162,7 @@ function start_initscripts() {
 }
 
 function stop_initscripts() {
-    while test $# -ge 1
+    while [[ $# -ge 1 ]]
     do
         case $DISTRO in
             "Debian" )
@@ -184,7 +184,7 @@ function for_each_component () {
     for component in `cat "$BASEDIR"/components/series`
     do
         capital=`echo $component | tr '[:lower:]' '[:upper:]'`
-        if test "`eval echo \$"$capital"_UPSTREAM_URL`"
+        if [[ "`eval echo \$"$capital"_UPSTREAM_URL`" ]]
         then
             "$component"_"$1"
         fi
@@ -192,10 +192,10 @@ function for_each_component () {
 }
 
 function build_package() {
-    if test $DISTRO = "Debian"
+    if [[ $DISTRO = "Debian" ]]
     then
         ./mkdeb "$1"
-    elif test $DISTRO = "Fedora"
+    elif [[  $DISTRO = "Fedora" ]]
     then
         ./mkrpm "$1"
     else
@@ -204,10 +204,10 @@ function build_package() {
 }
 
 function install_package() {
-    if test $DISTRO = "Debian"
+    if [[ $DISTRO = "Debian" ]]
     then
         $SUDO dpkg -i "$1".deb
-    elif test $DISTRO = "Fedora"
+    elif [[  $DISTRO = "Fedora" ]]
     then
         $SUDO rpm -i --force "$1"-`git show --oneline | head -1 | cut -d " " -f 1`-0.$ARCH.rpm
     else
@@ -216,10 +216,10 @@ function install_package() {
 }
 
 function uninstall_package() {
-    if test $DISTRO = "Debian"
+    if [[ $DISTRO = "Debian" ]]
     then
         $SUDO dpkg -r "$1"
-    elif test $DISTRO = "Fedora"
+    elif [[ $DISTRO = "Fedora" ]]
     then
         $SUDO rpm -e "$1"
     else

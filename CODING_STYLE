@@ -5,9 +5,7 @@ RAISIN CODING STYLE
 Shell version compliance
 ------------------------
 
-Although we are requiring bash to run at the moment, please don't make
-assumption on the bash version available. Use modern features only when
-no older constructs do what you need.
+Raisin requires BASH 3.2 or newer, use BASH features accordingly.
 
 
 Indentation
@@ -33,12 +31,13 @@ function do_something () {
     echo something
 }
 
+Prepend _ to the function name if it is a local function.
+
 
 Tests
 -----
 
-Use "test" to make a test. Do not use [. Do not use [[ unless you have a
-good reason.
+Use [[ for tests. Do not use test or [.
 
 
 Subshell
@@ -50,13 +49,13 @@ Use `` to execute a command in a subshell.
 Numeric tests
 -------------
 
-Use expr for calculations.
+Use $(( )) for calculations.
 
 
 Awk
 ---
 
-Use cut, tr, bash 4+ and sed instead of awk when possible, in this order.
+Use bash 3 features, cut, tr and sed instead of awk when possible.
 
 
 Block structure
@@ -72,7 +71,7 @@ done
 
 if statements, place then on a new line:
 
-if test -z "$VAR"
+if [[ -z "$VAR" ]]
 then
     echo do something
 fi
