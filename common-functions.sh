@@ -17,7 +17,7 @@ function common_init() {
         export SUDO=""
     elif test ! -f `which sudo 2>/dev/null`
     then
-        echo "Raixen requires sudo to install build dependencies for you."
+        echo "Raisin requires sudo to install build dependencies for you."
         echo "Please install sudo, then run this script again."
         exit 1
     fi
