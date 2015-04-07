@@ -81,6 +81,7 @@ if [[ -z "$INST" || "$INST" -eq 0 ]]
 then
     exit 0
 elif [[ -z "$YES" || "$YES" != "y" ]]
+then
     echo "Proceeding we'll make changes to the running system,"
     echo "Installing the components we built and configuring the system"
     echo "(requires sudo)."
