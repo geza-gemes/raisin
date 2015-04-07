@@ -47,6 +47,23 @@ do
   fi
 done
 
+if [[ $YES != "y" && $NO_DEPS -eq 0 ]]
+then
+    echo "Do you want Raisin to automatically install build time dependencies for you? (y/n)"
+    while read answer
+    do
+        if [[ "$answer" = "n" ]]
+        then
+            NO_DEPS=1
+            break
+        elif [[ "$answer" = "y" ]]
+        then
+            break
+        fi
+    done
+fi
+
+
 mkdir -p "$INST_DIR" &>/dev/null
 install_dependencies git
 if [[ $DISTRO = "Fedora" ]]
