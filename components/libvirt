@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-source "$BASEDIR"/config
-source "$BASEDIR"/scripts/common-functions.sh
-
-
 function _libvirt_install_dependencies() {
     local DEP_Debian_common="build-essential libtool autoconf autopoint \
                              xsltproc libxml2-utils pkg-config python-dev   \

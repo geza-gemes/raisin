@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-source "$BASEDIR"/config
-source "$BASEDIR"/scripts/common-functions.sh
-
-
 function _grub_install_dependencies() {
     local DEP_Debian_common="build-essential tar autoconf bison flex"
     local DEP_Debian_x86_32="$DEP_Debian_common"
