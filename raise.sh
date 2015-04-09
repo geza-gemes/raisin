@@ -3,7 +3,8 @@
 set -e
 
 source config
-source scripts/common-functions.sh
+source lib/common-functions.sh
+source lib/git-checkout.sh
 
 _help() {
     echo "Usage: ./build.sh <options> <command>"

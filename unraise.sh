@@ -3,7 +3,7 @@
 set -e
 
 source config
-source scripts/common-functions.sh
+source lib/common-functions.sh
 
 
 # start execution
