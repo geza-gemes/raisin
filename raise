@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+set -e
+
+_help() {
+    echo "Usage: ./build.sh <options> <command>"
+    echo "where options are:"
+    echo "    -n | --no-deps       Do no install build-time dependencies"
+    echo "    -v | --verbose       Verbose"
+    echo "    -y | --yes           Do not ask questions and continue"
+    echo "where commands are:"
+    echo "    build                Build the components enabled in config"
+    echo "    install              Install binaries under /  (requires sudo)"
+    echo "    configure            Configure the system  (requires sudo)"
+    echo "    unraise              Uninstall and unconfigure the system  (requires sudo)"
+}
+
+# Include your defaults
+if [[ -e "./config" ]] ; then
+    . ./config
+fi
+
+# To use this as a library, set RAISIN_PATH appropriately
+[[ -z "$RAISIN_PATH" ]] && RAISIN_PATH="$PWD/lib"
+
+# Then as many as the sub-libraries as you need
+source ${RAISIN_PATH}/common-functions.sh
+source ${RAISIN_PATH}/git-checkout.sh
+source ${RAISIN_PATH}/commands.sh
+
+# Set up basic functionality
+common_init
+
+# parameters check
+export VERBOSE=0
+export YES="n"
+export NO_DEPS=0
+while [[ $# -gt 1 ]]
+do
+  if [[ "$1" = "-v" || "$1" = "--verbose" ]]
+  then
+    VERBOSE=1
+    shift 1
+  elif [[ "$1" = "-y" || "$1" = "--yes" ]]
+  then
+    YES="y"
+    shift 1
+  else
+    _help
+    exit 1
+  fi
+done
+
+case "$1" in
+    "build" | "install" | "configure" | "unraise" )
+        COMMAND=$1
+        ;;
+    *)
+        _help
+        exit 1
+        ;;
+esac
+
+$COMMAND
+

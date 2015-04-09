@@ -1,24 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
-
-source config
-source lib/common-functions.sh
-source lib/git-checkout.sh
-
-_help() {
-    echo "Usage: ./build.sh <options> <command>"
-    echo "where options are:"
-    echo "    -n | --no-deps       Do no install build-time dependencies"
-    echo "    -v | --verbose       Verbose"
-    echo "    -y | --yes           Do not ask questions and continue"
-    echo "where commands are:"
-    echo "    build                Build the components enabled in config"
-    echo "    install              Install binaries under /  (requires sudo)"
-    echo "    configure            Configure the system  (requires sudo)"
-}
-
-_build() {
+build() {
     if [[ $YES != "y" ]]
     then
         echo "Do you want Raisin to automatically install build time dependencies for you? (y/n)"
@@ -50,17 +32,26 @@ _build() {
     build_package xen-system
 }
 
-_install() {
+unraise() {
+    for_each_component clean
+
+    uninstall_package xen-system
+    for_each_component unconfigure
+
+    rm -rf "$INST_DIR"
+}
+
+install() {
     # need single braces for filename matching expansion
     if [ ! -f xen-sytem*rpm ] && [ ! -f xen-system*deb ]
     then
-        echo You need to raise.sh build first.
+        echo You need to raise build first.
         exit 1
     fi
     install_package xen-system
 }
 
-_configure() {
+configure() {
     if [[ $YES != "y" ]]
     then
         echo "Proceeding we'll make changes to the running system,"
@@ -81,39 +72,4 @@ _configure() {
 
     for_each_component configure
 }
-
-# start execution
-common_init
-
-# parameters check
-export VERBOSE=0
-export YES="n"
-export NO_DEPS=0
-while [[ $# -gt 1 ]]
-do
-  if [[ "$1" = "-v" || "$1" = "--verbose" ]]
-  then
-    VERBOSE=1
-    shift 1
-  elif [[ "$1" = "-y" || "$1" = "--yes" ]]
-  then
-    YES="y"
-    shift 1
-  else
-    _help
-    exit 1
-  fi
-done
-
-case "$1" in
-    "build" | "install" | "configure" )
-        COMMAND=$1
-        ;;
-    *)
-        _help
-        exit 1
-        ;;
-esac
-
-_$COMMAND
 
