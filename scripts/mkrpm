@@ -48,7 +48,7 @@ cp -r "$BASEDIR"/data \$RPM_BUILD_ROOT/opt/raisin
 cp -r "$BASEDIR"/components \$RPM_BUILD_ROOT/opt/raisin
 cp -r "$BASEDIR"/scripts \$RPM_BUILD_ROOT/opt/raisin
 cp -r "$BASEDIR"/lib \$RPM_BUILD_ROOT/opt/raisin
-cp "$BASEDIR"/config \$RPM_BUILD_ROOT/opt/raisin
+cp "$BASEDIR"/defconfig \$RPM_BUILD_ROOT/opt/raisin
 cp "$BASEDIR"/raise \$RPM_BUILD_ROOT/opt/raisin
 
 %clean

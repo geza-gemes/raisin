@@ -28,6 +28,7 @@ cscope.in.out
 cscope.out
 cscope.po.out
 .config
+config
 
 xen-dir
 xen-dir-remote

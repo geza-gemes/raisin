@@ -28,6 +28,14 @@ source ${RAISIN_PATH}/common-functions.sh
 source ${RAISIN_PATH}/git-checkout.sh
 source ${RAISIN_PATH}/commands.sh
 
+# Include your defaults
+if [[ ! -e "./config" ]] ; then
+   echo "No config file found, copying default config"
+   cp defconfig config
+fi
+
+source ./config
+
 # Set up basic functionality
 common_init
 

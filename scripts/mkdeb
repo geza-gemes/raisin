@@ -36,7 +36,7 @@ cp -r data deb/opt/raisin
 cp -r components deb/opt/raisin
 cp -r scripts deb/opt/raisin
 cp -r lib deb/opt/raisin
-cp config raise deb/opt/raisin
+cp defconfig raise deb/opt/raisin
 
 
 # Debian doesn't use /usr/lib64 for 64-bit libraries
