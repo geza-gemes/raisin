@@ -53,6 +53,9 @@ depends on Xen, should be built after Xen).
 
 You need to implement a few bash functions in the component script file:
 
+* component_check_package
+passes a list of build dependencies to check-package
+
 * component_build
 git clones, builds and installs the new component under DESTDIR
 
@@ -90,6 +93,7 @@ particular:
 install_dependencies
 start_initscripts
 stop_initscripts
+check-package
 
 If your component comes with additional data, maybe a config script or
 anything else, place it under "data".
