@@ -75,3 +75,8 @@ if [[ -z "$VAR" ]]
 then
     echo do something
 fi
+
+
+Source
+------
+To import another script, use "source", avoid ".".
