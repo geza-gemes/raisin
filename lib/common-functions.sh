@@ -97,15 +97,23 @@ function get_distro() {
     case "$os_VENDOR" in
         "Debian"* | "Ubuntu"* | "LinuxMint"* )
             DISTRO="Debian"
+            PKGTYPE="deb"
+            ;;
+        "Fedora" )
+            DISTRO="Fedora"
+            PKGTYPE="rpm"
             ;;
         "SUSE"* )
             DISTRO="SUSE"
+            PKGTYPE="rpm"
             ;;
         "OpenSUSE"* | "openSUSE"* )
             DISTRO="openSUSE"
+            PKGTYPE="rpm"
             ;;
         "Red"* | "CentOS"* )
             DISTRO="CentOS"
+            PKGTYPE="rpm"
             ;;
         *)
             DISTRO=$os_VENDOR
@@ -114,6 +122,7 @@ function get_distro() {
 
     export os_VENDOR os_RELEASE os_UPDATE os_CODENAME
     export DISTRO
+    export PKGTYPE
 }
 
 function get_arch() {
@@ -122,24 +131,56 @@ function get_arch() {
                 -e s/aarch64/arm64/`
 }
 
-function install_dependencies() {
-    if [[ "$NO_DEPS" && "$NO_DEPS" -eq 1 ]]
+function _check-package-deb() {
+    if [[ $VERBOSE -eq 1 ]]
     then
-        echo "Not installing any dependencies, as requested."
-        echo "Depency list: $*"
-        return 0
+        echo "Checking for package ${args[0]}"
     fi
-    case $DISTRO in
-        "Debian" )
-        $SUDO apt-get install -y $*
-        ;;
-        "Fedora" )
-        $SUDO yum install -y $*
-        ;;
-        * )
-        echo "I don't know how to install dependencies on $DISTRO"
-        ;;
-    esac
+
+    if dpkg -s "$1" 2>/dev/null | grep -q "Status:.*installed"
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function _install-package-deb() {
+    $SUDO apt-get install -y $*
+}
+
+function _check-package-rpm() {
+    if [[ $VERBOSE -eq 1 ]]
+    then
+        echo "Checking for package $1"
+    fi
+
+    if rpm -q "$1" 2>&1 >/dev/null
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function _install-package-rpm() {
+    $SUDO yum install -y $*
+}
+
+# Modifies inherited variable "missing"
+function check-package() {
+    for p in $*
+    do
+        if ! _check-package-${PKGTYPE} $p
+        then
+            missing+=("$p")
+        fi
+    done
+
+}
+
+function install-package() {
+    _install-package-${PKGTYPE} $*
 }
 
 function start_initscripts() {

@@ -1,30 +1,52 @@
 #!/usr/bin/env bash
 
-build() {
-    if [[ $YES != "y" ]]
-    then
-        echo "Do you want Raisin to automatically install build time dependencies for you? (y/n)"
-        while read answer
-        do
-            if [[ "$answer" = "n" ]]
-            then
-                NO_DEPS=1
-                break
-            elif [[ "$answer" = "y" ]]
-            then
-                break
-            else
-                echo "Reply y or n"
-            fi
-        done
-    fi
+function check-builddep() {
+    local -a missing
 
-    mkdir -p "$INST_DIR" &>/dev/null
-    install_dependencies git
+    check-package git
+
     if [[ $DISTRO = "Fedora" ]]
     then
-        install_dependencies rpm-build
+        check-package rpm-build
     fi
+
+    for_each_component check_package
+
+    if [[ -n "${missing[@]}" ]]
+    then
+        echo "Missing packages: ${missing[@]}"
+        if [[ $YES != "y" ]]
+        then
+            echo "Do you want Raisin to automatically install them for you? (y/n)"
+            while read answer
+            do
+                if [[ "$answer" = "n" ]]
+                then
+                    echo "Please install, or run ./raise install-builddep"
+                    exit 1
+                elif [[ "$answer" = "y" ]]
+                then
+                    break
+                else
+                    echo "Reply y or n"
+                fi
+            done
+        fi
+
+        echo "Installing..."
+        install-package "${missing[@]}"
+    fi
+}
+
+function install-builddep() {
+    YES=y check-builddep
+}
+
+function build() {
+    check-builddep
+    
+    mkdir -p "$INST_DIR" &>/dev/null
+
     # build and install under $DESTDIR
     for_each_component clean
     for_each_component build
@@ -32,7 +54,7 @@ build() {
     build_package xen-system
 }
 
-unraise() {
+function unraise() {
     for_each_component clean
 
     uninstall_package xen-system
@@ -41,7 +63,7 @@ unraise() {
     rm -rf "$INST_DIR"
 }
 
-install() {
+function install() {
     # need single braces for filename matching expansion
     if [ ! -f xen-sytem*rpm ] && [ ! -f xen-system*deb ]
     then
@@ -51,7 +73,7 @@ install() {
     install_package xen-system
 }
 
-configure() {
+function configure() {
     if [[ $YES != "y" ]]
     then
         echo "Proceeding we'll make changes to the running system,"

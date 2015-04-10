@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-function _xen_install_dependencies() {
+function xen_check_package() {
     local DEP_Debian_common="build-essential python-dev gettext uuid-dev   \
              libncurses5-dev libyajl-dev libaio-dev pkg-config libglib2.0-dev  \
              libssl-dev libpixman-1-dev bridge-utils wget"
@@ -15,13 +15,11 @@ function _xen_install_dependencies() {
     local DEP_Fedora_x86_32="$DEP_Fedora_common dev86 acpica-tools texinfo"
     local DEP_Fedora_x86_64="$DEP_Fedora_x86_32 glibc-devel.i686"
 
-    echo installing Xen dependencies
-    eval install_dependencies \$DEP_"$DISTRO"_"$ARCH"
+    echo Checking Xen dependencies
+    eval check-package \$DEP_"$DISTRO"_"$ARCH"
 }
 
 function xen_build() {
-    _xen_install_dependencies
-
     cd "$BASEDIR"
     git-checkout $XEN_UPSTREAM_URL $XEN_UPSTREAM_REVISION xen-dir
     cd xen-dir

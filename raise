@@ -5,10 +5,10 @@ set -e
 _help() {
     echo "Usage: ./build.sh <options> <command>"
     echo "where options are:"
-    echo "    -n | --no-deps       Do no install build-time dependencies"
     echo "    -v | --verbose       Verbose"
     echo "    -y | --yes           Do not ask questions and continue"
     echo "where commands are:"
+    echo "    install-builddep     Install build time dependencies (requires sudo)"
     echo "    build                Build the components enabled in config"
     echo "    install              Install binaries under /  (requires sudo)"
     echo "    configure            Configure the system  (requires sudo)"
@@ -42,7 +42,6 @@ common_init
 # parameters check
 export VERBOSE=0
 export YES="n"
-export NO_DEPS=0
 while [[ $# -gt 1 ]]
 do
   if [[ "$1" = "-v" || "$1" = "--verbose" ]]
@@ -60,7 +59,7 @@ do
 done
 
 case "$1" in
-    "build" | "install" | "configure" | "unraise" )
+    "install-builddep" | "build" | "install" | "configure" | "unraise" )
         COMMAND=$1
         ;;
     *)
