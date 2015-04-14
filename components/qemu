@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+function qemu_check_package() {
+    local DEP_Debian_common="build-essential libglib2.0-dev libpixman-1-dev"
+    local DEP_Debian_x86_32="$DEP_Debian_common"
+    local DEP_Debian_x86_64="$DEP_Debian_common"
+    local DEP_Debian_arm32="$DEP_Debian_common"
+    local DEP_Debian_arm64="$DEP_Debian_common"
+
+    local DEP_Fedora_common="make gcc glib2-devel pixman-devel zlib-devel"
+    local DEP_Fedora_x86_32="$DEP_Fedora_common"
+    local DEP_Fedora_x86_64="$DEP_Fedora_common"
+
+    echo Checking QEMU dependencies
+    eval check-package \$DEP_"$DISTRO"_"$ARCH"
+}
+
+function qemu_build() {
+    cd "$BASEDIR"
+    git-checkout $QEMU_UPSTREAM_URL $QEMU_UPSTREAM_REVISION qemu-dir
+    cd qemu-dir
+    ./configure --enable-xen --target-list=i386-softmmu,x86_64-softmmu --prefix=$PREFIX \
+        --extra-cflags="-I$INST_DIR/$PREFIX/include" \
+        --extra-ldflags="-L$INST_DIR/$PREFIX/lib -Wl,-rpath-link=$INST_DIR/$PREFIX/lib" \
+        --disable-kvm \
+        --disable-docs \
+        --disable-guest-agent
+    $MAKE all
+    $MAKE install DESTDIR="$INST_DIR"
+    cd "$BASEDIR"
+}
+
+function qemu_clean() {
+    cd "$BASEDIR"
+    if [[ -d qemu-dir ]]
+    then
+        cd qemu-dir
+        $MAKE distclean
+        cd ..
+        rm -rf qemu-dir
+    fi
+}
+
+function qemu_configure() {
+    echo Nothing to configure for qemu
+}
+
+function qemu_unconfigure() {
+    echo Nothing to unconfigure for qemu
+}

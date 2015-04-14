@@ -14,6 +14,7 @@ DESTDIR=dist
 #GRUB_UPSTREAM_URL="http://git.savannah.gnu.org/r/grub.git"
 #LIBVIRT_UPSTREAM_URL="https://gitorious.org/libvirt/libvirt.git"
 XEN_UPSTREAM_URL="git://xenbits.xen.org/xen.git"
+QEMU_UPSTREAM_URL="git://git.qemu.org/qemu.git"
 GRUB_UPSTREAM_URL="git://git.savannah.gnu.org/grub.git"
 LIBVIRT_UPSTREAM_URL="git://libvirt.org/libvirt.git"
 
@@ -21,5 +22,6 @@ LIBVIRT_UPSTREAM_URL="git://libvirt.org/libvirt.git"
 # this: GRUB_UPSTREAM_REVISION=
 # Grub and Libvirt needs Xen to build and run.
 XEN_UPSTREAM_REVISION="master"
+QEMU_UPSTREAM_REVISION="master"
 GRUB_UPSTREAM_REVISION="master"
 LIBVIRT_UPSTREAM_REVISION="master"
