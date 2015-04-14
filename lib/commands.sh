@@ -51,7 +51,6 @@ function build() {
     mkdir -p "$INST_DIR" &>/dev/null
 
     # build and install under $DESTDIR
-    for_each_component clean
     for_each_component build
     
     build_package xen-system
