@@ -15,7 +15,10 @@ function check-builddep() {
     if [[ -n "${missing[@]}" ]]
     then
         echo "Missing packages: ${missing[@]}"
-        if [[ $YES != "y" ]]
+        if [[ "$YES" = "n" ]]
+        then
+            return
+        elif [[ "$YES" != "y" ]]
         then
             echo "Do you want Raisin to automatically install them for you? (y/n)"
             while read answer
@@ -74,7 +77,10 @@ function install() {
 }
 
 function configure() {
-    if [[ $YES != "y" ]]
+    if [[ "$YES" = "n" ]]
+    then
+        return
+    elif [[ "$YES" != "y" ]]
     then
         echo "Proceeding we'll make changes to the running system,"
         echo "are you sure that you want to continue? (y/n)"

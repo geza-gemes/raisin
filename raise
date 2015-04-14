@@ -7,6 +7,7 @@ _help() {
     echo "where options are:"
     echo "    -v | --verbose       Verbose"
     echo "    -y | --yes           Do not ask questions and continue"
+    echo "    -n | --no            No to all questions"
     echo "where commands are:"
     echo "    install-builddep     Install build time dependencies (requires sudo)"
     echo "    build                Build the components enabled in config"
@@ -41,7 +42,7 @@ common_init
 
 # parameters check
 export VERBOSE=0
-export YES="n"
+export YES=""
 while [[ $# -gt 1 ]]
 do
   if [[ "$1" = "-v" || "$1" = "--verbose" ]]
@@ -51,6 +52,10 @@ do
   elif [[ "$1" = "-y" || "$1" = "--yes" ]]
   then
     YES="y"
+    shift 1
+  elif [[ "$1" = "-n" || "$1" = "--no" ]]
+  then
+    YES="n"
     shift 1
   else
     _help
