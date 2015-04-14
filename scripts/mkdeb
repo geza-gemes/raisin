@@ -51,7 +51,7 @@ mkdir -p deb/DEBIAN
 cat >deb/DEBIAN/control <<EOF
 Package: $name
 Source: raisin
-Version: $(git show --oneline | head -1 | cut -d " " -f 1)
+Version: $(date +"%Y%m%d.%H%M%S")
 Architecture: $arch
 Maintainer: Unmaintained snapshot
 Section: admin
