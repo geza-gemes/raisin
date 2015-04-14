@@ -24,7 +24,7 @@ function libvirt_check_package() {
 
 function libvirt_build() {
     cd "$BASEDIR"
-    git-checkout $LIBVIRT_UPSTREAM_URL $LIBVIRT_UPSTREAM_REVISION libvirt-dir
+    git-checkout $LIBVIRT_URL $LIBVIRT_REVISION libvirt-dir
     cd libvirt-dir
     CFLAGS="-I$INST_DIR/$PREFIX/include" \
     LDFLAGS="-L$INST_DIR/$PREFIX/lib -Wl,-rpath-link=$INST_DIR/$PREFIX/lib" \

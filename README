@@ -84,8 +84,8 @@ ARCH: which architecture we are running on, x86_64, arm32, etc.
 BASEDIR: absolute path of the raisin directory
 PREFIX: installation PREFIX
 INST_DIR: absolute path of the installation directory
-COMPONENT_UPSTREAM_URL: git url to clone, set by config
-COMPONENT_UPSTREAM_REVISION: branch or tag to checkout, set by config
+COMPONENT_URL: git url to clone, set by config
+COMPONENT_REVISION: branch or tag to checkout, set by config
 
 You can also rely on any utility functions in common-functions.sh, in
 particular:

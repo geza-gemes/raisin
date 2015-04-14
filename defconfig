@@ -10,18 +10,18 @@ PREFIX="/usr"
 DESTDIR=dist
 
 # Git urls. Use the http urls if you are behind a firewall.
-#XEN_UPSTREAM_URL="http://xenbits.xen.org/git-http/xen.git"
-#GRUB_UPSTREAM_URL="http://git.savannah.gnu.org/r/grub.git"
-#LIBVIRT_UPSTREAM_URL="https://gitorious.org/libvirt/libvirt.git"
-XEN_UPSTREAM_URL="git://xenbits.xen.org/xen.git"
-QEMU_UPSTREAM_URL="git://git.qemu.org/qemu.git"
-GRUB_UPSTREAM_URL="git://git.savannah.gnu.org/grub.git"
-LIBVIRT_UPSTREAM_URL="git://libvirt.org/libvirt.git"
+#XEN_URL="http://xenbits.xen.org/git-http/xen.git"
+#GRUB_URL="http://git.savannah.gnu.org/r/grub.git"
+#LIBVIRT_URL="https://gitorious.org/libvirt/libvirt.git"
+XEN_URL="git://xenbits.xen.org/xen.git"
+QEMU_URL="git://git.qemu.org/qemu.git"
+GRUB_URL="git://git.savannah.gnu.org/grub.git"
+LIBVIRT_URL="git://libvirt.org/libvirt.git"
 
 # Software versions. Leave blank if you want to avoid the build, like
-# this: GRUB_UPSTREAM_REVISION=
+# this: GRUB_REVISION=
 # Grub and Libvirt needs Xen to build and run.
-XEN_UPSTREAM_REVISION="master"
-QEMU_UPSTREAM_REVISION="master"
-GRUB_UPSTREAM_REVISION="master"
-LIBVIRT_UPSTREAM_REVISION="master"
+XEN_REVISION="master"
+QEMU_REVISION="master"
+GRUB_REVISION="master"
+LIBVIRT_REVISION="master"

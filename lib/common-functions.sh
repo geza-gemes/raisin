@@ -225,7 +225,7 @@ function for_each_component () {
     for component in `cat "$BASEDIR"/components/series`
     do
         capital=`echo $component | tr '[:lower:]' '[:upper:]'`
-        if eval [[ ! -z \$"$capital"_UPSTREAM_REVISION ]]
+        if eval [[ ! -z \$"$capital"_REVISION ]]
         then
             "$component"_"$1"
         fi

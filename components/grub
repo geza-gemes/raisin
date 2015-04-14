@@ -27,7 +27,7 @@ function grub_build() {
     cd "$BASEDIR"
     rm -f memdisk.tar
     tar cf memdisk.tar -C data grub.cfg
-    git-checkout $GRUB_UPSTREAM_URL $GRUB_UPSTREAM_REVISION grub-dir
+    git-checkout $GRUB_URL $GRUB_REVISION grub-dir
     cd grub-dir
     ./autogen.sh
     ## GRUB32

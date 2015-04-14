@@ -17,7 +17,7 @@ function qemu_check_package() {
 
 function qemu_build() {
     cd "$BASEDIR"
-    git-checkout $QEMU_UPSTREAM_URL $QEMU_UPSTREAM_REVISION qemu-dir
+    git-checkout $QEMU_URL $QEMU_REVISION qemu-dir
     cd qemu-dir
     ./configure --enable-xen --target-list=i386-softmmu,x86_64-softmmu --prefix=$PREFIX \
         --extra-cflags="-I$INST_DIR/$PREFIX/include" \

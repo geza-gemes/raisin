@@ -21,7 +21,7 @@ function xen_check_package() {
 
 function xen_build() {
     cd "$BASEDIR"
-    git-checkout $XEN_UPSTREAM_URL $XEN_UPSTREAM_REVISION xen-dir
+    git-checkout $XEN_URL $XEN_REVISION xen-dir
     cd xen-dir
     ./configure --prefix=$PREFIX --with-system-qemu=/usr/bin/qemu-system-i386
     $MAKE
