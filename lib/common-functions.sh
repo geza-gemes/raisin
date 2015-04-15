@@ -225,9 +225,16 @@ function for_each_component () {
     for component in `cat "$BASEDIR"/components/series`
     do
         capital=`echo $component | tr '[:lower:]' '[:upper:]'`
+        if [[ $VERBOSE -eq 1 ]]
+        then
+            echo -n "$capital"_REVISION =" "
+            eval echo \$"$capital"_REVISION
+        fi
         if eval [[ ! -z \$"$capital"_REVISION ]]
         then
+            [[ $VERBOSE -eq 1 ]] && echo calling "$component"_"$1"
             "$component"_"$1"
+            [[ $VERBOSE -eq 1 ]] && echo "$component"_"$1" done
         fi
     done
 }
