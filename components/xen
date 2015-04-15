@@ -26,9 +26,6 @@ function xen_build() {
     ./configure --prefix=$PREFIX --with-system-qemu=/usr/bin/qemu-system-i386
     $MAKE
     $MAKE install DESTDIR="$INST_DIR"
-    chmod +x "$INST_DIR"/etc/init.d/xencommons
-    chmod +x "$INST_DIR"/etc/init.d/xendomains
-    chmod +x "$INST_DIR"/etc/init.d/xen-watchdog
     cd "$BASEDIR"
 }
 
