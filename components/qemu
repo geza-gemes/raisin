@@ -25,8 +25,8 @@ function qemu_build() {
         --disable-kvm \
         --disable-docs \
         --disable-guest-agent
-    $MAKE all
-    $MAKE install DESTDIR="$INST_DIR"
+    $RAISIN_MAKE all
+    $RAISIN_MAKE install DESTDIR="$INST_DIR"
     cd "$BASEDIR"
 }
 
@@ -35,7 +35,7 @@ function qemu_clean() {
     if [[ -d qemu-dir ]]
     then
         cd qemu-dir
-        $MAKE distclean
+        $RAISIN_MAKE distclean
         cd ..
         rm -rf qemu-dir
     fi

@@ -77,7 +77,7 @@ You can/should rely on the following global variables in your component
 script file:
 
 GIT: git command to run, but prefer the git-checkout.sh script
-MAKE: make command to run
+RAISIN_MAKE: make command to run
 SUDO: sudo command to run
 DISTRO: which Linux distribution we are running on, Debian, Fedora, etc
 ARCH: which architecture we are running on, x86_64, arm32, etc.

@@ -32,16 +32,16 @@ function grub_build() {
     ./autogen.sh
     ## GRUB32
     ./configure --target=i386 --with-platform=xen
-    $MAKE CPPFLAGS="-I$INST_DIR/$PREFIX/include"
+    $RAISIN_MAKE CPPFLAGS="-I$INST_DIR/$PREFIX/include"
     ./grub-mkimage -d grub-core -O i386-xen -c "$BASEDIR"/data/grub-bootstrap.cfg \
       -m ../memdisk.tar -o grub-i386-xen grub-core/*mod
     cp grub-i386-xen "$INST_DIR"/$PREFIX/lib/xen/boot
     ## GRUB64
     if [[ $ARCH = "x86_64" ]]
     then
-        $MAKE clean
+        $RAISIN_MAKE clean
         ./configure --target=amd64 --with-platform=xen
-        $MAKE CPPFLAGS="-I$INST_DIR/$PREFIX/include"
+        $RAISIN_MAKE CPPFLAGS="-I$INST_DIR/$PREFIX/include"
         ./grub-mkimage -d grub-core -O x86_64-xen -c "$BASEDIR"/data/grub-bootstrap.cfg \
           -m ../memdisk.tar -o grub-x86_64-xen grub-core/*mod
         cp grub-x86_64-xen "$INST_DIR"/$PREFIX/lib/xen/boot
@@ -55,7 +55,7 @@ function grub_clean() {
     if [[ -d grub-dir ]]
     then
         cd grub-dir
-        $MAKE distclean
+        $RAISIN_MAKE distclean
         cd ..
         rm -rf grub-dir
     fi

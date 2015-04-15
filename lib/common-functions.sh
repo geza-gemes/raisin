@@ -5,7 +5,7 @@ function common_init() {
     export BASEDIR=`pwd`
     export GIT=${GIT-git}
     export SUDO=${SUDO-sudo}
-    export MAKE=${MAKE-make}
+    export RAISIN_MAKE=${MAKE-make}
     export PREFIX=${PREFIX-/usr}
     export INST_DIR=${DESTDIR-dist}
     

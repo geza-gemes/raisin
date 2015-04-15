@@ -33,8 +33,8 @@ function libvirt_build() {
         --without-vbox --without-lxc --without-esx --without-hyperv       \
         --without-parallels --without-test --with-libvirtd --without-sasl \
         --with-yajl --without-macvtap --without-avahi  --prefix=$PREFIX
-    $MAKE
-    $MAKE --ignore-errors install DESTDIR="$INST_DIR" || true
+    $RAISIN_MAKE
+    $RAISIN_MAKE --ignore-errors install DESTDIR="$INST_DIR" || true
     if [[ $DISTRO = "Debian" ]]
     then
         mkdir -p "$INST_DIR"/etc/init.d
@@ -42,7 +42,7 @@ function libvirt_build() {
         chmod +x "$INST_DIR"/etc/init.d/libvirtd
     elif [[ $DISTRO = "Fedora" || $DISTRO = "CentOS" ]]
     then
-        $MAKE -C daemon libvirtd.init
+        $RAISIN_MAKE -C daemon libvirtd.init
         mkdir -p "$INST_DIR"/etc/rc.d/init.d
         cp daemon/libvirtd.init "$INST_DIR"/etc/rc.d/init.d/libvirtd
         chmod +x "$INST_DIR"/etc/rc.d/init.d/libvirtd
@@ -57,7 +57,7 @@ function libvirt_clean() {
     if [[ -d libvirt-dir ]]
     then
         cd libvirt-dir
-        $MAKE distclean
+        $RAISIN_MAKE distclean
         cd ..
         rm -rf libvirt-dir
     fi
