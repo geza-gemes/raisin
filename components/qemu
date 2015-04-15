@@ -21,7 +21,8 @@ function qemu_build() {
     cd qemu-dir
     ./configure --enable-xen --target-list=i386-softmmu,x86_64-softmmu --prefix=$PREFIX \
         --extra-cflags="-I$INST_DIR/$PREFIX/include" \
-        --extra-ldflags="-L$INST_DIR/$PREFIX/lib -Wl,-rpath-link=$INST_DIR/$PREFIX/lib" \
+        --extra-ldflags="-L$INST_DIR/$PREFIX/lib -Wl,-rpath-link=$INST_DIR/$PREFIX/lib \
+                         -L$INST_DIR/$PREFIX/lib64 -Wl,-rpath-link=$INST_DIR/$PREFIX/lib64" \
         --disable-kvm \
         --disable-docs \
         --disable-guest-agent

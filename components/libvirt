@@ -27,7 +27,8 @@ function libvirt_build() {
     git-checkout $LIBVIRT_URL $LIBVIRT_REVISION libvirt-dir
     cd libvirt-dir
     CFLAGS="-I$INST_DIR/$PREFIX/include" \
-    LDFLAGS="-L$INST_DIR/$PREFIX/lib -Wl,-rpath-link=$INST_DIR/$PREFIX/lib" \
+    LDFLAGS="-L$INST_DIR/$PREFIX/lib -Wl,-rpath-link=$INST_DIR/$PREFIX/lib \
+             -L$INST_DIR/$PREFIX/lib64 -Wl,-rpath-link=$INST_DIR/$PREFIX/lib64" \
     ./autogen.sh --with-xen --without-qemu --without-uml --without-openvz \
         --without-vmware --without-phyp --without-xenapi --with-libxl     \
         --without-vbox --without-lxc --without-esx --without-hyperv       \
