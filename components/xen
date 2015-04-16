@@ -23,7 +23,7 @@ function xen_build() {
     cd "$BASEDIR"
     git-checkout $XEN_URL $XEN_REVISION xen-dir
     cd xen-dir
-    ./configure --prefix=$PREFIX --with-system-qemu=/usr/bin/qemu-system-i386
+    ./configure --prefix=$PREFIX --with-system-qemu=$PREFIX/lib/xen/bin/qemu-system-i386
     $RAISIN_MAKE
     $RAISIN_MAKE install DESTDIR="$INST_DIR"
     cd "$BASEDIR"
