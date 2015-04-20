@@ -18,6 +18,10 @@ function libvirt_check_package() {
     local DEP_Fedora_x86_32="$DEP_Fedora_common"
     local DEP_Fedora_x86_64="$DEP_Fedora_common"
 
+    local DEP_CentOS_common="$DEP_Fedora_common"
+    local DEP_CentOS_x86_32="$DEP_Fedora_x86_32"
+    local DEP_CentOS_x86_64="$DEP_Fedora_x86_64"
+
     echo Checking Libvirt dependencies
     eval check-package \$DEP_"$DISTRO"_"$ARCH"
 }

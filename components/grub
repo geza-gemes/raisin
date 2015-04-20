@@ -12,6 +12,10 @@ function grub_check_package() {
     local DEP_Fedora_x86_32="$DEP_Fedora_common"
     local DEP_Fedora_x86_64="$DEP_Fedora_common glibc-devel.i686"
 
+    local DEP_CentOS_common="$DEP_Fedora_common"
+    local DEP_CentOS_x86_32="$DEP_Fedora_x86_32"
+    local DEP_CentOS_x86_64="$DEP_Fedora_x86_64"
+
 
     if [[ $ARCH != "x86_64" && $ARCH != "x86_32" ]]
     then

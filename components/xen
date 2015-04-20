@@ -11,9 +11,13 @@ function xen_check_package() {
 
     local DEP_Fedora_common="make gcc python-devel gettext libuuid-devel   \
              ncurses-devel glib2-devel libaio-devel openssl-devel yajl-devel   \
-             patch pixman-devel glibc-devel bridge-utils grub2 wget"
+             patch pixman-devel glibc-devel bridge-utils grub2 wget tar bzip2"
     local DEP_Fedora_x86_32="$DEP_Fedora_common dev86 acpica-tools texinfo"
     local DEP_Fedora_x86_64="$DEP_Fedora_x86_32 glibc-devel.i686"
+
+    local DEP_CentOS_common="$DEP_Fedora_common"
+    local DEP_CentOS_x86_32="$DEP_CentOS_common dev86 texinfo iasl"
+    local DEP_CentOS_x86_64="$DEP_CentOS_x86_32 glibc-devel.i686"
 
     echo Checking Xen dependencies
     eval check-package \$DEP_"$DISTRO"_"$ARCH"

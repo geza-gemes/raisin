@@ -5,10 +5,10 @@ function check-builddep() {
 
     check-package git
 
-    if [[ $DISTRO = "Fedora" ]]
+    if [[ $PKGTYPE = "rpm" ]]
     then
         check-package rpm-build
-    elif [[ $DISTRO = "Debian" ]]
+    elif [[ $PKGTYPE = "deb" ]]
     then
         check-package fakeroot
     fi
