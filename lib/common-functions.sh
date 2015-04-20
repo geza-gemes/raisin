@@ -232,9 +232,15 @@ function for_each_component () {
         fi
         if eval [[ ! -z \$"$capital"_REVISION ]]
         then
-            [[ $VERBOSE -eq 1 ]] && echo calling "$component"_"$1"
+            if [[ $VERBOSE -eq 1 ]]
+            then
+                echo calling "$component"_"$1"
+            fi
             "$component"_"$1"
-            [[ $VERBOSE -eq 1 ]] && echo "$component"_"$1" done
+            if [[ $VERBOSE -eq 1 ]]
+            then
+                echo "$component"_"$1" done
+            fi
         fi
     done
 }
