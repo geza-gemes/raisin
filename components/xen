@@ -28,7 +28,8 @@ function xen_build() {
     git-checkout $XEN_URL $XEN_REVISION xen-dir
     cd xen-dir
     ./configure --prefix=$PREFIX --with-system-qemu=$PREFIX/lib/xen/bin/qemu-system-i386 \
-        --disable-qemu-traditional --enable-rombios
+        --disable-qemu-traditional --enable-rombios \
+        --with-system-seabios="$BASEDIR"/seabios-dir/out/bios.bin
     $RAISIN_MAKE
     $RAISIN_MAKE install DESTDIR="$INST_DIR"
     cd "$BASEDIR"
