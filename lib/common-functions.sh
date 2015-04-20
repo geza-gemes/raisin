@@ -248,7 +248,7 @@ function for_each_component () {
 function build_package() {
     if [[ $DISTRO = "Debian" ]]
     then
-        ./scripts/mkdeb "$1"
+        fakeroot bash ./scripts/mkdeb "$1"
     elif [[  $DISTRO = "Fedora" ]]
     then
         ./scripts/mkrpm "$1"

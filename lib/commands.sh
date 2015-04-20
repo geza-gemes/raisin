@@ -8,6 +8,9 @@ function check-builddep() {
     if [[ $DISTRO = "Fedora" ]]
     then
         check-package rpm-build
+    elif [[ $DISTRO = "Debian" ]]
+    then
+        check-package fakeroot
     fi
 
     for_each_component check_package
