@@ -45,9 +45,9 @@ function qemu_clean() {
 }
 
 function qemu_configure() {
-    echo Nothing to configure for qemu
+    :
 }
 
 function qemu_unconfigure() {
-    echo Nothing to unconfigure for qemu
+    :
 }
