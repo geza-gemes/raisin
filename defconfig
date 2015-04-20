@@ -1,12 +1,12 @@
 # Config variables for raisin
 
 # Components
-## All components: xen qemu grub libvirt
+## All components: xen qemu qemu_traditional grub libvirt
 ## Core xen functionality: xen
 ## Remove a component from the list below, if you want to disable it
 ## You can manually overwrite this list using the COMPONENTS
 ## environmental variable.
-ENABLED_COMPONENTS="xen qemu grub libvirt"
+ENABLED_COMPONENTS="xen qemu qemu_traditional grub libvirt"
 
 # Build config
 ## Make command to run
@@ -23,11 +23,13 @@ DESTDIR=dist
 #LIBVIRT_URL="https://gitorious.org/libvirt/libvirt.git"
 XEN_URL="git://xenbits.xen.org/xen.git"
 QEMU_URL="git://git.qemu.org/qemu.git"
+QEMU_TRADITIONAL_URL="git://xenbits.xen.org/qemu-xen-unstable.git"
 GRUB_URL="git://git.savannah.gnu.org/grub.git"
 LIBVIRT_URL="git://libvirt.org/libvirt.git"
 
 # Software versions.
 XEN_REVISION="master"
 QEMU_REVISION="master"
+QEMU_TRADITIONAL_REVISION="master"
 GRUB_REVISION="master"
 LIBVIRT_REVISION="master"

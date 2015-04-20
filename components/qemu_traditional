@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+function qemu_traditional_check_package() {
+    local DEP_Debian_common="build-essential zlib1g-dev pciutils-dev pkg-config \
+              libncurses5-dev"
+    local DEP_Debian_x86_32="$DEP_Debian_common"
+    local DEP_Debian_x86_64="$DEP_Debian_common"
+    local DEP_Debian_arm32="$DEP_Debian_common"
+    local DEP_Debian_arm64="$DEP_Debian_common"
+
+    local DEP_Fedora_common="make gcc zlib-devel ncurses-devel pciutils-devel"
+    local DEP_Fedora_x86_32="$DEP_Fedora_common"
+    local DEP_Fedora_x86_64="$DEP_Fedora_common"
+
+    echo Checking QEMU dependencies
+    eval check-package \$DEP_"$DISTRO"_"$ARCH"
+}
+
+function qemu_traditional_build() {
+    cd "$BASEDIR"
+    git-checkout $QEMU_TRADITIONAL_URL $QEMU_TRADITIONAL_REVISION qemu_traditional-dir
+    cd qemu_traditional-dir
+
+    export CONFIG_BLKTAP1=n
+    export XEN_ROOT="$BASEDIR"/xen-dir
+    ./xen-setup
+    $RAISIN_MAKE all
+    $RAISIN_MAKE install DESTDIR="$INST_DIR"
+    cd "$BASEDIR"
+}
+
+function qemu_traditional_clean() {
+    cd "$BASEDIR"
+    if [[ -d qemu_traditional-dir ]]
+    then
+        cd qemu_traditional-dir
+        $MAKE distclean
+        cd ..
+        rm -rf qemu_traditional-dir
+    fi
+}
+
+function qemu_traditional_configure() {
+    :
+}
+
+function qemu_traditional_unconfigure() {
+    :
+}

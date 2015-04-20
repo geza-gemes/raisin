@@ -1,4 +1,5 @@
 xen
 qemu
+qemu_traditional
 grub
 libvirt
