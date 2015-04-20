@@ -39,6 +39,10 @@ configure the system for you. If you want this behaviour run
 raise.sh performs the installation by installing the deb or rpm package,
 hence it can be easily uninstalled by unraise.sh or manually by the
 user.
+It is also possible to specify which components to enable on the command
+line:
+
+COMPONENTS="xen qemu" ./raise build
 
 
 = Adding new components =

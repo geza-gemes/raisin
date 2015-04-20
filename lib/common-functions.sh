@@ -31,11 +31,45 @@ function common_init() {
 
     get_distro
     get_arch
+    get_components
 
-    for f in `cat "$BASEDIR"/components/series`
+    if [[ $VERBOSE -eq 1 ]]
+    then
+        echo "Distro: $DISTRO"
+        echo "Arch: $ARCH"
+        echo "Components: $COMPONENTS"
+    fi
+
+    for f in $COMPONENTS
     do
         source "$BASEDIR"/components/"$f"
     done
+}
+
+function get_components() {
+    if [[ -z "$COMPONENTS" ]]
+    then
+        COMPONENTS="$ENABLED_COMPONENTS"
+    fi
+
+    if [[ -z "$COMPONENTS" ]] 
+    then
+        local component
+        for component in `cat "$BASEDIR"/components/series`
+        do
+            local capital
+            capital=`echo $component | tr '[:lower:]' '[:upper:]'`
+            if eval [[ ! -z \$"$capital"_REVISION ]]
+            then
+                COMPONENTS="$COMPONENTS $component"
+                if [[ $VERBOSE -eq 1 ]]
+                then
+                    echo "Found component $component"
+                fi
+            fi
+        done
+    fi
+    export COMPONENTS
 }
 
 function get_distro() {
@@ -222,25 +256,38 @@ function stop_initscripts() {
 }
 
 function for_each_component () {
+    local component
+    local enabled
+    local found
+
     for component in `cat "$BASEDIR"/components/series`
     do
-        capital=`echo $component | tr '[:lower:]' '[:upper:]'`
+        found=0
+        for enabled in $COMPONENTS
+        do
+            if [[ $enabled = $component ]]
+            then
+                found=1
+                break
+            fi
+        done
+        if [[ $found -eq 0 ]]
+        then
+            if [[ $VERBOSE -eq 1 ]]
+            then
+                echo "$component" is disabled
+            fi
+            continue
+        fi
+
         if [[ $VERBOSE -eq 1 ]]
         then
-            echo -n "$capital"_REVISION =" "
-            eval echo \$"$capital"_REVISION
+            echo calling "$component"_"$1"
         fi
-        if eval [[ ! -z \$"$capital"_REVISION ]]
+        "$component"_"$1"
+        if [[ $VERBOSE -eq 1 ]]
         then
-            if [[ $VERBOSE -eq 1 ]]
-            then
-                echo calling "$component"_"$1"
-            fi
-            "$component"_"$1"
-            if [[ $VERBOSE -eq 1 ]]
-            then
-                echo "$component"_"$1" done
-            fi
+            echo "$component"_"$1" done
         fi
     done
 }
