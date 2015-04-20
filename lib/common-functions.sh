@@ -245,16 +245,16 @@ function for_each_component () {
     done
 }
 
+function _build_package_deb() {
+    fakeroot bash ./scripts/mkdeb "$1"
+}
+
+function _build_package_rpm() {
+    ./scripts/mkrpm "$1"
+}
+
 function build_package() {
-    if [[ $DISTRO = "Debian" ]]
-    then
-        fakeroot bash ./scripts/mkdeb "$1"
-    elif [[  $DISTRO = "Fedora" ]]
-    then
-        ./scripts/mkrpm "$1"
-    else
-        echo "Don't know how to create packages for $DISTRO"
-    fi
+    _build_package_"$PKGTYPE" "$1"
 }
 
 function install_package() {

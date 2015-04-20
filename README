@@ -80,6 +80,7 @@ GIT: git command to run, but prefer the git-checkout.sh script
 RAISIN_MAKE: make command to run
 SUDO: sudo command to run
 DISTRO: which Linux distribution we are running on, Debian, Fedora, etc
+PKGTYPE: which package format is used by the distro, rpm, deb, etc
 ARCH: which architecture we are running on, x86_64, arm32, etc.
 BASEDIR: absolute path of the raisin directory
 PREFIX: installation PREFIX
