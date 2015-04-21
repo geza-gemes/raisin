@@ -17,9 +17,12 @@ _help() {
 }
 
 # Include your defaults
-if [[ -e "./config" ]] ; then
-    . ./config
+if [[ ! -e "./config" ]]
+then
+   echo "No config file found, copying default config"
+   cp defconfig config
 fi
+source ./config
 
 # To use this as a library, set RAISIN_PATH appropriately
 [[ -z "$RAISIN_PATH" ]] && RAISIN_PATH="$PWD/lib"
@@ -28,14 +31,6 @@ fi
 source ${RAISIN_PATH}/common-functions.sh
 source ${RAISIN_PATH}/git-checkout.sh
 source ${RAISIN_PATH}/commands.sh
-
-# Include your defaults
-if [[ ! -e "./config" ]] ; then
-   echo "No config file found, copying default config"
-   cp defconfig config
-fi
-
-source ./config
 
 # Set up basic functionality
 common_init
