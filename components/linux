@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+
+function linux_check_package() {
+    local DEP_Debian_common="build-essential bc openssl"
+    local DEP_Debian_x86_32="$DEP_Debian_common"
+    local DEP_Debian_x86_64="$DEP_Debian_common"
+    local DEP_Debian_arm32="$DEP_Debian_common"
+    local DEP_Debian_arm64="$DEP_Debian_common"
+
+    local DEP_Fedora_common="make gcc bc openssl"
+    local DEP_Fedora_x86_32="$DEP_Fedora_common"
+    local DEP_Fedora_x86_64="$DEP_Fedora_common"
+
+    local DEP_CentOS_common="$DEP_Fedora_common"
+    local DEP_CentOS_x86_32="$DEP_Fedora_x86_32"
+    local DEP_CentOS_x86_64="$DEP_Fedora_x86_64"
+
+    echo Checking Linux dependencies
+    eval check-package \$DEP_"$DISTRO"_"$RAISIN_ARCH"
+}
+
+function _xenify_config() {
+    echo "CONFIG_HYPERVISOR_GUEST=y" >> $1
+    echo "CONFIG_PARAVIRT=y" >> $1
+    echo "CONFIG_PARAVIRT_SPINLOCKS=y" >> $1
+    echo "CONFIG_XEN=y" >> $1
+    echo "CONFIG_XEN_DOM0=y" >> $1
+    echo "CONFIG_XEN_PVHVM=y" >> $1
+    echo "CONFIG_XEN_SAVE_RESTORE=y" >> $1
+    echo "CONFIG_XEN_DEBUG_FS=y" >> $1
+    echo "CONFIG_XEN_PVH=y" >> $1
+    echo "CONFIG_PARAVIRT_CLOCK=y" >> $1
+    echo "CONFIG_BALLOON_COMPACTION=y" >> $1
+    echo "CONFIG_XEN_PCIDEV_FRONTEND=y" >> $1
+    echo "CONFIG_XEN_BLKDEV_FRONTEND=y" >> $1
+    echo "CONFIG_XEN_BLKDEV_BACKEND=y" >> $1
+    echo "CONFIG_XEN_SCSI_FRONTEND=y" >> $1
+    echo "CONFIG_XEN_NETDEV_FRONTEND=y" >> $1
+    echo "CONFIG_XEN_NETDEV_BACKEND=y" >> $1
+    echo "CONFIG_INPUT_XEN_KBDDEV_FRONTEND=y" >> $1
+    echo "CONFIG_XEN_FBDEV_FRONTEND=y" >> $1
+    echo "CONFIG_HVC_XEN=y" >> $1
+    echo "CONFIG_HVC_XEN_FRONTEND=y" >> $1
+    echo "CONFIG_XEN_BALLOON=y" >> $1
+    echo "CONFIG_XEN_SCRUB_PAGES=y" >> $1
+    echo "CONFIG_XEN_DEV_EVTCHN=y" >> $1
+    echo "CONFIG_XEN_BACKEND=y" >> $1
+    echo "CONFIG_XENFS=y" >> $1
+    echo "CONFIG_XEN_COMPAT_XENFS=y" >> $1
+    echo "CONFIG_XEN_SYS_HYPERVISOR=y" >> $1
+    echo "CONFIG_XEN_XENBUS_FRONTEND=y" >> $1
+    echo "CONFIG_XEN_GNTDEV=y" >> $1
+    echo "CONFIG_XEN_GRANT_DEV_ALLOC=y" >> $1
+    echo "CONFIG_SWIOTLB_XEN=y" >> $1
+    echo "CONFIG_XEN_PCIDEV_BACKEND=y" >> $1
+    echo "CONFIG_XEN_PRIVCMD=y" >> $1
+    echo "CONFIG_XEN_HAVE_PVMMU=y" >> $1
+    echo "CONFIG_XEN_ACPI_PROCESSOR=y" >> $1
+    echo "CONFIG_XEN_EFI=y" >> $1
+    echo "CONFIG_XEN_AUTO_XLATE=y" >> $1
+    echo "CONFIG_BRIDGE=y" >> $1
+}
+
+function linux_build() {
+    local vmlinuz
+
+    cd "$BASEDIR"
+    git-checkout $LINUX_URL $LINUX_REVISION linux-dir
+    cd linux-dir
+
+    if [[ ! -e .config ]]
+    then
+        if [[ -e /boot/config-`uname -r` ]]
+        then
+            cp /boot/config-`uname -r` .config
+        else
+            $RAISIN_MAKE defconfig
+        fi
+        _xenify_config .config
+        $RAISIN_MAKE olddefconfig
+    fi
+
+    $RAISIN_MAKE
+    $RAISIN_MAKE modules_install INSTALL_MOD_PATH="$INST_DIR"
+
+    mkdir -p "$INST_DIR"/boot/xen
+    vmlinuz="$INST_DIR"/boot/xen/vmlinuz-$RAISIN_ARCH-$LINUX_REVISION-`date +"%Y%m%d.%H%M%S"`
+
+    if [[ $RAISIN_ARCH = "x86_64" || $RAISIN_ARCH = "x86_32" ]]
+    then
+        cp arch/x86/boot/bzImage "$vmlinuz"
+    elif [[ $RAISIN_ARCH = "arm32" ]]
+    then
+        cp arch/arm/boot/zImage "$vmlinuz"
+    elif [[ $RAISIN_ARCH = "arm64" ]]
+    then
+        cp arch/x86/boot/Image.gz "$vmlinuz"
+    fi
+
+    cd ..
+}
+
+function linux_clean() {
+    cd "$BASEDIR"
+    if [[ -d linux-dir ]]
+    then
+        cd linux-dir
+        $RAISIN_MAKE distclean
+        cd ..
+        rm -rf linux-dir
+    fi
+}
+
+function linux_configure() {
+    :
+}
+
+function linux_unconfigure() {
+    :
+}
