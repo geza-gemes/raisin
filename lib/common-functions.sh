@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+function verbose_echo() {
+    if [[ $VERBOSE -eq 1 ]]
+    then
+        echo $*
+    fi
+}
+
 # Executed once at the beginning of the script
 function common_init() {
     export BASEDIR=`pwd`
@@ -33,12 +40,9 @@ function common_init() {
     get_arch
     get_components
 
-    if [[ $VERBOSE -eq 1 ]]
-    then
-        echo "Distro: $DISTRO"
-        echo "Arch: $ARCH"
-        echo "Components: $COMPONENTS"
-    fi
+    verbose_echo "Distro: $DISTRO"
+    verbose_echo "Arch: $ARCH"
+    verbose_echo "Components: $COMPONENTS"
 
     for f in $COMPONENTS
     do
@@ -62,10 +66,7 @@ function get_components() {
             if eval [[ ! -z \$"$capital"_REVISION ]]
             then
                 COMPONENTS="$COMPONENTS $component"
-                if [[ $VERBOSE -eq 1 ]]
-                then
-                    echo "Found component $component"
-                fi
+                verbose_echo "Found component $component"
             fi
         done
     fi
@@ -166,10 +167,7 @@ function get_arch() {
 }
 
 function _check-package-deb() {
-    if [[ $VERBOSE -eq 1 ]]
-    then
-        echo "Checking for package ${args[0]}"
-    fi
+    verbose_echo "Checking for package ${args[0]}"
 
     if dpkg -s "$1" 2>/dev/null | grep -q "Status:.*installed"
     then
@@ -184,10 +182,7 @@ function _install-package-deb() {
 }
 
 function _check-package-rpm() {
-    if [[ $VERBOSE -eq 1 ]]
-    then
-        echo "Checking for package $1"
-    fi
+    verbose_echo "Checking for package $1"
 
     if rpm -q "$1" 2>&1 >/dev/null
     then
@@ -273,22 +268,13 @@ function for_each_component () {
         done
         if [[ $found -eq 0 ]]
         then
-            if [[ $VERBOSE -eq 1 ]]
-            then
-                echo "$component" is disabled
-            fi
+            verbose_echo "$component" is disabled
             continue
         fi
 
-        if [[ $VERBOSE -eq 1 ]]
-        then
-            echo calling "$component"_"$1"
-        fi
+        verbose_echo calling "$component"_"$1"
         "$component"_"$1"
-        if [[ $VERBOSE -eq 1 ]]
-        then
-            echo "$component"_"$1" done
-        fi
+        verbose_echo "$component"_"$1" done
     done
 }
 
