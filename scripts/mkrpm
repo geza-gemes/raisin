@@ -3,7 +3,7 @@
 # mkrpm: package INST_DIR in an .rpm
 #
 # Takes 1 argument: the package name
-# It relies on ARCH and INST_DIR being set correctly
+# It relies on INST_DIR being set correctly
 
 set -e
 

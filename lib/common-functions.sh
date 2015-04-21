@@ -41,7 +41,7 @@ function common_init() {
     get_components
 
     verbose_echo "Distro: $DISTRO"
-    verbose_echo "Arch: $ARCH"
+    verbose_echo "Arch: $RAISIN_ARCH"
     verbose_echo "Components: $COMPONENTS"
 
     for f in $COMPONENTS
@@ -161,7 +161,7 @@ function get_distro() {
 }
 
 function get_arch() {
-    export ARCH=`uname -m | sed -e s/i.86/x86_32/ -e s/i86pc/x86_32/ -e \
+    export RAISIN_ARCH=`uname -m | sed -e s/i.86/x86_32/ -e s/i86pc/x86_32/ -e \
                 s/amd64/x86_64/ -e s/armv7.*/arm32/ -e s/armv8.*/arm64/ \
                 -e s/aarch64/arm64/`
 }
@@ -296,7 +296,7 @@ function install_package() {
         $SUDO dpkg -i "$1".deb
     elif [[  $DISTRO = "Fedora" ]]
     then
-        $SUDO rpm -i --force "$1"-`git show --oneline | head -1 | cut -d " " -f 1`-0.$ARCH.rpm
+        $SUDO rpm -i --force "$1"-`git show --oneline | head -1 | cut -d " " -f 1`-0.$RAISIN_ARCH.rpm
     else
         echo "Don't know how to install packages on $DISTRO"
     fi

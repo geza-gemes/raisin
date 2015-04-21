@@ -23,7 +23,7 @@ function libvirt_check_package() {
     local DEP_CentOS_x86_64="$DEP_Fedora_x86_64"
 
     echo Checking Libvirt dependencies
-    eval check-package \$DEP_"$DISTRO"_"$ARCH"
+    eval check-package \$DEP_"$DISTRO"_"$RAISIN_ARCH"
 }
 
 function libvirt_build() {

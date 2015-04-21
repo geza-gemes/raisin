@@ -3,7 +3,7 @@
 # mkdeb: package $INST_DIR output in a .deb 
 #
 # Takes 1 argument: the package name
-# It relies on ARCH and INST_DIR being set correctly
+# It relies on RAISIN_ARCH and INST_DIR being set correctly
 
 set -e
 
@@ -18,12 +18,12 @@ name=$1
 cd "$BASEDIR"
 
 # map the architecture, if necessary
-case "$ARCH" in
+case "$RAISIN_ARCH" in
   x86_32|x86_32p)  arch=i386 ;;
   x86_64)  arch=amd64 ;;
   arm32)   arch=armhf ;;
-  arm64)   arch=$ARCH;;
-  *) echo "Unknown ARCH $ARCH" >&2
+  arm64)   arch=$RAISIN_ARCH;;
+  *) echo "Unknown ARCH $RAISIN_ARCH" >&2
      exit 1
      ;;
 esac
