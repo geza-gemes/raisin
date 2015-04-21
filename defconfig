@@ -1,12 +1,12 @@
 # Config variables for raisin
 
 # Components
-## All components: seabios xen qemu qemu_traditional grub libvirt
+## All components: seabios ovmf xen qemu qemu_traditional grub libvirt
 ## Core xen functionality: xen
 ## Remove a component from the list below, if you want to disable it
 ## You can manually overwrite this list using the COMPONENTS
 ## environmental variable.
-ENABLED_COMPONENTS="seabios xen qemu qemu_traditional grub libvirt"
+ENABLED_COMPONENTS="seabios ovmf xen qemu qemu_traditional grub libvirt"
 
 # Build config
 ## Make command to run
@@ -27,6 +27,7 @@ QEMU_TRADITIONAL_URL="git://xenbits.xen.org/qemu-xen-unstable.git"
 SEABIOS_URL="git://xenbits.xen.org/seabios.git"
 GRUB_URL="git://git.savannah.gnu.org/grub.git"
 LIBVIRT_URL="git://libvirt.org/libvirt.git"
+OVMF_URL="git://xenbits.xen.org/ovmf.git"
 
 # Software versions.
 XEN_REVISION="master"
@@ -35,3 +36,4 @@ QEMU_TRADITIONAL_REVISION="master"
 SEABIOS_REVISION="master"
 GRUB_REVISION="master"
 LIBVIRT_REVISION="master"
+OVMF_REVISION="master"

@@ -25,6 +25,7 @@ function xen_check_package() {
 
 function xen_build() {
     local seabios_opt=""
+    local ovmf_opt=""
 
     cd "$BASEDIR"
     git-checkout $XEN_URL $XEN_REVISION xen-dir
@@ -33,8 +34,12 @@ function xen_build() {
     then
         seabios_opt="--with-system-seabios="$BASEDIR"/seabios-dir/out/bios.bin"
     fi
+    if [[ -e "$BASEDIR"/ovmf-dir/ovmf.bin ]]
+    then
+        ovmf_opt="--enable-ovmf --with-system-ovmf="$BASEDIR"/ovmf-dir/ovmf.bin"
+    fi
     ./configure --prefix=$PREFIX --with-system-qemu=$PREFIX/lib/xen/bin/qemu-system-i386 \
-        --disable-qemu-traditional --enable-rombios $seabios_opt
+        --disable-qemu-traditional --enable-rombios $seabios_opt $ovmf_opt
     $RAISIN_MAKE
     $RAISIN_MAKE install DESTDIR="$INST_DIR"
     cd "$BASEDIR"
