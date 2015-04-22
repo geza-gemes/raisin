@@ -24,7 +24,7 @@ function xen_check_package() {
 }
 
 function xen_build() {
-    local seabios_opt=""
+    local seabios_opt="--disable-seabios"
     local ovmf_opt=""
 
     cd "$BASEDIR"
