@@ -25,8 +25,8 @@ function common_init() {
     elif [[ ! -f `which sudo 2>/dev/null` ]]
     then
         echo "Raisin requires sudo to install build dependencies for you."
-        echo "Please install sudo, then run this script again."
-        exit 1
+        echo "You can only build without it."
+        export SUDO=""
     fi
 
     if [[ -z "$BASH_VERSINFO" || ${BASH_VERSINFO[0]} -lt 3 ||
