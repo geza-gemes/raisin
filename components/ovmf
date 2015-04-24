@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+function ovmf_check_package() {
+    local DEP_Debian_common="build-essential nasm uuid-dev python iasl"
+    local DEP_Debian_x86_32="$DEP_Debian_common"
+    local DEP_Debian_x86_64="$DEP_Debian_common"
+    local DEP_Debian_arm32="$DEP_Debian_common"
+    local DEP_Debian_arm64="$DEP_Debian_common"
+
+    local DEP_Fedora_common="make gcc gcc-c++ nasm libuuid-devel python acpica-tools"
+    local DEP_Fedora_x86_32="$DEP_Fedora_common"
+    local DEP_Fedora_x86_64="$DEP_Fedora_common"
+
+
+    if [[ $RAISIN_ARCH != "x86_64" ]]
+    then
+        echo ovmf is only supported on x86_64
+        return
+    fi
+    echo Checking OVMF dependencies
+    eval check-package \$DEP_"$DISTRO"_"$RAISIN_ARCH"
+}
+
+
+function ovmf_build() {
+    if [[ $RAISIN_ARCH != "x86_64" ]]
+    then
+        echo ovmf is only supported on x86_64
+        return
+    fi
+
+    cd "$BASEDIR"
+    git-checkout $OVMF_URL $OVMF_REVISION ovmf-dir
+    cd ovmf-dir
+
+    make -C BaseTools/Source/C
+    OvmfPkg/build.sh -a X64 -b RELEASE -n 4
+    cp Build/OvmfX64/RELEASE_GCC*/FV/OVMF.fd ovmf.bin
+
+    cd "$BASEDIR"
+}
+
+function ovmf_clean() {
+    cd "$BASEDIR"
+    if [[ -d ovmf-dir ]]
+    then
+        cd ovmf-dir
+        $GIT clean -fdx
+        cd ..
+        rm -rf ovmf-dir
+    fi
+}
+
+function ovmf_configure() {
+    :
+}
+
+function ovmf_unconfigure() {
+    :
+}
