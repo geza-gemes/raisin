@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+#
+# Need root privileges
+#
+# Create loop devices corresponding to partitions within an existing
+# file.
+
+set -e
+
+function _help() {
+    echo "Usage: lopartsetup file"
+}
+
+function _create_loop_device() {
+    local devnode
+    local filename
+    local offset
+    local index
+
+    filename="$1"
+    index="$2"
+    offset="$3"
+
+    devnode="`losetup -f 2>/dev/null`"
+    if [[ -z "$devnode" ]]
+    then
+        echo "no loop devices available"
+        exit 1
+    fi
+
+    echo "$devnode: partition $index of $filename"
+    losetup "$devnode" "$filename" -o "$offset"
+}
+
+if [[ $# -lt 1 ]]
+then
+    _help
+    exit 1
+fi
+
+if [[ -f "$1" && -r "$1" ]]
+then
+    filename="$1"
+    shift
+else
+    echo invalid image file
+    exit 1
+fi
+
+if [[ ! "`file -b $filename`" = *"boot sector"* ]]
+then
+    echo "$filename does not have a partition table"
+    exit 1
+fi
+
+unit="`fdisk -lu $filename 2>/dev/null | grep -e "^Units = " | cut -d " " -f 9`"
+index=0
+for i in "`fdisk -lu $filename 2>/dev/null | grep -e "^$filename"`"
+do
+    index=$((index+1))
+    offset=`echo $i | tr -s " " | cut -d " " -f 2`
+    offset=$((unit*offset))
+
+    _create_loop_device "$filename" "$index" "$offset"
+done
+
+exit 0

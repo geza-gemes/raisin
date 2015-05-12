@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -e
+
+function busybox-hvm-cleanup() {
+    $SUDO xl destroy raisin-test || true
+    umount $LOOP_P0 || true
+    cd "$BASEDIR"
+    $SUDO losetup -d $LOOP_P0 $LOOP
+    rm -rf $TMPDIR
+}
+
+function busybox-hvm-test() {
+    if [[ $RAISIN_ARCH != "x86_64" && $RAISIN_ARCH != "x86_32" ]]
+    then
+        echo busybox hvm test only valid on x86
+        exit 0
+    fi
+    
+    TMPDIR=`mktemp -d`
+    cd $TMPDIR
+    
+    allocate_disk busybox-vm-disk $((20*1024*1024))
+    LOOP=`create_loop busybox-vm-disk`
+    LOOP_P0=`create_one_partition busybox-vm-disk`
+    busybox_rootfs $LOOP_P0
+    busybox_network_init $LOOP_P0
+    bootloader_init $LOOP $LOOP_P0
+    
+    cat >busybox-hvm <<EOF
+builder = "hvm"
+memory = 512
+name = "raisin-test"
+vcpus = 2
+disk = [ '$LOOP,raw,hda,w' ]
+serial="pty"
+boot="c"
+vif=['bridge=xenbr1']
+EOF
+    
+    $SUDO xl create busybox-hvm
+    check_guest_alive
+}
