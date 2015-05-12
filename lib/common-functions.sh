@@ -281,16 +281,16 @@ function for_each_component () {
 
     for component in `cat "$BASEDIR"/components/series`
     do
-        found=0
+        found=false
         for enabled in $COMPONENTS
         do
             if [[ $enabled = $component ]]
             then
-                found=1
+                found=true
                 break
             fi
         done
-        if [[ $found -eq 0 ]]
+        if ! $found
         then
             verbose_echo "$component" is disabled
             continue
