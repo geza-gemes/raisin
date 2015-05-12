@@ -102,3 +102,17 @@ check-package
 
 If your component comes with additional data, maybe a config script or
 anything else, place it under "data".
+
+
+= Testing =
+
+Raisin can also be used for testing. Make sure to have Xen already up
+and running (raise build, raise install and host reboot).
+Ask Raisin to run tests like this:
+
+./raise test
+
+You can specify a subset of tests to run with ENABLED_TESTS in the
+config file, or the TESTS environmental variable:
+
+TESTS="busybox-pv" ./raise test

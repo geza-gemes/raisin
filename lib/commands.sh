@@ -103,3 +103,7 @@ function configure() {
     for_each_component configure
 }
 
+function test() {
+    init_tests
+    run_tests
+}

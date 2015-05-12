@@ -3,7 +3,7 @@
 set -e
 
 _help() {
-    echo "Usage: ./build.sh <options> <command>"
+    echo "Usage: ./raise <options> <command>"
     echo "where options are:"
     echo "    -v | --verbose       Verbose"
     echo "    -y | --yes           Do not ask questions and continue"
@@ -14,6 +14,7 @@ _help() {
     echo "    install              Install binaries under /  (requires sudo)"
     echo "    configure            Configure the system  (requires sudo)"
     echo "    unraise              Uninstall and unconfigure the system  (requires sudo)"
+    echo "    test                 Runs tests on the system (requires sudo, Xen must be running)"
 }
 
 # Include your defaults
@@ -25,10 +26,11 @@ fi
 source ./config
 
 # To use this as a library, set RAISIN_PATH appropriately
-[[ -z "$RAISIN_PATH" ]] && RAISIN_PATH="$PWD/lib"
+[[ -z "$RAISIN_PATH" ]] && export RAISIN_PATH="$PWD/lib"
 
 # Then as many as the sub-libraries as you need
 source ${RAISIN_PATH}/common-functions.sh
+source ${RAISIN_PATH}/common-tests.sh
 source ${RAISIN_PATH}/git-checkout.sh
 source ${RAISIN_PATH}/commands.sh
 
@@ -59,7 +61,7 @@ do
 done
 
 case "$1" in
-    "install-builddep" | "build" | "install" | "configure" | "unraise" )
+    "install-builddep" | "build" | "install" | "configure" | "unraise" | "test" )
         COMMAND=$1
         ;;
     *)

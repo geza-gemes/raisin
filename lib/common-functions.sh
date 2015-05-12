@@ -39,6 +39,7 @@ function common_init() {
     get_distro
     get_arch
     get_components
+    get_tests
 
     verbose_echo "Distro: $DISTRO"
     verbose_echo "Arch: $RAISIN_ARCH"
@@ -71,6 +72,24 @@ function get_components() {
         done
     fi
     export COMPONENTS
+}
+
+function get_tests() {
+    if [[ -z "$TESTS" ]]
+    then
+        TESTS="$ENABLED_TESTS"
+    fi
+
+    if [[ -z "$TESTS" ]] 
+    then
+        local t
+        for t in `cat "$BASEDIR"/tests/series`
+        do
+            TESTS="$TESTS $t"
+            verbose_echo "Found test $t"
+        done
+    fi
+    export TESTS
 }
 
 function get_distro() {
@@ -276,6 +295,64 @@ function for_each_component () {
         "$component"_"$1"
         verbose_echo "$component"_"$1" done
     done
+}
+
+function run_tests() {
+    local t
+    local enabled
+    local found
+
+    for t in `cat "$BASEDIR"/tests/series`
+    do
+        found=false
+        for enabled in $TESTS
+        do
+            if [[ $enabled = $t ]]
+            then
+                found=true
+                break
+            fi
+        done
+        if ! $found
+        then
+            verbose_echo "$t" is disabled
+            continue
+        fi
+
+        source "$BASEDIR"/tests/$t
+
+        verbose_echo running test "$t"
+        "$t"_test
+        "$t"_cleanup
+        verbose_echo "test "$t" done"
+    done
+}
+
+function init_tests() {
+    local -a missing
+
+    check-package bridge-utils
+    if [[ $DISTRO = "Debian" ]]
+    then
+        check-package busybox-static
+    elif [[ $DISTRO = "Fedora" ]]
+    then
+        check-package busybox grub2 which
+    else
+        echo "I don't know distro $DISTRO. It might be missing packages."
+    fi
+    
+    if [[ -n "${missing[@]}" ]]
+    then
+        verbose_echo "Installing ${missing[@]}"
+        install-package "${missing[@]}"
+    fi
+
+    if ! ifconfig xenbr1 &>/dev/null
+    then
+        $SUDO brctl addbr xenbr1
+        $SUDO ifconfig xenbr1 169.254.0.1 up
+    fi
 }
 
 function _build_package_deb() {

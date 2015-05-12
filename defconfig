@@ -43,3 +43,8 @@ GRUB_REVISION="master"
 LIBVIRT_REVISION="xen-tested-master"
 OVMF_REVISION="a065efc7c7ce8bb3e5cb3e463099d023d4a92927"
 LINUX_REVISION="master"
+
+# Tests
+## All tests: busybox-pv
+## ENABLED_TESTS is the list of test run by raise test
+ENABLED_TESTS="busybox-pv"
