@@ -3,8 +3,12 @@
 function verbose_echo() {
     if [[ $VERBOSE -eq 1 ]]
     then
-        echo $*
+        echo "$PREPEND" "$@"
     fi
+}
+
+function error_echo() {
+    echo "$PREPEND" "$@" >&2
 }
 
 # Executed once at the beginning of the script
@@ -15,6 +19,7 @@ function common_init() {
     export RAISIN_MAKE=${MAKE-make}
     export PREFIX=${PREFIX-/usr}
     export INST_DIR=${DESTDIR-dist}
+    export PREPEND="[raisin]"
     
     INST_DIR=`readlink -f $INST_DIR`
     
@@ -24,15 +29,15 @@ function common_init() {
         export SUDO=""
     elif [[ ! -f `which sudo 2>/dev/null` ]]
     then
-        echo "Raisin requires sudo to install build dependencies for you."
-        echo "You can only build without it."
+        error_echo "Raisin requires sudo to install build dependencies for you."
+        error_echo "You can only build without it."
         export SUDO=""
     fi
 
     if [[ -z "$BASH_VERSINFO" || ${BASH_VERSINFO[0]} -lt 3 ||
         (${BASH_VERSINFO[0]} -eq 3 && ${BASH_VERSINFO[1]} -lt 2) ]]
     then
-        echo "Raisin requires BASH 3.2 or newer."
+        error_echo "Raisin requires BASH 3.2 or newer."
         exit 1
     fi
 
@@ -186,7 +191,7 @@ function get_arch() {
 }
 
 function _check-package-deb() {
-    verbose_echo "Checking for package ${args[0]}"
+    verbose_echo "Checking for package $1"
 
     if dpkg -s "$1" 2>/dev/null | grep -q "Status:.*installed"
     then
@@ -197,7 +202,7 @@ function _check-package-deb() {
 }
 
 function _install-package-deb() {
-    $SUDO apt-get install -y $*
+    $SUDO apt-get install -y $* > /dev/null
 }
 
 function _check-package-rpm() {
@@ -212,7 +217,7 @@ function _check-package-rpm() {
 }
 
 function _install-package-rpm() {
-    $SUDO yum install -y $*
+    $SUDO yum install -y $* > /dev/null
 }
 
 # Modifies inherited variable "missing"
@@ -236,13 +241,13 @@ function start_initscripts() {
     do
         case $DISTRO in
             "Debian" )
-            $SUDO update-rc.d $1 defaults || echo "Couldn't set $1 to start"
+            $SUDO update-rc.d $1 defaults || error_echo "Couldn't set $1 to start"
             ;;
             "Fedora" )
-            $SUDO chkconfig --add $1 || echo "Couldn't set $1 to start"
+            $SUDO chkconfig --add $1 || error_echo "Couldn't set $1 to start"
             ;;
             * )
-            echo "I don't know how to start initscripts on $DISTRO"
+            error_echo "I don't know how to start initscripts on $DISTRO"
             return 1
             ;;
         esac
@@ -255,13 +260,13 @@ function stop_initscripts() {
     do
         case $DISTRO in
             "Debian" )
-            $SUDO update-rc.d $1 remove || echo "Couldn't remove $1 from init"
+            $SUDO update-rc.d $1 remove || error_echo "Couldn't remove $1 from init"
             ;;
             "Fedora" )
-            $SUDO chkconfig --del $1 || echo "Couldn't remove $1 from init"
+            $SUDO chkconfig --del $1 || error_echo "Couldn't remove $1 from init"
             ;;
             * )
-            echo "I don't know how to start initscripts on $DISTRO"
+            error_echo "I don't know how to start initscripts on $DISTRO"
             return 1
             ;;
         esac
@@ -291,9 +296,14 @@ function for_each_component () {
             continue
         fi
 
-        verbose_echo calling "$component"_"$1"
-        "$component"_"$1"
-        verbose_echo "$component"_"$1" done
+        echo "$PREPEND" calling "$component"_"$1"
+        if [[ $VERBOSE -eq 0 ]]
+        then
+            "$component"_"$1" &> /dev/null
+        else
+            "$component"_"$1"
+        fi
+        echo "$PREPEND" "$component"_"$1" done
     done
 }
 
@@ -301,6 +311,7 @@ function run_tests() {
     local t
     local enabled
     local found
+    local ret
 
     for t in `cat "$BASEDIR"/tests/series`
     do
@@ -320,11 +331,28 @@ function run_tests() {
         fi
 
         source "$BASEDIR"/tests/$t
+        ret=0
+        if [[ $VERBOSE -eq 0 ]]
+        then
+            echo -n "$PREPEND test $t: "
+            "$t"-test &>/dev/null || ret=1
+            if [[ $ret -eq 0 ]]
+            then
+                echo "success"
+            else
+                echo "fail"
+            fi
+        else
+            "$t"-test || ret=1
+            if [[ $ret -eq 0 ]]
+            then
+                echo "$PREPEND test $t: success"
+            else
+                echo "$PREPEND test $t: fail"
+            fi
+        fi
+        "$t"-cleanup
 
-        verbose_echo running test "$t"
-        "$t"_test
-        "$t"_cleanup
-        verbose_echo "test "$t" done"
     done
 }
 
@@ -339,7 +367,7 @@ function init_tests() {
     then
         check-package busybox grub2 which
     else
-        echo "I don't know distro $DISTRO. It might be missing packages."
+        error_echo "I don't know distro $DISTRO. It might be missing packages."
     fi
     
     if [[ -n "${missing[@]}" ]]
@@ -375,7 +403,7 @@ function install_package() {
     then
         $SUDO rpm -i --force "$1"-`git show --oneline | head -1 | cut -d " " -f 1`-0.$RAISIN_ARCH.rpm
     else
-        echo "Don't know how to install packages on $DISTRO"
+        error_echo "Don't know how to install packages on $DISTRO"
     fi
 }
 
@@ -387,6 +415,6 @@ function uninstall_package() {
     then
         $SUDO rpm -e "$1"
     else
-        echo "Don't know how to uninstall packages on $DISTRO"
+        error_echo "Don't know how to uninstall packages on $DISTRO"
     fi
 }

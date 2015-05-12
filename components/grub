@@ -19,10 +19,10 @@ function grub_check_package() {
 
     if [[ $RAISIN_ARCH != "x86_64" && $RAISIN_ARCH != "x86_32" ]]
     then
-        echo grub is only supported on x86_32 and x86_64
+        verbose_echo grub is only supported on x86_32 and x86_64
         return
     fi
-    echo Checking Grub dependencies
+    verbose_echo Checking Grub dependencies
     eval check-package \$DEP_"$DISTRO"_"$RAISIN_ARCH"
 }
 

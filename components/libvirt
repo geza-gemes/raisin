@@ -22,7 +22,7 @@ function libvirt_check_package() {
     local DEP_CentOS_x86_32="$DEP_Fedora_x86_32"
     local DEP_CentOS_x86_64="$DEP_Fedora_x86_64"
 
-    echo Checking Libvirt dependencies
+    verbose_echo Checking Libvirt dependencies
     eval check-package \$DEP_"$DISTRO"_"$RAISIN_ARCH"
 }
 
@@ -52,7 +52,7 @@ function libvirt_build() {
         cp daemon/libvirtd.init "$INST_DIR"/etc/rc.d/init.d/libvirtd
         chmod +x "$INST_DIR"/etc/rc.d/init.d/libvirtd
     else
-        echo "I don't know how write an init script for Libvirt on $DISTRO"
+        error_echo "I don't know how write an init script for Libvirt on $DISTRO"
     fi
     cd ..
 }

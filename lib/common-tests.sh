@@ -133,7 +133,7 @@ EOF
             --grub-mkdevicemap=$tmpdir/boot/grub/device.map \
             --root-directory=$tmpdir $dev
     else
-        echo "I don't know how to install grub on $DISTRO"
+        echo "$PREPEND I don't know how to install grub on $DISTRO"
     fi
 
     $SUDO umount $tmpdir
@@ -149,7 +149,7 @@ function check_guest_alive() {
         i=$((i+1))
         if [[ $i -gt 60 ]]
         then
-            echo Timeout connecting to guest
+            echo $PREPEND Timeout connecting to guest
             return 1
         fi
     done
@@ -168,7 +168,7 @@ function get_host_initrd() {
     then
         echo "/boot/initramfs-`uname -r`".img
     else
-        echo "I don't know how to find the initrd" >&2
+        echo "$PREPEND I don't know how to find the initrd" >&2
         exit 1
     fi
 }

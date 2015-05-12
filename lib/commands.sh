@@ -17,29 +17,29 @@ function check-builddep() {
 
     if [[ -n "${missing[@]}" ]]
     then
-        echo "Missing packages: ${missing[@]}"
+        echo "$PREPEND Missing packages: ${missing[@]}"
         if [[ "$YES" = "n" ]]
         then
             return
         elif [[ "$YES" != "y" ]]
         then
-            echo "Do you want Raisin to automatically install them for you? (y/n)"
+            echo "$PREPEND Do you want Raisin to automatically install them for you? (y/n)"
             while read answer
             do
                 if [[ "$answer" = "n" ]]
                 then
-                    echo "Please install, or run ./raise install-builddep"
+                    echo "$PREPEND Please install, or run ./raise install-builddep"
                     exit 1
                 elif [[ "$answer" = "y" ]]
                 then
                     break
                 else
-                    echo "Reply y or n"
+                    echo "$PREPEND Reply y or n"
                 fi
             done
         fi
 
-        echo "Installing..."
+        echo "$PREPEND Installing..."
         install-package "${missing[@]}"
     fi
 }
@@ -72,7 +72,7 @@ function install() {
     # need single braces for filename matching expansion
     if [ ! -f xen-sytem*rpm ] && [ ! -f xen-system*deb ]
     then
-        echo You need to raise build first.
+        error_echo You need to raise build first.
         exit 1
     fi
     install_package xen-system
@@ -84,8 +84,8 @@ function configure() {
         return
     elif [[ "$YES" != "y" ]]
     then
-        echo "Proceeding we'll make changes to the running system,"
-        echo "are you sure that you want to continue? (y/n)"
+        echo "$PREPEND Proceeding we'll make changes to the running system,"
+        echo "$PREPEND are you sure that you want to continue? (y/n)"
         while read answer
         do
             if [[ "$answer" = "n" ]]
@@ -95,7 +95,7 @@ function configure() {
             then
                 break
             else
-                echo "Reply y or n"
+                echo "$PREPEND Reply y or n"
             fi
         done
     fi

@@ -13,7 +13,7 @@ function busybox-hvm-cleanup() {
 function busybox-hvm-test() {
     if [[ $RAISIN_ARCH != "x86_64" && $RAISIN_ARCH != "x86_32" ]]
     then
-        echo busybox hvm test only valid on x86
+        echo $PREPEND busybox hvm test only valid on x86
         exit 0
     fi
     

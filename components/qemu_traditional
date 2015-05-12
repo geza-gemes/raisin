@@ -12,7 +12,7 @@ function qemu_traditional_check_package() {
     local DEP_Fedora_x86_32="$DEP_Fedora_common"
     local DEP_Fedora_x86_64="$DEP_Fedora_common"
 
-    echo Checking QEMU dependencies
+    verbose_echo Checking QEMU dependencies
     eval check-package \$DEP_"$DISTRO"_"$RAISIN_ARCH"
 }
 
