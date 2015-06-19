@@ -13,16 +13,17 @@ on how to build and configure the system.
 
 = Usage =
 
-Set your configuration parameters in the "config" file, then run
+Set your configuration parameters in the "config" file, sensible
+defaults are provided by "defconfig". Then run
 
-./raise.sh build
+./raise build
 
 Reply to questions and go and grab a coffee. When the script completes, you'll
 have a full Xen system installation under DESTDIR and a deb or rpm package
 (depending on your distro) containing all the necessary binaries in the raisin
 directory.
 
-raise.sh takes care of:
+raise takes care of:
 
 - git cloning all the components enabled in the config
 - installing all the dependencies needed to build each components (requires sudo)
@@ -30,17 +31,16 @@ raise.sh takes care of:
 - installing them under DESTDIR (the "dist" sub-directory by default)
 - creating a deb or rpm package with all the content
 
-raise.sh can also perform the installation under / and fully
+raise can also perform the installation under / and fully
 configure the system for you. If you want this behaviour run
 
-./raise.sh install
-./raise.sh configure
+./raise install
+./raise configure
 
-raise.sh performs the installation by installing the deb or rpm package,
-hence it can be easily uninstalled by unraise.sh or manually by the
-user.
-It is also possible to specify which components to enable on the command
-line:
+raise performs the installation by installing the deb or rpm package,
+hence it can be easily uninstalled by "raise unraise" or manually by the
+user. It is also possible to specify which components to enable on the
+command line:
 
 COMPONENTS="xen qemu" ./raise build
 
@@ -73,7 +73,7 @@ it
 * component_unconfigure
 The component has already been uninstalled, now remove the configuration
 
-These functions are called by raise.sh automatically if the component is
+These functions are called by raise automatically if the component is
 enabled in the config.
 
 
