@@ -176,6 +176,7 @@ function get_distro() {
             ;;
         *)
             DISTRO=$os_VENDOR
+            PKGTYPE="unknown"
             ;;
     esac
 
@@ -218,6 +219,16 @@ function _check-package-rpm() {
 
 function _install-package-rpm() {
     $SUDO yum install -y $* > /dev/null
+}
+
+function _check-package-unknown() {
+    error_echo "I don't know distro $DISTRO. It might be missing packages."
+    return 1
+}
+
+function _install-package-unknown() {
+    error_echo "I don't know distro $DISTRO. Cannot install packages."
+    return 1
 }
 
 # Modifies inherited variable "missing"
