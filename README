@@ -45,6 +45,15 @@ command line:
 COMPONENTS="xen qemu" ./raise build
 
 
+= Contributing patches to Raisin =
+Contributions are welcome! Please send patches to xen-devel@lists.xenproject.org
+and CC Stefano Stabellini (stefano.stabellini@eu.citrix.com). Add a [raisin] tag
+to the subject line of your emails to make sure that they stand out and are
+easily recognized by any interested parties.
+Refer to Xen Project wiki page on submitting patches for more information on the
+process (http://wiki.xenproject.org/wiki/Submitting_Xen_Project_Patches).
+
+
 = Adding new components =
 
 Adding new components is easy!
