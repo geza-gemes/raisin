@@ -9,8 +9,8 @@ set -e
 
 if [[ -z "$1" ]]
 then
-  echo "usage: $0 package_name"
-  exit 1
+    echo "usage: $0 package_name"
+    exit 1
 fi
 
 name=$1
@@ -19,13 +19,13 @@ cd "$BASEDIR"
 
 # map the architecture, if necessary
 case "$RAISIN_ARCH" in
-  x86_32|x86_32p)  arch=i386 ;;
-  x86_64)  arch=amd64 ;;
-  arm32)   arch=armhf ;;
-  arm64)   arch=$RAISIN_ARCH;;
-  *) echo "Unknown ARCH $RAISIN_ARCH" >&2
-     exit 1
-     ;;
+    x86_32|x86_32p)  arch=i386 ;;
+    x86_64)  arch=amd64 ;;
+    arm32)   arch=armhf ;;
+    arm64)   arch=$RAISIN_ARCH;;
+    *) echo "Unknown ARCH $RAISIN_ARCH" >&2
+       exit 1
+       ;;
 esac
 
 # Prepare the directory to package
@@ -42,8 +42,8 @@ cp config raise deb/opt/raisin
 # Debian doesn't use /usr/lib64 for 64-bit libraries
 if [[ -d deb/usr/lib64 ]]
 then
-  cp -a deb/usr/lib64/* deb/usr/lib/
-  rm -rf deb/usr/lib64
+    cp -a deb/usr/lib64/* deb/usr/lib/
+    rm -rf deb/usr/lib64
 fi
 
 # Fill in the debian boilerplate
