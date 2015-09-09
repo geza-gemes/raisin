@@ -15,7 +15,7 @@ function busybox-hvm-migrate-test() {
         echo $PREPEND busybox hvm test only valid on x86
         exit 0
     fi
-    
+
     busybox-hvm-test
 
     TMPSCRIPT=`mktemp`
@@ -26,7 +26,7 @@ function busybox-hvm-migrate-test() {
 shift
 \$*
 EOF
-    
+
     chmod +x $TMPSCRIPT
     xl migrate -s $TMPSCRIPT raisin-test localhost
     check_guest_alive

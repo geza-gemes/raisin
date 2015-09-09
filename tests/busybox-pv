@@ -13,12 +13,12 @@ function busybox-pv-cleanup() {
 function busybox-pv-test() {
     TMPDIR=`mktemp -d`
     cd $TMPDIR
-    
+
     allocate_disk busybox-vm-disk $((20*1024*1024))
     LOOP=`create_loop busybox-vm-disk`
     busybox_rootfs $LOOP
     busybox_network_init $LOOP
-    
+
     cat >busybox-pv <<EOF
 kernel = "`get_host_kernel`"
 ramdisk = "`get_host_initrd`"
@@ -31,7 +31,7 @@ serial="pty"
 boot="c"
 vif=['bridge=xenbr1']
 EOF
-    
+
     $SUDO xl create busybox-pv
     check_guest_alive
 }

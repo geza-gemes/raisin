@@ -50,12 +50,12 @@ function install-builddep() {
 
 function build() {
     check-builddep
-    
+
     mkdir -p "$INST_DIR" &>/dev/null
 
     # build and install under $DESTDIR
     for_each_component build
-    
+
     build_package xen-system
 }
 

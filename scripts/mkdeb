@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# mkdeb: package $INST_DIR output in a .deb 
+# mkdeb: package $INST_DIR output in a .deb
 #
 # Takes 1 argument: the package name
 # It relies on RAISIN_ARCH and INST_DIR being set correctly
@@ -8,10 +8,10 @@
 set -e
 
 if [[ -z "$1" ]]
-then 
+then
   echo "usage: $0 package_name"
   exit 1
-fi 
+fi
 
 name=$1
 
@@ -41,7 +41,7 @@ cp config raise deb/opt/raisin
 
 # Debian doesn't use /usr/lib64 for 64-bit libraries
 if [[ -d deb/usr/lib64 ]]
-then 
+then
   cp -a deb/usr/lib64/* deb/usr/lib/
   rm -rf deb/usr/lib64
 fi

@@ -8,10 +8,10 @@
 set -e
 
 if [[ -z "$1" ]]
-then 
+then
   echo "usage: $0 package_name"
   exit 1
-fi 
+fi
 
 name="$1"
 

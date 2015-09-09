@@ -16,17 +16,17 @@ function busybox-hvm-test() {
         echo $PREPEND busybox hvm test only valid on x86
         exit 0
     fi
-    
+
     TMPDIR=`mktemp -d`
     cd $TMPDIR
-    
+
     allocate_disk busybox-vm-disk $((20*1024*1024))
     LOOP=`create_loop busybox-vm-disk`
     LOOP_P0=`create_one_partition busybox-vm-disk`
     busybox_rootfs $LOOP_P0
     busybox_network_init $LOOP_P0
     bootloader_init $LOOP $LOOP_P0
-    
+
     cat >busybox-hvm <<EOF
 builder = "hvm"
 memory = 512
@@ -37,7 +37,7 @@ serial="pty"
 boot="c"
 vif=['bridge=xenbr1']
 EOF
-    
+
     $SUDO xl create busybox-hvm
     check_guest_alive
 }

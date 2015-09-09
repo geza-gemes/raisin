@@ -20,9 +20,9 @@ function common_init() {
     export PREFIX=${PREFIX-/usr}
     export INST_DIR=${DESTDIR-dist}
     export PREPEND="[raisin]"
-    
+
     INST_DIR=`readlink -f $INST_DIR`
-    
+
     # execution
     if [[ $EUID -eq 0 ]]
     then
@@ -62,7 +62,7 @@ function get_components() {
         COMPONENTS="$ENABLED_COMPONENTS"
     fi
 
-    if [[ -z "$COMPONENTS" ]] 
+    if [[ -z "$COMPONENTS" ]]
     then
         local component
         for component in `cat "$BASEDIR"/components/series`
@@ -85,7 +85,7 @@ function get_tests() {
         TESTS="$ENABLED_TESTS"
     fi
 
-    if [[ -z "$TESTS" ]] 
+    if [[ -z "$TESTS" ]]
     then
         local t
         for t in `cat "$BASEDIR"/tests/series`
@@ -380,7 +380,7 @@ function init_tests() {
     else
         error_echo "I don't know distro $DISTRO. It might be missing packages."
     fi
-    
+
     if [[ -n "${missing[@]}" ]]
     then
         verbose_echo "Installing ${missing[@]}"
