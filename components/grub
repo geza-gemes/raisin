@@ -28,6 +28,12 @@ function grub_check_package() {
 
 
 function grub_build() {
+    if [[ $RAISIN_ARCH != "x86_64" && $RAISIN_ARCH != "x86_32" ]]
+    then
+        verbose_echo grub is only supported on x86_32 and x86_64
+        return
+    fi
+
     cd "$BASEDIR"
     rm -f memdisk.tar
     tar cf memdisk.tar -C data grub.cfg
