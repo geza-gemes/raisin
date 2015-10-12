@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+function libvirt_skip() {
+    return 1
+}
+
 function libvirt_check_package() {
     local DEP_Debian_common="build-essential libtool autoconf autopoint \
                              xsltproc libxml2-utils pkg-config python-dev   \

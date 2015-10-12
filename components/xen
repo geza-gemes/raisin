@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+function xen_skip() {
+    return 1
+}
+
 function xen_check_package() {
     local DEP_Debian_common="build-essential python-dev gettext uuid-dev   \
              libncurses5-dev libyajl-dev libaio-dev pkg-config libglib2.0-dev  \

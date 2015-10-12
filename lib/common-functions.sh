@@ -301,7 +301,7 @@ function for_each_component () {
                 break
             fi
         done
-        if ! $found
+        if ! $found || "$component"_skip
         then
             verbose_echo "$component" is disabled
             continue

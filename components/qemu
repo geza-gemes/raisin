@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+function qemu_skip() {
+    return 1
+}
+
 function qemu_check_package() {
     local DEP_Debian_common="build-essential libglib2.0-dev libpixman-1-dev"
     local DEP_Debian_x86_32="$DEP_Debian_common"

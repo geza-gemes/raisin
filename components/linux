@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+function linux_skip() {
+    return 1
+}
+
 function linux_check_package() {
     local DEP_Debian_common="build-essential bc openssl"
     local DEP_Debian_x86_32="$DEP_Debian_common"

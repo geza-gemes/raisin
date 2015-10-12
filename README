@@ -66,6 +66,11 @@ depends on Xen, should be built after Xen).
 
 You need to implement a few bash functions in the component script file:
 
+* component_skip
+return 0 if the component should be skipped, 1 if it should be enabled.
+It can be used to skip some components on platforms where they are not
+used, for example pvgrub on ARM.
+
 * component_check_package
 passes a list of build dependencies to check-package
 

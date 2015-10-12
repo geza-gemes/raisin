@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+function qemu_traditional_skip() {
+    if [[ $RAISIN_ARCH != "x86_64" && $RAISIN_ARCH != "x86_32" ]]
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+
 function qemu_traditional_check_package() {
     local DEP_Debian_common="build-essential zlib1g-dev pciutils-dev pkg-config \
               libncurses5-dev"
@@ -10,23 +19,11 @@ function qemu_traditional_check_package() {
     local DEP_Fedora_x86_32="$DEP_Fedora_common"
     local DEP_Fedora_x86_64="$DEP_Fedora_common"
 
-    if [[ $RAISIN_ARCH != "x86_64" && $RAISIN_ARCH != "x86_32" ]]
-    then
-        verbose_echo qemu_traditional is only supported on x86_32 and x86_64
-        return
-    fi
-
     verbose_echo Checking QEMU dependencies
     eval check-package \$DEP_"$DISTRO"_"$RAISIN_ARCH"
 }
 
 function qemu_traditional_build() {
-    if [[ $RAISIN_ARCH != "x86_64" && $RAISIN_ARCH != "x86_32" ]]
-    then
-        verbose_echo qemu_traditional is only supported on x86_32 and x86_64
-        return
-    fi
-
     cd "$BASEDIR"
     git-checkout $QEMU_TRADITIONAL_URL $QEMU_TRADITIONAL_REVISION qemu_traditional-dir
     cd qemu_traditional-dir

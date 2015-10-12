@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+function seabios_skip() {
+    if [[ $RAISIN_ARCH != "x86_64" && $RAISIN_ARCH != "x86_32" ]]
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+
 function seabios_check_package() {
     local DEP_Debian_common="build-essential iasl"
     local DEP_Debian_x86_32="$DEP_Debian_common"
@@ -11,24 +20,12 @@ function seabios_check_package() {
     local DEP_Fedora_x86_32="$DEP_Fedora_common"
     local DEP_Fedora_x86_64="$DEP_Fedora_common"
 
-
-    if [[ $RAISIN_ARCH != "x86_64" && $RAISIN_ARCH != "x86_32" ]]
-    then
-        verbose_echo seabios is only supported on x86_32 and x86_64
-        return
-    fi
     verbose_echo Checking SeaBIOS dependencies
     eval check-package \$DEP_"$DISTRO"_"$RAISIN_ARCH"
 }
 
 
 function seabios_build() {
-    if [[ $RAISIN_ARCH != "x86_64" && $RAISIN_ARCH != "x86_32" ]]
-    then
-        verbose_echo seabios is only supported on x86_32 and x86_64
-        return
-    fi
-
     cd "$BASEDIR"
     git-checkout $SEABIOS_URL $SEABIOS_REVISION seabios-dir
     cd seabios-dir

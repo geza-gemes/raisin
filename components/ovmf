@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+function ovmf_skip() {
+    if [[ $RAISIN_ARCH != "x86_64" && $RAISIN_ARCH != "x86_32" ]]
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+
 function ovmf_check_package() {
     local DEP_Debian_common="build-essential nasm uuid-dev python iasl"
     local DEP_Debian_x86_32="$DEP_Debian_common"
@@ -11,24 +20,12 @@ function ovmf_check_package() {
     local DEP_Fedora_x86_32="$DEP_Fedora_common"
     local DEP_Fedora_x86_64="$DEP_Fedora_common"
 
-
-    if [[ $RAISIN_ARCH != "x86_64" ]]
-    then
-        verbose_echo ovmf is only supported on x86_64
-        return
-    fi
     verbose_echo Checking OVMF dependencies
     eval check-package \$DEP_"$DISTRO"_"$RAISIN_ARCH"
 }
 
 
 function ovmf_build() {
-    if [[ $RAISIN_ARCH != "x86_64" ]]
-    then
-        verbose_echo ovmf is only supported on x86_64
-        return
-    fi
-
     cd "$BASEDIR"
     git-checkout $OVMF_URL $OVMF_REVISION ovmf-dir
     cd ovmf-dir
