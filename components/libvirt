@@ -5,7 +5,7 @@ function libvirt_check_package() {
                              xsltproc libxml2-utils pkg-config python-dev   \
                              libxml-xpath-perl libyajl-dev libxml2-dev      \
                              gettext libdevmapper-dev libnl-3-dev           \
-                             libnl-route-3-dev"
+                             libnl-route-3-dev libpciaccess-dev"
     local DEP_Debian_x86_32="$DEP_Debian_common"
     local DEP_Debian_x86_64="$DEP_Debian_common"
     local DEP_Debian_arm32="$DEP_Debian_common"
