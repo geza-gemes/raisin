@@ -36,6 +36,15 @@ grub-dir
 grub-dir-remote
 libvirt-dir
 libvirt-dir-remote
+ovmf-dir
+ovmf-dir-remote/
+qemu-dir
+qemu-dir-remote/
+qemu_traditional-dir
+qemu_traditional-dir-remote/
+seabios-dir
+seabios-dir-remote/
+xen-system.deb
 
 memdisk.tar
 dist
