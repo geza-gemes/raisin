@@ -301,9 +301,14 @@ function for_each_component () {
                 break
             fi
         done
-        if ! $found || "$component"_skip
+        if ! $found
         then
             verbose_echo "$component" is disabled
+            continue
+        fi
+        if "$component"_skip
+        then
+            error_echo "$component" will be skipped on your platform
             continue
         fi
 
