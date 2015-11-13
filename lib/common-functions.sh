@@ -98,6 +98,8 @@ function get_tests() {
 }
 
 function get_distro() {
+    os_VENDOR="unknown"
+
     if [[ -x "`which lsb_release 2>/dev/null`" ]]
     then
         os_VENDOR=`lsb_release -i -s`
@@ -150,6 +152,9 @@ function get_distro() {
                      sed -r 's/\"|\(|\)//g' | awk '{print $2}'`
         os_RELEASE=`awk '/VERSION_ID=/' /etc/os-release | sed 's/VERSION_ID=//' \
                     | sed 's/\"//g'`
+    elif [[ -f /etc/gentoo-release ]]
+    then
+        os_VENDOR="Gentoo"
     fi
 
     # Simply distro version string
