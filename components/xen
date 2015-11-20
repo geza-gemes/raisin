@@ -42,10 +42,13 @@ function xen_build() {
     then
         ovmf_opt="--enable-ovmf --with-system-ovmf="$BASEDIR"/ovmf-dir/ovmf.bin"
     fi
+    export ETHERBOOT_NICS=""
     ./configure --prefix=$PREFIX --with-system-qemu=$PREFIX/lib/xen/bin/qemu-system-i386 \
-        --disable-qemu-traditional --enable-rombios $seabios_opt $ovmf_opt
+        --disable-stubdom --disable-qemu-traditional \
+        --enable-rombios $seabios_opt $ovmf_opt
     $RAISIN_MAKE
     $RAISIN_MAKE install DESTDIR="$INST_DIR"
+    unset ETHERBOOT_NICS
     cd "$BASEDIR"
 }
 
