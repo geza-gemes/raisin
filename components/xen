@@ -45,7 +45,7 @@ function xen_build() {
     export ETHERBOOT_NICS=""
     ./configure --prefix=$PREFIX --with-system-qemu=$PREFIX/lib/xen/bin/qemu-system-i386 \
         --disable-stubdom --disable-qemu-traditional \
-        --enable-rombios $seabios_opt $ovmf_opt
+        --disable-rombios $seabios_opt $ovmf_opt
     $RAISIN_MAKE
     $RAISIN_MAKE install DESTDIR="$INST_DIR"
     unset ETHERBOOT_NICS
