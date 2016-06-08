@@ -1,0 +1,7 @@
+XEN_URL="http://xenbits.xen.org/git-http/xen.git"
+QEMU_URL="http://xenbits.xen.org/git-http/qemu-xen.git"
+QEMU_TRADITIONAL_URL="http://xenbits.xen.org/git-http/qemu-xen-traditional.git"
+SEABIOS_URL="http://xenbits.xen.org/git-http/seabios.git"
+GRUB_URL="http://git.savannah.gnu.org/r/grub.git"
+LIBVIRT_URL="https://gitorious.org/libvirt/libvirt.git"
+OVMF_URL="http://xenbits.xen.org/git-http/ovmf.git"
