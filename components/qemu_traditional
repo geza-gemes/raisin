@@ -30,7 +30,7 @@ function qemu_traditional_build() {
 
     export CONFIG_BLKTAP1=n
     export XEN_ROOT="$BASEDIR"/xen-dir
-    ./xen-setup
+    ./xen-setup --extra-cflags="-D__XEN_TOOLS__"
     $RAISIN_MAKE all
     $RAISIN_MAKE install DESTDIR="$INST_DIR"
     cd "$BASEDIR"

@@ -2,7 +2,7 @@
 # Setup a Xen based system.
 
 # Available options: 4.5, 4.6, master (for development branch)
-XEN_RELEASE="4.6"
+XEN_RELEASE="4.7"
 
 # Components
 ## All components: seabios ovmf xen qemu qemu_traditional grub libvirt linux
