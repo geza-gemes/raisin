@@ -54,18 +54,18 @@ function busybox_rootfs() {
 
     tmpdir=`mktemp -d`
     $SUDO mount $dev $tmpdir
-    mkdir -p $tmpdir/bin
-    mkdir -p $tmpdir/sbin
-    mkdir -p $tmpdir/dev
-    mkdir -p $tmpdir/proc
-    mkdir -p $tmpdir/sys
-    mkdir -p $tmpdir/lib
-    mkdir -p $tmpdir/var
-    cp `which busybox` $tmpdir/bin
-    $tmpdir/bin/busybox --install $tmpdir/bin
+    $SUDO mkdir -p $tmpdir/bin
+    $SUDO mkdir -p $tmpdir/sbin
+    $SUDO mkdir -p $tmpdir/dev
+    $SUDO mkdir -p $tmpdir/proc
+    $SUDO mkdir -p $tmpdir/sys
+    $SUDO mkdir -p $tmpdir/lib
+    $SUDO mkdir -p $tmpdir/var
+    $SUDO cp `which busybox` $tmpdir/bin
+    $SUDO $tmpdir/bin/busybox --install $tmpdir/bin
 
     $SUDO umount $tmpdir
-    rmdir $tmpdir
+    $SUDO rmdir $tmpdir
 }
 
 function busybox_network_init() {
@@ -76,18 +76,20 @@ function busybox_network_init() {
     tmpdir=`mktemp -d`
 
     $SUDO mount $dev $tmpdir
-    rm -f $tmpdir/bin/init
-    cat >$tmpdir/bin/init <<EOF
+    $SUDO rm -f $tmpdir/bin/init
+    tmpinit=`mktemp`
+    cat >$tmpinit <<EOF
 #!/bin/sh
 mount -t proc proc /proc
 mount -t sysfs sysfs /sys
 ifconfig eth0 169.254.0.2 up
 /bin/sh
 EOF
-    chmod +x $tmpdir/bin/init
+    $SUDO mv $tmpinit $tmpdir/bin/init
+    $SUDO chmod +x $tmpdir/bin/init
 
     $SUDO umount $tmpdir
-    rmdir $tmpdir
+    $SUDO rmdir $tmpdir
 }
 
 function bootloader_init() {
@@ -100,10 +102,11 @@ function bootloader_init() {
     tmpdir=`mktemp -d`
 
     $SUDO mount $devp $tmpdir
-    mkdir -p $tmpdir/boot/grub
-    cp "`get_host_kernel`" $tmpdir/boot
-    cp "`get_host_initrd`" $tmpdir/boot || true
-    cat >$tmpdir/boot/grub/grub.cfg <<EOF
+    $SUDO mkdir -p $tmpdir/boot/grub
+    $SUDO cp "`get_host_kernel`" $tmpdir/boot
+    $SUDO cp "`get_host_initrd`" $tmpdir/boot || true
+    tmpgrubcfg=`mktemp`
+    cat >$tmpgrubcfg <<EOF
 set default="0"
 set timeout=0
 
@@ -111,16 +114,19 @@ menuentry 'Xen Guest' {
  set root=hd0,1
  linux `get_host_kernel` root=/dev/xvda1 console=ttyS0
 EOF
+    $SUDO mv $tmpgrubcfg $tmpdir/boot/grub/grub.cfg
     if [[ -e `get_host_initrd` ]]
     then
-        echo "initrd `get_host_initrd`" >> $tmpdir/boot/grub/grub.cfg
+        $SUDO echo "initrd `get_host_initrd`" >> $tmpdir/boot/grub/grub.cfg
     fi
-    echo "}" >> $tmpdir/boot/grub/grub.cfg
+    $SUDO echo "}" >> $tmpdir/boot/grub/grub.cfg
 
-    cat >$tmpdir/boot/grub/device.map <<EOF
+    tmpgrubdevmap=`mktemp`
+    cat >$tmpgrubdevmap <<EOF
 (hd0)   $dev
 (hd0,1) $devp
 EOF
+    $SUDO mv $tmpgrubdevmap $tmpdir/boot/grub/device.map
 
     if [[ $DISTRO = "Debian" ]]
     then
@@ -137,7 +143,7 @@ EOF
     fi
 
     $SUDO umount $tmpdir
-    rmdir $tmpdir
+    $SUDO rmdir $tmpdir
 }
 
 function check_guest_alive() {
