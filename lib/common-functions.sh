@@ -420,7 +420,7 @@ function install_package() {
     if [[ $DISTRO = "Debian" ]]
     then
         $SUDO dpkg -i "$1".deb
-    elif [[  $DISTRO = "Fedora" ]]
+    elif [[  $DISTRO = "Fedora" || $DISTRO = "CentOS" ]]
     then
         $SUDO rpm -i --force "$1"-`git show --oneline | head -1 | cut -d " " -f 1`-0.$RAISIN_ARCH.rpm
     else
@@ -432,7 +432,7 @@ function uninstall_package() {
     if [[ $DISTRO = "Debian" ]]
     then
         $SUDO dpkg -r "$1"
-    elif [[ $DISTRO = "Fedora" ]]
+    elif [[ $DISTRO = "Fedora" || $DISTRO = "CentOS" ]]
     then
         $SUDO rpm -e "$1"
     else
