@@ -70,7 +70,7 @@ function unraise() {
 
 function install() {
     # need single braces for filename matching expansion
-    if [ ! -f xen-sytem*rpm ] && [ ! -f xen-system*deb ]
+    if [ ! -f xen-system*rpm ] && [ ! -f xen-system*deb ]
     then
         error_echo You need to raise build first.
         exit 1
