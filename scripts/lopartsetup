@@ -58,7 +58,11 @@ index=0
 for i in "`fdisk -lu $filename 2>/dev/null | grep -e "^$filename"`"
 do
     index=$((index+1))
-    offset=`echo $i | tr -s " " | cut -d " " -f 2`
+    offset=`echo "$i" | tr -s " " | cut -d " " -f 2`
+    if [[ "$offset" == "*" ]]
+    then
+        offset=`echo "$i" | tr -s " " | cut -d " " -f 3`
+    fi
     offset=$((unit*offset))
 
     _create_loop_device "$filename" "$index" "$offset"
