@@ -53,7 +53,22 @@ then
     exit 1
 fi
 
-unit="`fdisk -lu $filename 2>/dev/null | grep -e "^Units = " | cut -d " " -f 9`"
+unitstring=""
+column=0
+if [ `fdisk -lu $filename 2>/dev/null | grep -e "^Units = " | wc -l` -eq 1 ]
+then
+    unitstring="^Units = "
+    column=9
+else if [ `fdisk -lu $filename 2>/dev/null | grep -e "^Units:" | wc -l` -eq 1 ]
+then
+    unitstring="^Units:"
+    column=8
+else
+    exit 1
+fi
+
+unit="`fdisk -lu $filename 2>/dev/null | grep -e "$unitstring" | cut -d " " -f $column`"
+
 index=0
 for i in "`fdisk -lu $filename 2>/dev/null | grep -e "^$filename"`"
 do
