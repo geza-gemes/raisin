@@ -31,4 +31,4 @@ GIT_TRANSPORT="git"
 # Tests
 ## All tests: busybox-pv busybox-hvm
 ## ENABLED_TESTS is the list of test run by raise test
-ENABLED_TESTS="busybox-pv busybox-hvm"
+ENABLED_TESTS="busybox-pv busybox-hvm cirros-separate-kernel-pv cirros-pygrub-pv cirros-pvgrub2-pv cirros-qemu-hvm cirros-qemu-pvhvm"
