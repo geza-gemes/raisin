@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -e
+
+function cirros-minios-stubdom-pvhvm-cleanup() {
+    tear_down_cirros_test $testdir
+}
+
+function cirros-minios-stubdom-pvhvm-test() {
+    download_cirros_components
+    testdir=`mktemp -d`
+    cp $CIRROS_DOWNLOADS/$CIRROS_DISK_FILE $testdir
+    cat >$testdir/cirros-minios-stubdom-pvhvm.cfg <<EOF
+name = "raisin-test"
+builder = "hvm"
+device_model_stubdomain_override = 1
+xen_platform_pci = 1
+memory = 128
+vcpus = 2
+disk = [ '$testdir/$CIRROS_DISK_FILE,raw,xvda,rw' ]
+vif = [ 'bridge=xenbr1' ]
+serial="pty"
+boot="c"
+EOF
+
+    $SUDO xl create $testdir/cirros-minios-stubdom-pvhvm.cfg
+    check_guest_alive
+}
