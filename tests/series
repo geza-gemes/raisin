@@ -4,3 +4,4 @@ busybox-hvm-migrate
 cirros-separate-kernel-pv
 cirros-pygrub-pv
 cirros-pvgrub2-pv
+cirros-qemu-hvm
