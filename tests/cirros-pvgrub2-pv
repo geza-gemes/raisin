@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -e
+
+function cirros-pvgrub2-pv-cleanup() {
+    tear_down_cirros_test $testdir
+}
+
+function cirros-pvgrub2-pv-test() {
+    download_cirros_components
+    testdir=`mktemp -d`
+    cp $CIRROS_DOWNLOADS/$CIRROS_DISK_FILE $testdir
+    # Need to install grub.cfg
+    local cirros_disk_loop=`$SUDO $BASEDIR/scripts/lopartsetup $testdir/$CIRROS_DISK_FILE | head -1 | cut -d ":" -f 1`
+    local cirros_disk_mntpt=`mktemp -d`
+    $SUDO mount $cirros_disk_loop $cirros_disk_mntpt
+    cirros_grub_cfg $cirros_disk_mntpt
+    $SUDO umount $cirros_disk_mntpt
+    $SUDO rmdir $cirros_disk_mntpt
+    $SUDO losetup -d $cirros_disk_loop
+    cat >$testdir/cirros-pvgrub2-pv.cfg <<EOF
+name = "raisin-test"
+memory = 128
+vcpus = 2
+kernel = "$PVGRUB"
+disk = [ '${testdir}/${CIRROS_DISK_FILE},raw,xvda,rw' ]
+extra = "$CIRROS_GRUB_CFG"
+vif = [ 'bridge=xenbr1' ]
+EOF
+
+    $SUDO xl create $testdir/cirros-pvgrub2-pv.cfg
+    check_guest_alive
+}
