@@ -1,3 +1,4 @@
 busybox-pv
 busybox-hvm
 busybox-hvm-migrate
+cirros-separate-kernel-pv

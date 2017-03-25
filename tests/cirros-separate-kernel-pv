@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -e
+
+function cirros-separate-kernel-pv-cleanup() {
+    tear_down_cirros_test $testdir
+}
+
+function cirros-separate-kernel-pv-test() {
+    download_cirros_components
+    testdir=`mktemp -d`
+    cp $CIRROS_DOWNLOADS/$CIRROS_KERNEL_FILE $testdir
+    cp $CIRROS_DOWNLOADS/$CIRROS_INITRD_FILE $testdir
+    cp $CIRROS_DOWNLOADS/$CIRROS_ROOTFS_FILE $testdir
+    cat >$testdir/cirros-separate-kernel-pv.cfg <<EOF
+name = "raisin-test"
+memory = 128
+vcpus = 2
+kernel = "$testdir/$CIRROS_KERNEL_FILE"
+ramdisk = "$testdir/$CIRROS_INITRD_FILE"
+disk = [ '$testdir/$CIRROS_ROOTFS_FILE,raw,xvda,rw' ]
+extra = "root=/dev/xvda"
+vif = [ 'bridge=xenbr1' ]
+EOF
+
+    $SUDO xl create $testdir/cirros-separate-kernel-pv.cfg
+    check_guest_alive
+}
