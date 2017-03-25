@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -e
+
+function cirros-pygrub-pv-cleanup() {
+    tear_down_cirros_test $testdir
+}
+
+function cirros-pygrub-pv-test() {
+    download_cirros_components
+    testdir=`mktemp -d`
+    cp $CIRROS_DOWNLOADS/$CIRROS_DISK_FILE $testdir
+    cat >$testdir/cirros-pygrub-pv.cfg <<EOF
+name = "raisin-test"
+memory = 128
+vcpus = 2
+bootloader = "pygrub"
+disk = [ '$testdir/$CIRROS_DISK_FILE,raw,xvda,rw' ]
+extra = "root=/dev/xvda1"
+vif = [ 'bridge=xenbr1' ]
+EOF
+
+    $SUDO xl create $testdir/cirros-pygrub-pv.cfg
+    check_guest_alive
+}
