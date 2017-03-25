@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -e
+
+function cirros-qemu-pvhvm-cleanup() {
+    tear_down_cirros_test $testdir
+}
+
+function cirros-qemu-pvhvm-test() {
+    download_cirros_components
+    testdir=`mktemp -d`
+    cp $CIRROS_DOWNLOADS/$CIRROS_DISK_FILE $testdir
+    cat >$testdir/cirros-qemu-pvhvm.cfg <<EOF
+name = "raisin-test"
+builder = "hvm"
+xen_platform_pci = 1
+memory = 128
+vcpus = 2
+disk = [ '$testdir/$CIRROS_DISK_FILE,raw,xvda,rw' ]
+vif = [ 'bridge=xenbr1' ]
+serial="pty"
+boot="c"
+EOF
+
+    $SUDO xl create $testdir/cirros-qemu-pvhvm.cfg
+    check_guest_alive
+}
