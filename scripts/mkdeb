@@ -46,6 +46,10 @@ then
     rm -rf deb/usr/lib64
 fi
 
+# Make sure that python libs will be in the path
+mkdir -p deb/usr/lib/python2.7/dist-packages
+mv deb/usr/lib/python2.7/site-packages/* deb/usr/lib/python2.7/dist-packages
+
 # Fill in the debian boilerplate
 mkdir -p deb/DEBIAN
 cat >deb/DEBIAN/control <<EOF
