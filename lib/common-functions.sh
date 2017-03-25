@@ -439,3 +439,36 @@ function uninstall_package() {
         error_echo "Don't know how to uninstall packages on $DISTRO"
     fi
 }
+
+function get-qemu-img() {
+    set +e
+    QEMU_IMG=`which qemu-img`
+    set -e
+    if [[ -z "$QEMU_IMG" ]]
+    then
+        QEMU_IMG="/usr/lib/xen/bin/qemu-img"
+    fi
+    if [[ -x $QEMU_IMG ]]
+    then
+        export QEMU_IMG
+    else
+        error_echo "No working qemu-img found! Some tests may fail!"
+    fi
+}
+
+function get-pvgrub() {
+    local arch=$1
+    set +e
+    PVGRUB=`which grub-${arch}-xen`
+    set -e
+    if [[ -z "$PVGRUB" ]]
+    then
+        PVGRUB="/usr/lib/xen/boot/grub-${arch}-xen"
+    fi
+    if [[ -f $PVGRUB ]]
+    then
+        export PVGRUB
+    else
+        error_echo "No working pvgrub found! Some tests may fail!"
+    fi
+}
