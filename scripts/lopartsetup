@@ -59,7 +59,7 @@ if [ `fdisk -lu $filename 2>/dev/null | grep -e "^Units = " | wc -l` -eq 1 ]
 then
     unitstring="^Units = "
     column=9
-else if [ `fdisk -lu $filename 2>/dev/null | grep -e "^Units:" | wc -l` -eq 1 ]
+elif [ `fdisk -lu $filename 2>/dev/null | grep -e "^Units:" | wc -l` -eq 1 ]
 then
     unitstring="^Units:"
     column=8
